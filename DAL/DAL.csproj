@@ -53,6 +53,13 @@
     <Compile Include="City.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Converts\CityConvert.cs" />
+    <Compile Include="Converts\FeedbackConvert.cs" />
+    <Compile Include="Converts\ParkSpotConvert.cs" />
+    <Compile Include="Converts\PaymentDetailsConvert.cs" />
+    <Compile Include="Converts\SearchConvert.cs" />
+    <Compile Include="Converts\UserConvert.cs" />
+    <Compile Include="Converts\WeekDayConvert.cs" />
     <Compile Include="DBConnection.cs" />
     <Compile Include="Feedback.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -98,6 +105,7 @@
   <ItemGroup>
     <None Include="App.Config" />
     <None Include="ClassDiagram1.cd" />
+    <None Include="ConvertFunc.cd" />
     <None Include="Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>
     </None>
