@@ -1,0 +1,674 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ParkMarkModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Cities">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CityName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Feedbacks">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DescriberUserCode" Type="int" />
+          <Property Name="DescriptedUserCode" Type="int" />
+          <Property Name="Feedback" Type="varchar" MaxLength="500" />
+          <Property Name="Rating" Type="int" />
+        </EntityType>
+        <EntityType Name="ParkingSpot">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserCode" Type="int" Nullable="false" />
+          <Property Name="CityCode" Type="int" />
+          <Property Name="Place_id" Type="varchar" MaxLength="100" />
+          <Property Name="FullAddress" Type="varchar" MaxLength="120" />
+          <Property Name="SpotWidth" Type="float" />
+          <Property Name="SpotLength" Type="float" />
+          <Property Name="PricePerHour" Type="float" />
+          <Property Name="HasRoof" Type="bit" />
+          <Property Name="DaysSchedule" Type="int" />
+          <Property Name="IsOccupied" Type="bit" />
+          <Property Name="AvRegularly" Type="bit" />
+        </EntityType>
+        <EntityType Name="ParkingSpotSearch">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" />
+          <Property Name="MyLocationAddress" Type="varchar" MaxLength="120" />
+          <Property Name="Place_id" Type="varchar" MaxLength="100" />
+          <Property Name="CityCode" Type="int" />
+          <Property Name="SizeOpt" Type="bit" />
+          <Property Name="PreferableWidth" Type="float" />
+          <Property Name="PreferableLength" Type="float" />
+          <Property Name="RoofOpt" Type="bit" />
+          <Property Name="DaysSchedule" Type="int" />
+          <Property Name="MinPrice" Type="float" />
+          <Property Name="MaxPrice" Type="float" />
+          <Property Name="Regularly" Type="bit" />
+          <Property Name="SearchDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PaymentDetails">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CreditCardNumber" Type="varchar" MaxLength="16" />
+          <Property Name="PaymentAmount" Type="float" />
+          <Property Name="ExpiryDateMonth" Type="char" MaxLength="2" />
+          <Property Name="ExpiryDateYear" Type="char" MaxLength="2" />
+          <Property Name="SecurityCode" Type="varchar" MaxLength="4" />
+          <Property Name="PostalCode" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="30" />
+          <Property Name="UserPassword" Type="varchar" MaxLength="50" />
+          <Property Name="UserEmail" Type="varchar" MaxLength="100" />
+          <Property Name="UserPhoneNumber" Type="varchar" MaxLength="10" />
+          <Property Name="PaymentDetails1" Type="int" />
+          <Property Name="PaymentDetails2" Type="int" />
+        </EntityType>
+        <EntityType Name="WeekDays">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SundayHourQuaters" Type="int" />
+          <Property Name="MondayHourQuaters" Type="int" />
+          <Property Name="TuedayHourQuaters" Type="int" />
+          <Property Name="WednesdayHourQuaters" Type="int" />
+          <Property Name="ThursdayHourQuaters" Type="int" />
+          <Property Name="FridayHourQuaters" Type="int" />
+        </EntityType>
+        <Association Name="FK__Feedbacks__Descr__4CA06362">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Feedbacks" Type="Self.Feedbacks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="Feedbacks">
+              <PropertyRef Name="DescriberUserCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Feedbacks__Descr__4D94879B">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Feedbacks" Type="Self.Feedbacks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="Feedbacks">
+              <PropertyRef Name="DescriptedUserCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ParkingSp__CityC__412EB0B6">
+          <End Role="Cities" Type="Self.Cities" Multiplicity="0..1" />
+          <End Role="ParkingSpot" Type="Self.ParkingSpot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cities">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="ParkingSpot">
+              <PropertyRef Name="CityCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ParkingSp__CityC__48CFD27E">
+          <End Role="Cities" Type="Self.Cities" Multiplicity="0..1" />
+          <End Role="ParkingSpotSearch" Type="Self.ParkingSpotSearch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cities">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="ParkingSpotSearch">
+              <PropertyRef Name="CityCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ParkingSp__DaysS__4222D4EF">
+          <End Role="WeekDays" Type="Self.WeekDays" Multiplicity="0..1" />
+          <End Role="ParkingSpot" Type="Self.ParkingSpot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WeekDays">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="ParkingSpot">
+              <PropertyRef Name="DaysSchedule" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ParkingSp__DaysS__49C3F6B7">
+          <End Role="WeekDays" Type="Self.WeekDays" Multiplicity="0..1" />
+          <End Role="ParkingSpotSearch" Type="Self.ParkingSpotSearch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WeekDays">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="ParkingSpotSearch">
+              <PropertyRef Name="DaysSchedule" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ParkingSp__UserC__403A8C7D">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="ParkingSpot" Type="Self.ParkingSpot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="ParkingSpot">
+              <PropertyRef Name="UserCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ParkingSp__UserI__47DBAE45">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="ParkingSpotSearch" Type="Self.ParkingSpotSearch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="ParkingSpotSearch">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Users__PaymentDe__3C69FB99">
+          <End Role="PaymentDetails" Type="Self.PaymentDetails" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentDetails">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="PaymentDetails1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Users__PaymentDe__3D5E1FD2">
+          <End Role="PaymentDetails" Type="Self.PaymentDetails" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentDetails">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="PaymentDetails2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ParkMarkModelStoreContainer">
+          <EntitySet Name="Cities" EntityType="Self.Cities" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Feedbacks" EntityType="Self.Feedbacks" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParkingSpot" EntityType="Self.ParkingSpot" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParkingSpotSearch" EntityType="Self.ParkingSpotSearch" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PaymentDetails" EntityType="Self.PaymentDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WeekDays" EntityType="Self.WeekDays" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Feedbacks__Descr__4CA06362" Association="Self.FK__Feedbacks__Descr__4CA06362">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Feedbacks" EntitySet="Feedbacks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Feedbacks__Descr__4D94879B" Association="Self.FK__Feedbacks__Descr__4D94879B">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Feedbacks" EntitySet="Feedbacks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ParkingSp__CityC__412EB0B6" Association="Self.FK__ParkingSp__CityC__412EB0B6">
+            <End Role="Cities" EntitySet="Cities" />
+            <End Role="ParkingSpot" EntitySet="ParkingSpot" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ParkingSp__CityC__48CFD27E" Association="Self.FK__ParkingSp__CityC__48CFD27E">
+            <End Role="Cities" EntitySet="Cities" />
+            <End Role="ParkingSpotSearch" EntitySet="ParkingSpotSearch" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ParkingSp__DaysS__4222D4EF" Association="Self.FK__ParkingSp__DaysS__4222D4EF">
+            <End Role="WeekDays" EntitySet="WeekDays" />
+            <End Role="ParkingSpot" EntitySet="ParkingSpot" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ParkingSp__DaysS__49C3F6B7" Association="Self.FK__ParkingSp__DaysS__49C3F6B7">
+            <End Role="WeekDays" EntitySet="WeekDays" />
+            <End Role="ParkingSpotSearch" EntitySet="ParkingSpotSearch" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ParkingSp__UserC__403A8C7D" Association="Self.FK__ParkingSp__UserC__403A8C7D">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ParkingSpot" EntitySet="ParkingSpot" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ParkingSp__UserI__47DBAE45" Association="Self.FK__ParkingSp__UserI__47DBAE45">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ParkingSpotSearch" EntitySet="ParkingSpotSearch" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__PaymentDe__3C69FB99" Association="Self.FK__Users__PaymentDe__3C69FB99">
+            <End Role="PaymentDetails" EntitySet="PaymentDetails" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__PaymentDe__3D5E1FD2" Association="Self.FK__Users__PaymentDe__3D5E1FD2">
+            <End Role="PaymentDetails" EntitySet="PaymentDetails" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ParkMarkModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CityName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ParkingSpots" Relationship="Self.FK__ParkingSp__CityC__412EB0B6" FromRole="Cities" ToRole="ParkingSpot" />
+          <NavigationProperty Name="ParkingSpotSearches" Relationship="Self.FK__ParkingSp__CityC__48CFD27E" FromRole="Cities" ToRole="ParkingSpotSearch" />
+        </EntityType>
+        <EntityType Name="Feedback">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DescriberUserCode" Type="Int32" />
+          <Property Name="DescriptedUserCode" Type="Int32" />
+          <Property Name="Feedback1" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Rating" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Feedbacks__Descr__4CA06362" FromRole="Feedbacks" ToRole="Users" />
+          <NavigationProperty Name="User1" Relationship="Self.FK__Feedbacks__Descr__4D94879B" FromRole="Feedbacks" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="ParkingSpot">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserCode" Type="Int32" Nullable="false" />
+          <Property Name="CityCode" Type="Int32" />
+          <Property Name="Place_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FullAddress" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="SpotWidth" Type="Double" />
+          <Property Name="SpotLength" Type="Double" />
+          <Property Name="PricePerHour" Type="Double" />
+          <Property Name="HasRoof" Type="Boolean" />
+          <Property Name="DaysSchedule" Type="Int32" />
+          <Property Name="IsOccupied" Type="Boolean" />
+          <Property Name="AvRegularly" Type="Boolean" />
+          <NavigationProperty Name="City" Relationship="Self.FK__ParkingSp__CityC__412EB0B6" FromRole="ParkingSpot" ToRole="Cities" />
+          <NavigationProperty Name="WeekDay" Relationship="Self.FK__ParkingSp__DaysS__4222D4EF" FromRole="ParkingSpot" ToRole="WeekDays" />
+          <NavigationProperty Name="User" Relationship="Self.FK__ParkingSp__UserC__403A8C7D" FromRole="ParkingSpot" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="ParkingSpotSearch">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" />
+          <Property Name="MyLocationAddress" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="Place_id" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CityCode" Type="Int32" />
+          <Property Name="SizeOpt" Type="Boolean" />
+          <Property Name="PreferableWidth" Type="Double" />
+          <Property Name="PreferableLength" Type="Double" />
+          <Property Name="RoofOpt" Type="Boolean" />
+          <Property Name="DaysSchedule" Type="Int32" />
+          <Property Name="MinPrice" Type="Double" />
+          <Property Name="MaxPrice" Type="Double" />
+          <Property Name="Regularly" Type="Boolean" />
+          <Property Name="SearchDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="City" Relationship="Self.FK__ParkingSp__CityC__48CFD27E" FromRole="ParkingSpotSearch" ToRole="Cities" />
+          <NavigationProperty Name="WeekDay" Relationship="Self.FK__ParkingSp__DaysS__49C3F6B7" FromRole="ParkingSpotSearch" ToRole="WeekDays" />
+          <NavigationProperty Name="User" Relationship="Self.FK__ParkingSp__UserI__47DBAE45" FromRole="ParkingSpotSearch" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="PaymentDetail">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreditCardNumber" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentAmount" Type="Double" />
+          <Property Name="ExpiryDateMonth" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="ExpiryDateYear" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="SecurityCode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="PostalCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Users__PaymentDe__3C69FB99" FromRole="PaymentDetails" ToRole="Users" />
+          <NavigationProperty Name="Users1" Relationship="Self.FK__Users__PaymentDe__3D5E1FD2" FromRole="PaymentDetails" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="UserPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="UserEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="UserPhoneNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentDetails1" Type="Int32" />
+          <Property Name="PaymentDetails2" Type="Int32" />
+          <NavigationProperty Name="Feedbacks" Relationship="Self.FK__Feedbacks__Descr__4CA06362" FromRole="Users" ToRole="Feedbacks" />
+          <NavigationProperty Name="Feedbacks1" Relationship="Self.FK__Feedbacks__Descr__4D94879B" FromRole="Users" ToRole="Feedbacks" />
+          <NavigationProperty Name="ParkingSpots" Relationship="Self.FK__ParkingSp__UserC__403A8C7D" FromRole="Users" ToRole="ParkingSpot" />
+          <NavigationProperty Name="ParkingSpotSearches" Relationship="Self.FK__ParkingSp__UserI__47DBAE45" FromRole="Users" ToRole="ParkingSpotSearch" />
+          <NavigationProperty Name="PaymentDetail" Relationship="Self.FK__Users__PaymentDe__3C69FB99" FromRole="Users" ToRole="PaymentDetails" />
+          <NavigationProperty Name="PaymentDetail1" Relationship="Self.FK__Users__PaymentDe__3D5E1FD2" FromRole="Users" ToRole="PaymentDetails" />
+        </EntityType>
+        <EntityType Name="WeekDay">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SundayHourQuaters" Type="Int32" />
+          <Property Name="MondayHourQuaters" Type="Int32" />
+          <Property Name="TuedayHourQuaters" Type="Int32" />
+          <Property Name="WednesdayHourQuaters" Type="Int32" />
+          <Property Name="ThursdayHourQuaters" Type="Int32" />
+          <Property Name="FridayHourQuaters" Type="Int32" />
+          <NavigationProperty Name="ParkingSpots" Relationship="Self.FK__ParkingSp__DaysS__4222D4EF" FromRole="WeekDays" ToRole="ParkingSpot" />
+          <NavigationProperty Name="ParkingSpotSearches" Relationship="Self.FK__ParkingSp__DaysS__49C3F6B7" FromRole="WeekDays" ToRole="ParkingSpotSearch" />
+        </EntityType>
+        <Association Name="FK__ParkingSp__CityC__412EB0B6">
+          <End Role="Cities" Type="Self.City" Multiplicity="0..1" />
+          <End Role="ParkingSpot" Type="Self.ParkingSpot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cities">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="ParkingSpot">
+              <PropertyRef Name="CityCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ParkingSp__CityC__48CFD27E">
+          <End Role="Cities" Type="Self.City" Multiplicity="0..1" />
+          <End Role="ParkingSpotSearch" Type="Self.ParkingSpotSearch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cities">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="ParkingSpotSearch">
+              <PropertyRef Name="CityCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Feedbacks__Descr__4CA06362">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Feedbacks" Type="Self.Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="Feedbacks">
+              <PropertyRef Name="DescriberUserCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Feedbacks__Descr__4D94879B">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Feedbacks" Type="Self.Feedback" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="Feedbacks">
+              <PropertyRef Name="DescriptedUserCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ParkingSp__DaysS__4222D4EF">
+          <End Role="WeekDays" Type="Self.WeekDay" Multiplicity="0..1" />
+          <End Role="ParkingSpot" Type="Self.ParkingSpot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WeekDays">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="ParkingSpot">
+              <PropertyRef Name="DaysSchedule" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ParkingSp__UserC__403A8C7D">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="ParkingSpot" Type="Self.ParkingSpot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="ParkingSpot">
+              <PropertyRef Name="UserCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ParkingSp__DaysS__49C3F6B7">
+          <End Role="WeekDays" Type="Self.WeekDay" Multiplicity="0..1" />
+          <End Role="ParkingSpotSearch" Type="Self.ParkingSpotSearch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WeekDays">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="ParkingSpotSearch">
+              <PropertyRef Name="DaysSchedule" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ParkingSp__UserI__47DBAE45">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="ParkingSpotSearch" Type="Self.ParkingSpotSearch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="ParkingSpotSearch">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Users__PaymentDe__3C69FB99">
+          <End Role="PaymentDetails" Type="Self.PaymentDetail" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentDetails">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="PaymentDetails1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Users__PaymentDe__3D5E1FD2">
+          <End Role="PaymentDetails" Type="Self.PaymentDetail" Multiplicity="0..1" />
+          <End Role="Users" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentDetails">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="Users">
+              <PropertyRef Name="PaymentDetails2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ParkMarkEntitiesDAL" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Cities" EntityType="Self.City" />
+          <EntitySet Name="Feedbacks" EntityType="Self.Feedback" />
+          <EntitySet Name="ParkingSpots" EntityType="Self.ParkingSpot" />
+          <EntitySet Name="ParkingSpotSearches" EntityType="Self.ParkingSpotSearch" />
+          <EntitySet Name="PaymentDetails" EntityType="Self.PaymentDetail" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="WeekDays" EntityType="Self.WeekDay" />
+          <AssociationSet Name="FK__ParkingSp__CityC__412EB0B6" Association="Self.FK__ParkingSp__CityC__412EB0B6">
+            <End Role="Cities" EntitySet="Cities" />
+            <End Role="ParkingSpot" EntitySet="ParkingSpots" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ParkingSp__CityC__48CFD27E" Association="Self.FK__ParkingSp__CityC__48CFD27E">
+            <End Role="Cities" EntitySet="Cities" />
+            <End Role="ParkingSpotSearch" EntitySet="ParkingSpotSearches" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Feedbacks__Descr__4CA06362" Association="Self.FK__Feedbacks__Descr__4CA06362">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Feedbacks" EntitySet="Feedbacks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Feedbacks__Descr__4D94879B" Association="Self.FK__Feedbacks__Descr__4D94879B">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Feedbacks" EntitySet="Feedbacks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ParkingSp__DaysS__4222D4EF" Association="Self.FK__ParkingSp__DaysS__4222D4EF">
+            <End Role="WeekDays" EntitySet="WeekDays" />
+            <End Role="ParkingSpot" EntitySet="ParkingSpots" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ParkingSp__UserC__403A8C7D" Association="Self.FK__ParkingSp__UserC__403A8C7D">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ParkingSpot" EntitySet="ParkingSpots" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ParkingSp__DaysS__49C3F6B7" Association="Self.FK__ParkingSp__DaysS__49C3F6B7">
+            <End Role="WeekDays" EntitySet="WeekDays" />
+            <End Role="ParkingSpotSearch" EntitySet="ParkingSpotSearches" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ParkingSp__UserI__47DBAE45" Association="Self.FK__ParkingSp__UserI__47DBAE45">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="ParkingSpotSearch" EntitySet="ParkingSpotSearches" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__PaymentDe__3C69FB99" Association="Self.FK__Users__PaymentDe__3C69FB99">
+            <End Role="PaymentDetails" EntitySet="PaymentDetails" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Users__PaymentDe__3D5E1FD2" Association="Self.FK__Users__PaymentDe__3D5E1FD2">
+            <End Role="PaymentDetails" EntitySet="PaymentDetails" />
+            <End Role="Users" EntitySet="Users" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ParkMarkModelStoreContainer" CdmEntityContainer="ParkMarkEntitiesDAL">
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="ParkMarkModel.City">
+              <MappingFragment StoreEntitySet="Cities">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Feedbacks">
+            <EntityTypeMapping TypeName="ParkMarkModel.Feedback">
+              <MappingFragment StoreEntitySet="Feedbacks">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="DescriberUserCode" ColumnName="DescriberUserCode" />
+                <ScalarProperty Name="DescriptedUserCode" ColumnName="DescriptedUserCode" />
+                <ScalarProperty Name="Feedback1" ColumnName="Feedback" />
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParkingSpots">
+            <EntityTypeMapping TypeName="ParkMarkModel.ParkingSpot">
+              <MappingFragment StoreEntitySet="ParkingSpot">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="UserCode" ColumnName="UserCode" />
+                <ScalarProperty Name="CityCode" ColumnName="CityCode" />
+                <ScalarProperty Name="Place_id" ColumnName="Place_id" />
+                <ScalarProperty Name="FullAddress" ColumnName="FullAddress" />
+                <ScalarProperty Name="SpotWidth" ColumnName="SpotWidth" />
+                <ScalarProperty Name="SpotLength" ColumnName="SpotLength" />
+                <ScalarProperty Name="PricePerHour" ColumnName="PricePerHour" />
+                <ScalarProperty Name="HasRoof" ColumnName="HasRoof" />
+                <ScalarProperty Name="DaysSchedule" ColumnName="DaysSchedule" />
+                <ScalarProperty Name="IsOccupied" ColumnName="IsOccupied" />
+                <ScalarProperty Name="AvRegularly" ColumnName="AvRegularly" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParkingSpotSearches">
+            <EntityTypeMapping TypeName="ParkMarkModel.ParkingSpotSearch">
+              <MappingFragment StoreEntitySet="ParkingSpotSearch">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="MyLocationAddress" ColumnName="MyLocationAddress" />
+                <ScalarProperty Name="Place_id" ColumnName="Place_id" />
+                <ScalarProperty Name="CityCode" ColumnName="CityCode" />
+                <ScalarProperty Name="SizeOpt" ColumnName="SizeOpt" />
+                <ScalarProperty Name="PreferableWidth" ColumnName="PreferableWidth" />
+                <ScalarProperty Name="PreferableLength" ColumnName="PreferableLength" />
+                <ScalarProperty Name="RoofOpt" ColumnName="RoofOpt" />
+                <ScalarProperty Name="DaysSchedule" ColumnName="DaysSchedule" />
+                <ScalarProperty Name="MinPrice" ColumnName="MinPrice" />
+                <ScalarProperty Name="MaxPrice" ColumnName="MaxPrice" />
+                <ScalarProperty Name="Regularly" ColumnName="Regularly" />
+                <ScalarProperty Name="SearchDate" ColumnName="SearchDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentDetails">
+            <EntityTypeMapping TypeName="ParkMarkModel.PaymentDetail">
+              <MappingFragment StoreEntitySet="PaymentDetails">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="CreditCardNumber" ColumnName="CreditCardNumber" />
+                <ScalarProperty Name="PaymentAmount" ColumnName="PaymentAmount" />
+                <ScalarProperty Name="ExpiryDateMonth" ColumnName="ExpiryDateMonth" />
+                <ScalarProperty Name="ExpiryDateYear" ColumnName="ExpiryDateYear" />
+                <ScalarProperty Name="SecurityCode" ColumnName="SecurityCode" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="ParkMarkModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+                <ScalarProperty Name="UserPhoneNumber" ColumnName="UserPhoneNumber" />
+                <ScalarProperty Name="PaymentDetails1" ColumnName="PaymentDetails1" />
+                <ScalarProperty Name="PaymentDetails2" ColumnName="PaymentDetails2" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WeekDays">
+            <EntityTypeMapping TypeName="ParkMarkModel.WeekDay">
+              <MappingFragment StoreEntitySet="WeekDays">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="SundayHourQuaters" ColumnName="SundayHourQuaters" />
+                <ScalarProperty Name="MondayHourQuaters" ColumnName="MondayHourQuaters" />
+                <ScalarProperty Name="TuedayHourQuaters" ColumnName="TuedayHourQuaters" />
+                <ScalarProperty Name="WednesdayHourQuaters" ColumnName="WednesdayHourQuaters" />
+                <ScalarProperty Name="ThursdayHourQuaters" ColumnName="ThursdayHourQuaters" />
+                <ScalarProperty Name="FridayHourQuaters" ColumnName="FridayHourQuaters" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
