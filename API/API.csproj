@@ -155,7 +155,9 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\FeedbackController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ParkingSpotController.cs" />
     <Compile Include="Controllers\PaymentDetailsController.cs" />
     <Compile Include="Controllers\SearchesController.cs" />
     <Compile Include="Controllers\UserController.cs" />
