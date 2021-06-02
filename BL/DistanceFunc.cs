@@ -53,12 +53,12 @@ namespace BL
                     location += locationAsArray[i];
             }
 
-            return "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyC7TbjduTc1JiFtJihmLEGXlwLJZFh6tYs&query=" + location;
+            return "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyDKdp5Tna0InvxI6tDyUSU3FYbpcWA7mYYs&query=" + location;
         }
 
         public static string BuildUrlForDistance(string place1, string place2)
         {
-            string url = "https://maps.googleapis.com/maps/api/distancematrix/json?key=AIzaSyC7TbjduTc1JiFtJihmLEGXlwLJZFh6tYs&units=metric&origins=";
+            string url = "https://maps.googleapis.com/maps/api/distancematrix/json?key=AIzaSyDKdp5Tna0InvxI6tDyUSU3FYbpcWA7mYY&units=metric&origins=";
             return url + "place_id:" + place1 + "&destinations=place_id:" + place2;
         }
         //returns a dictionary= key: pspot code , value: distance to there in 00.000 km
@@ -114,7 +114,7 @@ namespace BL
                     location += locationAsArray[i];
             }
 
-            string url = "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyC7TbjduTc1JiFtJihmLEGXlwLJZFh6tYs&query=" + location;
+            string url = "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyDKdp5Tna0InvxI6tDyUSU3FYbpcWA7mYY&query=" + location;
             HttpClient http = new HttpClient();
 
             var responseId = await http.GetAsync(url);
@@ -132,7 +132,7 @@ namespace BL
 
         static string BuildUrlForManyDistances(string origin, string[] destinations)
         {
-            string url = "https://maps.googleapis.com/maps/api/distancematrix/json?key=&units=metric&origins=";
+            string url = "https://maps.googleapis.com/maps/api/distancematrix/json?key=AIzaSyDKdp5Tna0InvxI6tDyUSU3FYbpcWA7mYY&units=metric&origins=";
             url += "place_id:" + origin + "&destinations=place_id:" + destinations[0];
             for (int i = 1; i < destinations.Length - 1; i++)
             {
