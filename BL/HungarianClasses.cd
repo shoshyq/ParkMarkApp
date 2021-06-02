@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BL.HungarianAlgorithm">
+    <Position X="4.25" Y="1.25" Width="1.5" />
+    <NestedTypes>
+      <Struct Name="BL.HungarianAlgorithm.Location" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Hungarian.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAgEAgAAIABAAAIgMAAAQAgAAQA=</HashCode>
+      <FileName>Hungarian.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BL.HungarianFunctions">
+    <Position X="2.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAgAACAEAAAAAAAAAAAAIAAAAAAAAACABAAA=</HashCode>
+      <FileName>HungarianFunctions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

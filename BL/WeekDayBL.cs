@@ -11,11 +11,11 @@ namespace BL
 {
    public  class WeekDayBL
     {
-        DBConnection DBCon;
         ConvertFuncBL convertFunc;
+        //public static List<string> weekdays = new List<string>() { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
+
         public WeekDayBL()
         {
-            DBCon = new DBConnection();
             convertFunc = new ConvertFuncBL();
         }
         // adding a new week to week table. gets a Schedule_Week/// and returns the code if succeeds, if not - 0

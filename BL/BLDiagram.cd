@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BL.MainBL">
+    <Position X="9.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAQAAEAAAAAAAAAAAAAAAAAAAAAQCAAAAA=</HashCode>
+      <FileName>MainBL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BL.ConvertFuncBL">
+    <Position X="4.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAgAACCAAAABAAAgABAAAEA=</HashCode>
+      <FileName>ConvertFuncBL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BL.FeedbackBL">
+    <Position X="6.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAgACIAAAAAAAAAAAAAAAAAAgCAAAAE=</HashCode>
+      <FileName>FeedbackBL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BL.ParkingSpotsBL">
+    <Position X="8.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAEAAAAAgAAAAAAAAAAAAAIAACACAAA=</HashCode>
+      <FileName>ParkingSpotsBL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BL.PaymentDetailsBL">
+    <Position X="10" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAACAAAAAAAAACAgEAA=</HashCode>
+      <FileName>PaymentDetailsBL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BL.SearchRequestsBL">
+    <Position X="11.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAEAAAAAgAAAABAAAAAAAAgAAiAABAA=</HashCode>
+      <FileName>SearchRequestsBL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BL.UserBL">
+    <Position X="13.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABACAAEAAAAAAAAAQAgAAAAAEBQAAAIAAA=</HashCode>
+      <FileName>UserBL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BL.WeekDayBL">
+    <Position X="15.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAAAAABABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WeekDayBL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -12,11 +12,14 @@ namespace BL
     {
         DBConnection DBCon;
         MainBL mbl;
-        DistanceFunc df = new DistanceFunc();
+        DistanceFunc df;
+        ConvertFuncBL convertFuncBL;
         public HungarianFunctions()
         {
             DBCon = new DBConnection();
             mbl = new MainBL();
+            df = new DistanceFunc();
+            convertFuncBL = new ConvertFuncBL();
         }
         #region functions for hungarian
         //Main algorithm function  - returns dictionary key:city, value: dictionary - schedule of pspots and searches
@@ -44,8 +47,8 @@ namespace BL
             var groupOfPSpots = new List<DAL.ParkingSpot>();
             int[] spotsClients;
             int minCost = int.MaxValue;
-            List<PSpotHandler> parkSpotsMatrixList = mbl.ConvertToPSpotHandlerList(pspots);
-            List<PSpotSearchHandler> parkSearchesMatrixList = mbl.ConvertToSpotSearchHandlerList(psearches);
+            List<PSpotHandler> parkSpotsMatrixList = convertFuncBL.ConvertToPSpotHandlerList(pspots);
+            List<PSpotSearchHandler> parkSearchesMatrixList = convertFuncBL.ConvertToSpotSearchHandlerList(psearches);
 
             Dictionary<int, int> settingPSpotsPerSearch = new Dictionary<int, int>();
             int costPerOption;

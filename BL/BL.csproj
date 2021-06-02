@@ -85,7 +85,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ClassDiagram1.cd" />
+    <None Include="BLDiagram.cd" />
+    <None Include="DistanceClasses.cd" />
+    <None Include="HungarianClasses.cd" />
+    <None Include="OtherClasses.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
