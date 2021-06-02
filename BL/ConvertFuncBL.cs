@@ -5,29 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using DAL;
 using Entities;
-using City = DAL.City;
-using Feedback = DAL.Feedback;
-using ParkingSpot = DAL.ParkingSpot;
-using ParkingSpotSearch = DAL.ParkingSpotSearch;
-using PaymentDetail = DAL.PaymentDetail;
-using User = DAL.User;
 using WeekDay = DAL.WeekDay;
 
 namespace BL
 {
-    public class MainBL
+    public class ConvertFuncBL
     {
-        HungarianFunctions hf;
-        DBConnection DBCon;
-        DistanceFunc df;
-
-        //public static List<string> weekdays = new List<string>() { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday" };
-        public MainBL()
-        {
-            DBCon = new DBConnection();
-            df = new DistanceFunc();
-            hf = new HungarianFunctions();
-        }
         #region convertion functions
         //converts List<ParkingSpot> to List<PSpotHandler>
         public List<PSpotHandler> ConvertToPSpotHandlerList(List<DAL.ParkingSpot> pslist)
@@ -263,24 +246,5 @@ namespace BL
 
         #endregion
 
-
-        #region main functions
-        //searching for the spot, imidiate
-
-        //once a day main-hungarian function - suppose to be here 
-        public Dictionary<int, Dictionary<int, int>> ParkingSpotPerUser()
-        {
-            return hf.PSpotsAllSearchesByCities();
-        }
-        // confirmation of the result from user about the parking spot. updating the schedule-times table 
-        public int ConfirmResult()
-        {
-            return 1;
-        }
-        #endregion
-
-       
-
     }
-
 }

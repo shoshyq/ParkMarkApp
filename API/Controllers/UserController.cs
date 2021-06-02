@@ -14,15 +14,15 @@ namespace API.Controllers
     [RoutePrefix("api/users")]
     public class UserController : ApiController
     {
+        UserBL ubl = new UserBL();
 
-        MainBL mbl = new MainBL();
         [AcceptVerbs("GET", "POST")]
         [Route("logIn/{username}/{password}")]
         [HttpGet]
         //login 
         public int LogIn(string username, string password)
         {
-            return mbl.Login(username, password);
+            return ubl.Login(username, password);
         }
 
         [AcceptVerbs("GET", "POST")]
@@ -30,21 +30,21 @@ namespace API.Controllers
         [HttpPost]
         public int SignUp(Entities.User u)
         {
-            return (mbl.SignUp(u));
+            return (ubl.SignUp(u));
         }
         [AcceptVerbs("GET", "POST")]
         [Route("updateUser")]
         [HttpPost]
         public int UpdateUser(Entities.User u)
         {
-            return (mbl.UpdateUser(u));
+            return (ubl.UpdateUser(u));
         }
         [AcceptVerbs("GET", "POST")]
         [Route("deleteUser")]
         [HttpPost]
         public int DeleteUser(DAL.User u)
         {
-            return (mbl.DeleteUser(u));
+            return (ubl.DeleteUser(u));
         }
     }
 }

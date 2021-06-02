@@ -13,14 +13,17 @@ namespace API.Controllers
     [RoutePrefix("api/parkingSpots")]
     public class ParkingSpotController : ApiController
     {
-        MainBL mbl = new MainBL();
+        WeekDayBL wdbl = new WeekDayBL();
+        ParkingSpotsBL psbl = new ParkingSpotsBL();
+        CityBL cbl = new CityBL();
+
         [AcceptVerbs("GET", "POST")]
         [Route("addSchedule")]
         [HttpPost]
         //adding a schedule table 
         public int AddWeekDays(Schedule_Week sw)
         {
-            return mbl.AddWeekDays(sw);
+            return wdbl.AddWeekDays(sw);
         }
 
         [AcceptVerbs("GET", "POST")]
@@ -29,7 +32,7 @@ namespace API.Controllers
         //adding a parking spot
         public int AddParkSpot(Entities.ParkingSpot ps)
         {
-            return (mbl.RegisterUsersParkSpot(ps));
+            return (psbl.RegisterUsersParkSpot(ps));
         }
         [AcceptVerbs("GET", "POST")]
         [Route("addCity")]
@@ -37,28 +40,28 @@ namespace API.Controllers
         //adding a new city
         public int AddCity(string cityname)
         {
-            return mbl.AddCity(cityname);
+            return cbl.AddCity(cityname);
         }
         [AcceptVerbs("GET", "POST")]
         [Route("updateParkSpot")]
         [HttpPost]
         public int UpdateParkSpot(Entities.ParkingSpot ps)
         {
-            return (mbl.UpdateUsersParkSpot(ps));
+            return (psbl.UpdateUsersParkSpot(ps));
         }
         [AcceptVerbs("GET", "POST")]
         [Route("deleteParkSpot")]
         [HttpPost]
         public int DeleteParkSpot(DAL.ParkingSpot ps)
         {
-            return (mbl.DeleteParkingSpot(ps));
+            return (psbl.DeleteParkingSpot(ps));
         }
         [AcceptVerbs("GET", "POST")]
         [Route("updateWeekDays")]
         [HttpPost]
-        public int UpdateWeekDays(Schedule_Week sw)
+        public Schedule_Week UpdateWeekDays(Schedule_Week sw)
         {
-            return (mbl.UpdateWeekDay(sw));
+            return (wdbl.UpdateWeekDay(sw));
         }
 
     }

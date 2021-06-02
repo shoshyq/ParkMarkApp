@@ -14,35 +14,37 @@ namespace API.Controllers
     [RoutePrefix("api/searches")]
     public class SearchesController : ApiController
     {
-        MainBL mbl = new MainBL();
+
+        SearchRequestsBL sbl = new SearchRequestsBL();
+
         [AcceptVerbs("GET", "POST")]
         [Route("addRegSearch")]
         [HttpPost]
         //adding a reg search request 
         public int AddParkingSpotSearch(Entities.ParkingSpotSearch pss)
         {
-            return mbl.AddParkingSpotSearch(pss);
+            return sbl.AddParkingSpotSearch(pss);
         }
         [Route("addImmidSearch")]
         [HttpPost]
         //adding an immidiate search request 
         public Dictionary<DAL.ParkingSpot, int> AddImmidiateSearch(Entities.ParkingSpotSearch pss)
         {
-            return mbl.AddImmidiateParkingSpotSearch(pss);
+            return sbl.AddImmidiateParkingSpotSearch(pss);
         }
         [AcceptVerbs("GET", "POST")]
         [Route("updateSearch")]
         [HttpPost]
         public int UpdateSearch(Entities.ParkingSpotSearch pss)
         {
-            return (mbl.UpdateParkingSpotSearch(pss));
+            return (sbl.UpdateParkingSpotSearch(pss));
         }
         [AcceptVerbs("GET", "POST")]
         [Route("deleteSearch")]
         [HttpPost]
         public int DeleteSearch(DAL.ParkingSpotSearch pss)
         {
-            return (mbl.DeleteParkingSpotSearch(pss));
+            return (sbl.DeleteParkingSpotSearch(pss));
         }
     }
 }

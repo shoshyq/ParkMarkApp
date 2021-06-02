@@ -51,20 +51,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="CityBL.cs" />
+    <Compile Include="ConvertFuncBL.cs" />
     <Compile Include="DbHandler.cs" />
     <Compile Include="DistanceDetails.cs" />
     <Compile Include="DistanceFunc.cs" />
     <Compile Include="Email.cs" />
+    <Compile Include="FeedbackBL.cs" />
     <Compile Include="Hours.cs" />
     <Compile Include="Hungarian.cs" />
     <Compile Include="HungarianFunctions.cs" />
     <Compile Include="LocationBase.cs" />
     <Compile Include="MainBL.cs" />
+    <Compile Include="ParkingSpotsBL.cs" />
+    <Compile Include="PaymentDetailsBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PSpotHandler.cs" />
     <Compile Include="PSpotSearchHandler.cs" />
     <Compile Include="Schedule_Week.cs" />
+    <Compile Include="SearchRequestsBL.cs" />
+    <Compile Include="UserBL.cs" />
+    <Compile Include="WeekDayBL.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj">
@@ -78,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
