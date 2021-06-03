@@ -51,7 +51,7 @@ namespace BL
             return DbHandler.GetAll<ParkingSpotSearch>().First(s => s.Code == pss.Code).Code;
         }
         // deletes search by user
-        public int DeletePSSearchesByUser(DAL.User u)
+        public int DeletePSSearchesByUser(Entities.User u)
         {
             var psslist = DbHandler.GetAll<ParkingSpotSearch>();
             if (psslist != null)

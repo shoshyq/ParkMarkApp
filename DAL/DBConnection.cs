@@ -16,17 +16,14 @@ namespace DAL
             parkMarkmodels = new ParkMarkEntitiesDAL();
         }
         #region generic functions for all tables
-        public DbSet<T> GetDbSet<T>() where T : class
+        public List<T> GetDbSet<T>() where T : class
         {
             using (ParkMarkEntitiesDAL pmm = new ParkMarkEntitiesDAL())
             {
-                return pmm.GetDbSet<T>();
+                return pmm.Set<T>().ToList();
             }
         }
-        public List<T> GetDbSetInList<T>() where T : class
-        {
-            return GetDbSet<T>().ToList();
-        }
+  
         public enum ExecuteActions
         {
             Insert,
@@ -62,8 +59,8 @@ namespace DAL
 
         public int GetUserCode(string userName, string password)
         {
-            if (GetDbSetInList<User>().Any(u => u.Username == userName && u.UserPassword == password))
-                return GetDbSetInList<User>().First(u => u.Username == userName && u.UserPassword == password).Code;
+            if (GetDbSet<User>().Any(u => u.Username == userName && u.UserPassword == password))
+                return GetDbSet<User>().First(u => u.Username == userName && u.UserPassword == password).Code;
             return 0;
         }
 

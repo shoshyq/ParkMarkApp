@@ -48,7 +48,7 @@ namespace BL
             DBCon.Execute(mp, DBConnection.ExecuteActions.Update);
             return mp.Code;
         }
-        public int DeleteParkingSpotByUser(DAL.User u)
+        public int DeleteParkingSpotByUser(Entities.User u)
         {
             var pslist = DbHandler.GetAll<ParkingSpot>();
             if (pslist != null)

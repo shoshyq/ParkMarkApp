@@ -15,7 +15,7 @@ using WeekDay = DAL.WeekDay;
 
 namespace BL
 {
-    public class UserBL
+    public class UserBL : DbHandler
     {
         DBConnection dBConnection;
         FeedbackBL fbl;
@@ -37,12 +37,13 @@ namespace BL
             //if this username already exists
             if (!DbHandler.GetAll<User>().Any(d => d.Username.Trim() == user.Username.Trim()))
             {
-                DbHandler.AddSet(user);
+                AddSet<User>(DAL.Converts.UserConvert.ConvertUserToEF(user));
                 return DbHandler.GetAll<User>().Where(u => u.Username == user.Username && u.UserPassword == user.UserPassword).Select(c => c.Code).ToList()[0];
             }
 
             return 0;
         }
+       
         // login function - returns user code
         public int Login(string username, string password)
         {
@@ -54,13 +55,13 @@ namespace BL
 
             if (dBConnection.GetUserCode(user.Username, user.UserPassword) != 0)
             {
-                dBConnection.Execute(user, DBConnection.ExecuteActions.Update);
+                UpdateSet<User>(DAL.Converts.UserConvert.ConvertUserToEF(user));
                 return user.Code;
             }
             return 0;
         }
         //deletes a user returns 1 if succeeds
-        public int DeleteUser(DAL.User u)
+        public int DeleteUser(Entities.User u)
         {
             //success
             int result = 0;
@@ -75,13 +76,13 @@ namespace BL
                     }
                 }
             }
-            DbHandler.DeleteSet(DbHandler.GetAll<User>().First(y => y.Code == u.Code));
+            DeleteSet<User>(GetAll<User>().First(y => y.Code == u.Code));
             return result;
         }
         //checking if user's rating is fine, if not, deletes
         public int checkUserAvRating(int usercode)
         {
-            var feedbacks = DbHandler.GetAll<Feedback>().Where(g => g.DescriptedUserCode == usercode).ToList();
+            var feedbacks = DAL.Converts.FeedbackConvert.ConvertFeedbacksListToEntity(GetAll<Feedback>().Where(g => g.DescriptedUserCode == usercode).ToList());
             int sum_raiting = 0;
             if ((feedbacks != null) || (feedbacks.Count() != 0))
             {
@@ -91,7 +92,7 @@ namespace BL
                 }
                 if ((sum_raiting / feedbacks.Count()) < 2)
                 {
-                    User user = DbHandler.GetAll<User>().First(u => u.Code == usercode);
+                    Entities.User user = DAL.Converts.UserConvert.ConvertUserToEntity(GetAll<User>().First(u => u.Code == usercode));
                     Email.MailToUserDeletingUser(user);
                     if (DeleteUser(user) == 1)
                         return 1;

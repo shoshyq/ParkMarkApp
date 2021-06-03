@@ -37,7 +37,7 @@ namespace BL
             else
                 return AddPaymentDetails(p);
         }
-        public int DeletePaymentDetailsByUser(DAL.User user)
+        public int DeletePaymentDetailsByUser(Entities.User user)
         {
             var pdlist = DbHandler.GetAll<PaymentDetail>();
             if (pdlist != null)
