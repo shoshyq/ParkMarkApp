@@ -28,7 +28,7 @@ namespace API.Controllers
         [Route("addImmidSearch")]
         [HttpPost]
         //adding an immidiate search request 
-        public Dictionary<DAL.ParkingSpot, int> AddImmidiateSearch(Entities.ParkingSpotSearch pss)
+        public Dictionary<Entities.ParkingSpot, int> AddImmidiateSearch(Entities.ParkingSpotSearch pss)
         {
             return sbl.AddImmidiateParkingSpotSearch(pss);
         }

@@ -11,15 +11,15 @@ using ParkingSpotSearch = DAL.ParkingSpotSearch;
 
 namespace BL
 {
-    public class SearchRequestsBL
+    public class SearchRequestsBL : DbHandler
     {
-        DBConnection DBCon;
         DistanceFunc df;
         ConvertFuncBL convertFunc;
-        
+        List<Entities.ParkingSpotSearch> psslist = DAL.Converts.SearchConvert.ConvertSearchesListToEntity(GetAll<ParkingSpotSearch>());
+
+
         public SearchRequestsBL()
         {
-            DBCon = new DBConnection();
             df = new DistanceFunc();
             convertFunc = new ConvertFuncBL();
         }
@@ -28,11 +28,11 @@ namespace BL
 
         {
             pss.Place_id = df.GetPlaceId(pss.MyLocationAddress);
-            DbHandler.AddSet(pss);
-            return DbHandler.GetAll<ParkingSpotSearch>().Any(s => s.Code == pss.Code) ? DbHandler.GetAll<ParkingSpotSearch>().First(s => s.Code == pss.Code).Code : 0;
+            AddSet(DAL.Converts.SearchConvert.ConvertSearchToEF(pss));
+            return psslist.Any(s => s.Code == pss.Code) ? psslist.First(s => s.Code == pss.Code).Code : 0;
 
         }
-        public Dictionary<ParkingSpot, int> AddImmidiateParkingSpotSearch(Entities.ParkingSpotSearch pss)
+        public Dictionary<Entities.ParkingSpot, int> AddImmidiateParkingSpotSearch(Entities.ParkingSpotSearch pss)
         {
             int result = AddParkingSpotSearch(pss);
             if (result != 0)
@@ -40,27 +40,25 @@ namespace BL
                 return GetFiveClosestParkSpots(pss);
             else
                 return null;
-
         }
         // updating a parking spot search. returns code if succeeds
         public int UpdateParkingSpotSearch(Entities.ParkingSpotSearch pss)
         {
             pss.Place_id = df.GetPlaceId(pss.MyLocationAddress);
 
-            DBCon.Execute(pss, DBConnection.ExecuteActions.Update);
-            return DbHandler.GetAll<ParkingSpotSearch>().First(s => s.Code == pss.Code).Code;
+            UpdateSet(DAL.Converts.SearchConvert.ConvertSearchToEF(pss));
+            return psslist.First(s => s.Code == pss.Code).Code;
         }
         // deletes search by user
         public int DeletePSSearchesByUser(Entities.User u)
-        {
-            var psslist = DbHandler.GetAll<ParkingSpotSearch>();
+        {   
             if (psslist != null)
             {
                 foreach (var item in psslist)
                 {
                     if (item.UserId == u.Code)
                     {
-                        DbHandler.DeleteSet(item);
+                       DeleteSet(DAL.Converts.SearchConvert.ConvertSearchToEF(item));
                     }
                 }
             }
@@ -70,15 +68,15 @@ namespace BL
         //deletes search
         public int DeleteParkingSpotSearch(ParkingSpotSearch pss)
         {
-            var l = DbHandler.GetAll<ParkingSpotSearch>().First(i => i.Code == pss.Code);
-            DbHandler.DeleteSet(l);
+            var l = psslist.First(i => i.Code == pss.Code);
+            DeleteSet(DAL.Converts.SearchConvert.ConvertSearchToEF(l));
 
             return 1;
         }
-        public Dictionary<ParkingSpot, int> GetFiveClosestParkSpots(Entities.ParkingSpotSearch pss)
+        public Dictionary<Entities.ParkingSpot, int> GetFiveClosestParkSpots(Entities.ParkingSpotSearch pss)
         {
             //gets all parking spots in this city
-            var listOfSpots = DbHandler.GetAll<ParkingSpot>().Where(y => y.CityCode == pss.CityCode).ToList();
+            var listOfSpots = DAL.Converts.ParkSpotConvert.ConvertParkingSpotsListToEntity(GetAll<ParkingSpot>()).Where(y => y.CityCode == pss.CityCode).ToList();
             //filtering by hours
             var shl = convertFunc.GetHoursForPSImidiateSearch(pss.WeekDay.Code);
             foreach (var spot in listOfSpots)
@@ -93,11 +91,11 @@ namespace BL
             Dictionary<int, int> results_dic = df.GetDistanceToManyPoints(pss.Place_id, listOfSpots);
 
             //result Dict
-            Dictionary<ParkingSpot, int> distdic = new Dictionary<ParkingSpot, int>();
+            Dictionary<Entities.ParkingSpot, int> distdic = new Dictionary<Entities.ParkingSpot, int>();
             //  select the 5 closest
             foreach (var item in results_dic)
             {
-                distdic.Add(key: DbHandler.GetAll<ParkingSpot>().First(y => y.Code == item.Key), value: item.Value);
+                distdic.Add(key: DAL.Converts.ParkSpotConvert.ConvertParkingSpotsListToEntity(GetAll<ParkingSpot>()).First(y => y.Code == item.Key), value: item.Value);
             }
             return distdic;
         }

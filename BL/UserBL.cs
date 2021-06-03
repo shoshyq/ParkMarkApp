@@ -5,26 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using DAL;
 using Entities;
-using City = DAL.City;
 using Feedback = DAL.Feedback;
-using ParkingSpot = DAL.ParkingSpot;
-using ParkingSpotSearch = DAL.ParkingSpotSearch;
-using PaymentDetail = DAL.PaymentDetail;
 using User = DAL.User;
-using WeekDay = DAL.WeekDay;
 
 namespace BL
 {
     public class UserBL : DbHandler
     {
-        DBConnection dBConnection;
         FeedbackBL fbl;
         ParkingSpotsBL parkingSpotsBL;
         PaymentDetailsBL paymentDetailsBL;
         SearchRequestsBL searchRequestsBL;
         public UserBL()
         {
-            dBConnection = new DBConnection();
             fbl = new FeedbackBL();
             parkingSpotsBL = new ParkingSpotsBL();
             paymentDetailsBL = new PaymentDetailsBL();
@@ -35,10 +28,10 @@ namespace BL
         public int SignUp(Entities.User user)
         {
             //if this username already exists
-            if (!DbHandler.GetAll<User>().Any(d => d.Username.Trim() == user.Username.Trim()))
+            if (!DAL.Converts.UserConvert.ConvertUsersListToEntity(GetAll<User>()).Any(d => d.Username.Trim() == user.Username.Trim()))
             {
                 AddSet<User>(DAL.Converts.UserConvert.ConvertUserToEF(user));
-                return DbHandler.GetAll<User>().Where(u => u.Username == user.Username && u.UserPassword == user.UserPassword).Select(c => c.Code).ToList()[0];
+                return DAL.Converts.UserConvert.ConvertUserToEntity(GetAll<User>().First(u => u.Username == user.Username && u.UserPassword == user.UserPassword)).Code;
             }
 
             return 0;
@@ -47,13 +40,13 @@ namespace BL
         // login function - returns user code
         public int Login(string username, string password)
         {
-            return dBConnection.GetUserCode(username, password);
+            return GetUserCode(username, password);
         }
         // update user function. returns code if succeeds.
         public int UpdateUser(Entities.User user)
         {
 
-            if (dBConnection.GetUserCode(user.Username, user.UserPassword) != 0)
+            if (GetUserCode(user.Username, user.UserPassword) != 0)
             {
                 UpdateSet<User>(DAL.Converts.UserConvert.ConvertUserToEF(user));
                 return user.Code;
@@ -103,6 +96,13 @@ namespace BL
             else
                 return 1;
             
+        }
+        //gets user code by username and password
+        public int GetUserCode(string userName, string password)
+        {
+            if (GetAll<User>().Any(u => u.Username == userName && u.UserPassword == password))
+                return DAL.Converts.UserConvert.ConvertUserToEntity(GetAll<User>().First(u => u.Username == userName && u.UserPassword == password)).Code;
+            return 0;
         }
 
     }

@@ -57,12 +57,7 @@ namespace DAL
         }
         #endregion
 
-        public int GetUserCode(string userName, string password)
-        {
-            if (GetDbSet<User>().Any(u => u.Username == userName && u.UserPassword == password))
-                return GetDbSet<User>().First(u => u.Username == userName && u.UserPassword == password).Code;
-            return 0;
-        }
+      
 
     }
 

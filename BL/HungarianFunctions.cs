@@ -4,20 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BL;
-using DAL;
+using Entities;
 
 namespace BL
 {
     public class HungarianFunctions
     {
-        DBConnection DBCon;
-        MainBL mbl;
         DistanceFunc df;
         ConvertFuncBL convertFuncBL;
         public HungarianFunctions()
         {
-            DBCon = new DBConnection();
-            mbl = new MainBL();
             df = new DistanceFunc();
             convertFuncBL = new ConvertFuncBL();
         }
@@ -32,7 +28,7 @@ namespace BL
             var bycitySpotsDic = DbHandler.GetAll<ParkingSpot>().Where(s => s.AvRegularly == true).GroupBy(y => y.City).ToDictionary(u => u.Key, u => u.ToList());
             foreach (var item in bycitySearchesDic)
             {
-                List<DAL.ParkingSpot> spotslist = bycitySpotsDic[item.Key].ToList();
+                List<ParkingSpot> spotslist = bycitySpotsDic[item.Key].ToList();
                 var resultInsideDic = ParkingSpotPerUser(spotslist, item.Value);
                 dic.Add(key: item.Key.Code, value: resultInsideDic);
             }
@@ -40,7 +36,7 @@ namespace BL
 
         }
         // Inside Main algorithm function - calculates parkspot per search by city code, returns dictionary <spot_code, search_code>
-        public Dictionary<int, int> ParkingSpotPerUser(List<DAL.ParkingSpot> pspots, List<DAL.ParkingSpotSearch> psearches)
+        public Dictionary<int, int> ParkingSpotPerUser(List<Entities.ParkingSpot> pspots, List<Entities.ParkingSpotSearch> psearches)
         {
             //costs array for hungarian Algorithm - rows: spots, columns: searches
             int[,] costs = new int[pspots.Count, psearches.Count];
