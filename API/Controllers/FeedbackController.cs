@@ -13,28 +13,28 @@ namespace API.Controllers
     [RoutePrefix("api/feedbacks")]
     public class FeedbackController : ApiController
     {
-        MainBL mbl = new MainBL();
+        FeedbackBL fbl = new FeedbackBL();
         [AcceptVerbs("GET", "POST")]
         [Route("addFeedback")]
         [HttpGet]
         //adding a feedback 
         public int AddFeedback(Entities.Feedback f)
         {
-            return mbl.AddFeedback(f);
+            return fbl.AddFeedback(f);
         }
         [AcceptVerbs("GET", "POST")]
         [Route("updateFeedback")]
         [HttpPost]
         public int UpdateFeedback(Entities.Feedback f)
         {
-            return (mbl.UpdateFeedback(f));
+            return (fbl.UpdateFeedback(f));
         }
         [AcceptVerbs("GET", "POST")]
         [Route("deleteFeedback")]
         [HttpPost]
         public int DeleteFeedback(DAL.Feedback f)
         {
-            return (mbl.DeleteFeedback(f));
+            return (fbl.DeleteFeedback(f));
         }
 
     }

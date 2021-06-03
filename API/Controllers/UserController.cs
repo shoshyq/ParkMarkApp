@@ -42,7 +42,7 @@ namespace API.Controllers
         [AcceptVerbs("GET", "POST")]
         [Route("deleteUser")]
         [HttpPost]
-        public int DeleteUser(DAL.User u)
+        public int DeleteUser(Entities.User u)
         {
             return (ubl.DeleteUser(u));
         }

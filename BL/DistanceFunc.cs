@@ -62,13 +62,13 @@ namespace BL
             return url + "place_id:" + place1 + "&destinations=place_id:" + place2;
         }
         //returns a dictionary= key: pspot code , value: distance to there in 00.000 km
-        public Dictionary<int, int> GetDistanceToManyPoints(string origin_place_id, List<ParkingSpot> pspots)
+        public Dictionary<int, int> GetDistanceToManyPoints(string origin_place_id, List<Entities.ParkingSpot> pspots)
         {
             Task<Dictionary<int, int>> t = GetDistance(origin_place_id, pspots);
             return t.Result;
         }
         //returns a dictionary= key: pspot code , value: distance to there in 00.000 km
-        public async Task<Dictionary<int, int>> GetDistance(string origin_place_id, List<ParkingSpot> pspots)
+        public async Task<Dictionary<int, int>> GetDistance(string origin_place_id, List<Entities.ParkingSpot> pspots)
         {
             Dictionary<int, int> result_dict = new Dictionary<int, int>();
             string[] idLocations = new string[pspots.Count];

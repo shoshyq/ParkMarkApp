@@ -28,7 +28,7 @@ namespace API.Controllers
         [Route("deletePaymentAccount")]
         [HttpPost]
         //deleting the payment details
-        public int deletePaymentA(int usercode, DAL.PaymentDetail p)
+        public int deletePaymentA(int usercode, Entities.PaymentDetail p)
         {
             return pbl.DeletePaymentDetails(usercode, p);
         }

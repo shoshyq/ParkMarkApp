@@ -20,13 +20,7 @@ namespace DAL
         {
         }
 
-        public DbSet<T> GetDbSet<T>() where T : class
-        {
-            using (ParkMarkEntitiesDAL pmm = new ParkMarkEntitiesDAL())
-            {
-                return pmm.Set<T>();
-            }
-        }
+  
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();

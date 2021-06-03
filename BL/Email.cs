@@ -92,7 +92,7 @@ namespace BL
             }
         }
         //mailing user that his rating is very low and we had to delete him from the app db
-        public static void MailToUserDeletingUser(DAL.User user)
+        public static void MailToUserDeletingUser(Entities.User user)
         {
             try
             {

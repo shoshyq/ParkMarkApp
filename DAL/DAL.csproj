@@ -105,6 +105,7 @@
   <ItemGroup>
     <None Include="App.Config" />
     <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
     <None Include="ConvertFunc.cd" />
     <None Include="Model1.edmx.diagram">
       <DependentUpon>Model1.edmx</DependentUpon>

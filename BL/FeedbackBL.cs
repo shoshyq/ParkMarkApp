@@ -10,23 +10,21 @@ using Feedback = DAL.Feedback;
 
 namespace BL
 {
-    public class FeedbackBL
+    public class FeedbackBL : DbHandler
     {
         UserBL ubl;
-        DBConnection DBCon;
-
+        List<Entities.Feedback> flst = DAL.Converts.FeedbackConvert.ConvertFeedbacksListToEntity(GetAll<Feedback>());
         public FeedbackBL()
         {
-            DBCon = new DBConnection();
             ubl = new UserBL();
         }
         // adding new feedback. returns code if succeeds
         public int AddFeedback(Entities.Feedback f)
         {
-            DbHandler.AddSet(f);
+            AddSet(DAL.Converts.FeedbackConvert.ConvertFeedbackToEF(f));
             ubl.checkUserAvRating((int)f.DescriptedUserCode);
-            if (DbHandler.GetAll<Feedback>().Any(g => g.Code == f.Code))
-                return DbHandler.GetAll<Feedback>().First(g => g.Code == f.Code).Code;
+            if (flst.Any(g => g.Code == f.Code))
+                return flst.First(g => g.Code == f.Code).Code;
             return 0;
 
 
@@ -34,20 +32,19 @@ namespace BL
         // updating a feedback. returns code if succeeds
         public int UpdateFeedback(Entities.Feedback f)
         {
-            DBCon.Execute(f, DBConnection.ExecuteActions.Update);
-            return DbHandler.GetAll<Feedback>().First(g => g.Code == f.Code).Code;
+            UpdateSet(DAL.Converts.FeedbackConvert.ConvertFeedbackToEF(f));
+            return flst.First(g => g.Code == f.Code).Code;
         }
         // deleting descripted users' feedbacks by usercode
         public int DeleteFeedbacksByUser(int usercode)
         {
-            var flist = DbHandler.GetAll<Feedback>();
-            if (flist != null)
+            if (flst != null)
             {
-                foreach (var item in flist)
+                foreach (var item in flst)
                 {
                     if (item.DescriptedUserCode == usercode)
                     {
-                        DbHandler.DeleteSet(item);
+                        DeleteSet(DAL.Converts.FeedbackConvert.ConvertFeedbackToEF(item));
                     }
                 }
 
@@ -58,14 +55,14 @@ namespace BL
         public int DeleteFeedback(Feedback f)
         {
 
-            var l = DbHandler.GetAll<Feedback>().First(i => i.Code == f.Code);
-            DbHandler.DeleteSet(l);
+            var l  = flst.First(i => i.Code == f.Code);
+            DeleteSet(DAL.Converts.FeedbackConvert.ConvertFeedbackToEF(l));
             return 1;
         }
         //gets all descripted users' feedbacks by usercode
-        public List<DAL.Feedback> GetAllFeedbacksByUser(int usercode)
+        public List<Entities.Feedback> GetAllFeedbacksByUser(int usercode)
         {
-            return DbHandler.GetAll<Feedback>().Where(f => f.DescriptedUserCode == usercode).ToList();
+            return flst.Where(f => f.DescriptedUserCode == usercode).ToList();
         }
 
 

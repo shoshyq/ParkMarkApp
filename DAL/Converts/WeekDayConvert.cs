@@ -34,7 +34,7 @@ namespace DAL.Converts
                 FridayHourQuaters = w.FridayHourQuaters
             };
         }
-        public static List<Entities.WeekDay> ConvertWeekDayToEntity(IEnumerable<DAL.WeekDay> weekdays)
+        public static List<Entities.WeekDay> ConvertWeekDaysListToEntity(IEnumerable<DAL.WeekDay> weekdays)
         {
             return weekdays.Select(p => ConvertWeekDayToEntity(p)).OrderBy(n => n.Code).ToList();
         }

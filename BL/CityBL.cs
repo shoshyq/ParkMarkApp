@@ -9,19 +9,17 @@ using City = DAL.City;
 
 namespace BL
 {
-   public class CityBL
+   public class CityBL : DbHandler
     {
 
-        DBConnection DBCon;
         public CityBL()
         {
-            DBCon = new DBConnection();
         }
         // adding a new city to cities table. returns 1 if succeeds
         public int AddCity(string cityname)
         {
 
-            DbHandler.AddSet(new City { CityName = cityname });
+            AddSet(new City { CityName = cityname });
             return 1;
         }
 
