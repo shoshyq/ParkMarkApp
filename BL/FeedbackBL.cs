@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL;
 using Entities;
-using Feedback = DAL.Feedback;
+
 
 
 namespace BL
@@ -13,15 +12,15 @@ namespace BL
     public class FeedbackBL : DbHandler
     {
         UserBL ubl;
-        List<Entities.Feedback> flst = DAL.Converts.FeedbackConvert.ConvertFeedbacksListToEntity(GetAll<Feedback>());
-        public FeedbackBL()
+        List<Feedback> flst = (GetAll<Feedback>());
+        public FeedbackBL()//DAL.Converts.FeedbackConvert.ConvertFeedbacksListToEntity
         {
             ubl = new UserBL();
         }
         // adding new feedback. returns code if succeeds
-        public int AddFeedback(Entities.Feedback f)
+        public int AddFeedback(Feedback f)
         {
-            AddSet(DAL.Converts.FeedbackConvert.ConvertFeedbackToEF(f));
+            AddSet((f));//DAL.Converts.FeedbackConvert.ConvertFeedbackToEF
             ubl.checkUserAvRating((int)f.DescriptedUserCode);
             if (flst.Any(g => g.Code == f.Code))
                 return flst.First(g => g.Code == f.Code).Code;
@@ -30,9 +29,9 @@ namespace BL
 
         }
         // updating a feedback. returns code if succeeds
-        public int UpdateFeedback(Entities.Feedback f)
+        public int UpdateFeedback(Feedback f)
         {
-            UpdateSet(DAL.Converts.FeedbackConvert.ConvertFeedbackToEF(f));
+            UpdateSet(f);//(DAL.Converts.FeedbackConvert.ConvertFeedbackToEF
             return flst.First(g => g.Code == f.Code).Code;
         }
         // deleting descripted users' feedbacks by usercode
@@ -44,7 +43,7 @@ namespace BL
                 {
                     if (item.DescriptedUserCode == usercode)
                     {
-                        DeleteSet(DAL.Converts.FeedbackConvert.ConvertFeedbackToEF(item));
+                        DeleteSet((item));//DAL.Converts.FeedbackConvert.ConvertFeedbackToEF
                     }
                 }
 
@@ -56,11 +55,11 @@ namespace BL
         {
 
             var l  = flst.First(i => i.Code == f.Code);
-            DeleteSet(DAL.Converts.FeedbackConvert.ConvertFeedbackToEF(l));
+            DeleteSet((l));//DAL.Converts.FeedbackConvert.ConvertFeedbackToEF
             return 1;
         }
         //gets all descripted users' feedbacks by usercode
-        public List<Entities.Feedback> GetAllFeedbacksByUser(int usercode)
+        public List<Feedback> GetAllFeedbacksByUser(int usercode)
         {
             return flst.Where(f => f.DescriptedUserCode == usercode).ToList();
         }

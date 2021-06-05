@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL;
 using Entities;
-using ParkingSpot = DAL.ParkingSpot;
+using DAL;
 using ParkingSpotSearch = DAL.ParkingSpotSearch;
-
 
 namespace BL
 {
@@ -15,7 +13,7 @@ namespace BL
     {
         DistanceFunc df;
         ConvertFuncBL convertFunc;
-        List<Entities.ParkingSpotSearch> psslist = DAL.Converts.SearchConvert.ConvertSearchesListToEntity(GetAll<ParkingSpotSearch>());
+        List<Entities.ParkingSpotSearch> psslist = DAL.Convert.SearchConvert.ConvertSearchesListToEntity(GetAll<ParkingSpotSearch>());
 
 
         public SearchRequestsBL()
@@ -28,7 +26,7 @@ namespace BL
 
         {
             pss.Place_id = df.GetPlaceId(pss.MyLocationAddress);
-            AddSet(DAL.Converts.SearchConvert.ConvertSearchToEF(pss));
+            AddSet(DAL.Convert.SearchConvert.ConvertSearchToEF(pss));
             return psslist.Any(s => s.Code == pss.Code) ? psslist.First(s => s.Code == pss.Code).Code : 0;
 
         }
@@ -46,7 +44,7 @@ namespace BL
         {
             pss.Place_id = df.GetPlaceId(pss.MyLocationAddress);
 
-            UpdateSet(DAL.Converts.SearchConvert.ConvertSearchToEF(pss));
+            UpdateSet(DAL.Convert.SearchConvert.ConvertSearchToEF(pss));
             return psslist.First(s => s.Code == pss.Code).Code;
         }
         // deletes search by user
@@ -58,7 +56,7 @@ namespace BL
                 {
                     if (item.UserId == u.Code)
                     {
-                       DeleteSet(DAL.Converts.SearchConvert.ConvertSearchToEF(item));
+                       DeleteSet(DAL.Convert.SearchConvert.ConvertSearchToEF(item));
                     }
                 }
             }
@@ -69,19 +67,19 @@ namespace BL
         public int DeleteParkingSpotSearch(ParkingSpotSearch pss)
         {
             var l = psslist.First(i => i.Code == pss.Code);
-            DeleteSet(DAL.Converts.SearchConvert.ConvertSearchToEF(l));
+            DeleteSet(DAL.Convert.SearchConvert.ConvertSearchToEF(l));
 
             return 1;
         }
         public Dictionary<Entities.ParkingSpot, int> GetFiveClosestParkSpots(Entities.ParkingSpotSearch pss)
         {
             //gets all parking spots in this city
-            var listOfSpots = DAL.Converts.ParkSpotConvert.ConvertParkingSpotsListToEntity(GetAll<ParkingSpot>()).Where(y => y.CityCode == pss.CityCode).ToList();
+            var listOfSpots = DAL.Convert.ParkSpotConvert.ConvertParkingSpotsListToEntity(GetAll<DAL.ParkingSpot>()).Where(y => y.CityCode == pss.CityCode).ToList();//
             //filtering by hours
-            var shl = convertFunc.GetHoursForPSImidiateSearch(pss.WeekDay.Code);
+            var shl = convertFunc.GetHoursForPSImidiateSearch((int)pss.DaysSchedule);
             foreach (var spot in listOfSpots)
             {
-                var hl = convertFunc.GetHoursListFromWeekDay(spot.WeekDay.Code);
+                var hl = convertFunc.GetHoursListFromWeekDay((int)spot.DaysSchedule);
                 //checks if there is any hours in listOfSpots that matches hours in that search at that day
                 if (!(hl[shl.First().Key].Any(h => (h.StartHour <= shl.First().Value.StartHour) && (h.EndHour >= shl.First().Value.EndHour))))
                     listOfSpots.Remove(spot);
@@ -95,7 +93,7 @@ namespace BL
             //  select the 5 closest
             foreach (var item in results_dic)
             {
-                distdic.Add(key: DAL.Converts.ParkSpotConvert.ConvertParkingSpotsListToEntity(GetAll<ParkingSpot>()).First(y => y.Code == item.Key), value: item.Value);
+                distdic.Add(key: DAL.Convert.ParkSpotConvert.ConvertParkingSpotsListToEntity(GetAll<DAL.ParkingSpot>()).First(y => y.Code == item.Key), value: item.Value);//DAL.Converts.ParkSpotConvert.ConvertParkingSpotsListToEntity
             }
             return distdic;
         }

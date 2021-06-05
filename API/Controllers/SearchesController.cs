@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using BL;
-using DAL;
+using Entities;
 
 namespace API.Controllers
 {
@@ -21,21 +21,21 @@ namespace API.Controllers
         [Route("addRegSearch")]
         [HttpPost]
         //adding a reg search request 
-        public int AddParkingSpotSearch(Entities.ParkingSpotSearch pss)
+        public int AddParkingSpotSearch(ParkingSpotSearch pss)
         {
             return sbl.AddParkingSpotSearch(pss);
         }
         [Route("addImmidSearch")]
         [HttpPost]
         //adding an immidiate search request 
-        public Dictionary<Entities.ParkingSpot, int> AddImmidiateSearch(Entities.ParkingSpotSearch pss)
+        public Dictionary<ParkingSpot, int> AddImmidiateSearch(ParkingSpotSearch pss)
         {
             return sbl.AddImmidiateParkingSpotSearch(pss);
         }
         [AcceptVerbs("GET", "POST")]
         [Route("updateSearch")]
         [HttpPost]
-        public int UpdateSearch(Entities.ParkingSpotSearch pss)
+        public int UpdateSearch(ParkingSpotSearch pss)
         {
             return (sbl.UpdateParkingSpotSearch(pss));
         }

@@ -32,7 +32,7 @@ namespace API.Controllers
         [AcceptVerbs("GET", "POST")]
         [Route("deleteFeedback")]
         [HttpPost]
-        public int DeleteFeedback(DAL.Feedback f)
+        public int DeleteFeedback(Entities.Feedback f)
         {
             return (fbl.DeleteFeedback(f));
         }

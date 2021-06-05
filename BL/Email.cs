@@ -8,6 +8,7 @@ using System.Net.Mime;
 using System.Net;
 using Entities;
 
+
 namespace BL
 {
     public class Email
@@ -92,7 +93,7 @@ namespace BL
             }
         }
         //mailing user that his rating is very low and we had to delete him from the app db
-        public static void MailToUserDeletingUser(Entities.User user)
+        public static void MailToUserDeletingUser(User user)
         {
             try
             {
