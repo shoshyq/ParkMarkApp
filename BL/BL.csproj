@@ -73,6 +73,7 @@
     <Compile Include="SearchRequestsBL.cs" />
     <Compile Include="SendMail.cs" />
     <Compile Include="UserBL.cs" />
+    <Compile Include="Validation.cs" />
     <Compile Include="WeekDayBL.cs" />
   </ItemGroup>
   <ItemGroup>
