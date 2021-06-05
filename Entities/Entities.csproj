@@ -50,5 +50,8 @@
     <Compile Include="User.cs" />
     <Compile Include="WeekDay.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="AllEntitiesClasses.cd" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
