@@ -52,7 +52,7 @@ namespace API.Controllers
         [AcceptVerbs("GET", "POST")]
         [Route("deleteParkSpot")]
         [HttpPost]
-        public int DeleteParkSpot(DAL.ParkingSpot ps)
+        public int DeleteParkSpot(Entities.ParkingSpot ps)
         {
             return (psbl.DeleteParkingSpot(ps));
         }

@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL;
 using Entities;
-using Feedback = DAL.Feedback;
+using DAL;
 using User = DAL.User;
 
 namespace BL
@@ -18,7 +17,7 @@ namespace BL
         SearchRequestsBL searchRequestsBL;
         public UserBL()
         {
-            fbl = new FeedbackBL();
+            //fbl = new FeedbackBL();
             parkingSpotsBL = new ParkingSpotsBL();
             paymentDetailsBL = new PaymentDetailsBL();
             searchRequestsBL = new SearchRequestsBL();
@@ -28,10 +27,10 @@ namespace BL
         public int SignUp(Entities.User user)
         {
             //if this username already exists
-            if (!DAL.Converts.UserConvert.ConvertUsersListToEntity(GetAll<User>()).Any(d => d.Username.Trim() == user.Username.Trim()))
+            if (!DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<User>()).Any(d => d.Username.Trim() == user.Username.Trim()))
             {
-                AddSet<User>(DAL.Converts.UserConvert.ConvertUserToEF(user));
-                return DAL.Converts.UserConvert.ConvertUserToEntity(GetAll<User>().First(u => u.Username == user.Username && u.UserPassword == user.UserPassword)).Code;
+                AddSet<User>(DAL.Convert.UserConvert.ConvertUserToEF(user));
+                return (DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<User>()).First(u => u.Username == user.Username && u.UserPassword == user.UserPassword)).Code;
             }
 
             return 0;
@@ -48,7 +47,7 @@ namespace BL
 
             if (GetUserCode(user.Username, user.UserPassword) != 0)
             {
-                UpdateSet<User>(DAL.Converts.UserConvert.ConvertUserToEF(user));
+                UpdateSet<User>(DAL.Convert.UserConvert.ConvertUserToEF(user));
                 return user.Code;
             }
             return 0;
@@ -56,7 +55,7 @@ namespace BL
         //deletes a user returns 1 if succeeds
         public int DeleteUser(Entities.User u)
         {
-            //success
+            //success var
             int result = 0;
             if (paymentDetailsBL.DeletePaymentDetailsByUser(u) == 1)
             {
@@ -75,7 +74,7 @@ namespace BL
         //checking if user's rating is fine, if not, deletes
         public int checkUserAvRating(int usercode)
         {
-            var feedbacks = DAL.Converts.FeedbackConvert.ConvertFeedbacksListToEntity(GetAll<Feedback>().Where(g => g.DescriptedUserCode == usercode).ToList());
+            var feedbacks = DAL.Convert.FeedbackConvert.ConvertFeedbacksListToEntity(GetAll<DAL.Feedback>().Where(g => g.DescriptedUserCode == usercode).ToList());
             int sum_raiting = 0;
             if ((feedbacks != null) || (feedbacks.Count() != 0))
             {
@@ -85,25 +84,52 @@ namespace BL
                 }
                 if ((sum_raiting / feedbacks.Count()) < 2)
                 {
-                    Entities.User user = DAL.Converts.UserConvert.ConvertUserToEntity(GetAll<User>().First(u => u.Code == usercode));
+                    Entities.User user = DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<User>()).First(u => u.Code == usercode);
                     Email.MailToUserDeletingUser(user);
-                    if (DeleteUser(user) == 1)
+                    if (DeleteUser(DAL.Convert.UserConvert.ConvertUserToEF(user)) == 1)
                         return 1;
                 }
                 return 0;
             }
 
             else
+                // because he doesn't have any feedbacks yet
                 return 1;
             
         }
+
+        private int DeleteUser(User user)
+        {
+            throw new NotImplementedException();
+        }
+
         //gets user code by username and password
         public int GetUserCode(string userName, string password)
         {
             if (GetAll<User>().Any(u => u.Username == userName && u.UserPassword == password))
-                return DAL.Converts.UserConvert.ConvertUserToEntity(GetAll<User>().First(u => u.Username == userName && u.UserPassword == password)).Code;
+                return (GetAll<User>().First(u => u.Username == userName && u.UserPassword == password)).Code;
+            return 0;//DAL.Converts.UserConvert.ConvertUserToEntity
+        }
+        // function that sends email to user
+        public int SendEmail()
+        {
+            SendMail sendMail = new SendMail("blala", "shoshy.ustinov43770@gmail.com");
+            string body = "";
+            string subject = string.Format(" אימות סיסמא למשתמש {0}", "Shoshy");
+            body += "\nלתשומת לבך, מצורפת סיסמתך החדשה לכניסה למערכת";
+            body += string.Format(" :סיסמתך החדשה היא {0}", "56785");
+            //מבצע את השליחה
+            bool mailSend = sendMail.SendEMail(new MessageGmail()
+            {
+                sendTo = "tamid.lehajeh@gmail.com",
+                Subject = subject,
+                Body = body,
+                IsBodyHtml = true
+            });
+
             return 0;
         }
+
 
     }
 }

@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL;
 using Entities;
+using DAL;
 using ParkingSpot = DAL.ParkingSpot;
 
 namespace BL
@@ -12,8 +12,8 @@ namespace BL
     public  class ParkingSpotsBL : DbHandler
     {
         DistanceFunc df;
-        List<Entities.ParkingSpot> pslst = DAL.Converts.ParkSpotConvert.ConvertParkingSpotsListToEntity(GetAll<ParkingSpot>());
-        public ParkingSpotsBL()
+        List<Entities.ParkingSpot> pslst = DAL.Convert.ParkSpotConvert.ConvertParkingSpotsListToEntity(GetAll<ParkingSpot>());
+        public ParkingSpotsBL()//
         {
             df = new DistanceFunc();
         }
@@ -25,7 +25,7 @@ namespace BL
                 //if (!DbHandler.GetAll<ParkingLocation>().Any(d => d.Place_Id.Trim() == mp.Place_id.Trim()))
                 //{
                 mp.Place_id = df.GetPlaceId(mp.FullAddress);
-               AddSet(DAL.Converts.ParkSpotConvert.ConvertParkingSpotToEF(mp));
+               AddSet(DAL.Convert.ParkSpotConvert.ConvertParkingSpotToEF(mp));
 
                 //DbHandler.AddSet<ParkingLocation>(new ParkingLocation
                 //{
@@ -43,7 +43,7 @@ namespace BL
         public int UpdateUsersParkSpot(Entities.ParkingSpot mp)
         {
             mp.Place_id = df.GetPlaceId(mp.FullAddress);
-            UpdateSet(DAL.Converts.ParkSpotConvert.ConvertParkingSpotToEF(mp));
+            UpdateSet(DAL.Convert.ParkSpotConvert.ConvertParkingSpotToEF(mp));
             return mp.Code;
         }
         public int DeleteParkingSpotByUser(Entities.User u)
@@ -55,7 +55,7 @@ namespace BL
                     if (item.UserCode == u.Code)
                     {
 
-                        DeleteSet(DAL.Converts.ParkSpotConvert.ConvertParkingSpotToEF(item));
+                        DeleteSet(DAL.Convert.ParkSpotConvert.ConvertParkingSpotToEF(item));
 
                     }
                     else
@@ -64,10 +64,10 @@ namespace BL
             }
             return 1;
         }
-        public int DeleteParkingSpot(ParkingSpot p)
+        public int DeleteParkingSpot(Entities.ParkingSpot p)
         {
             var l = pslst.First(i => i.Code == p.Code);
-           DeleteSet(DAL.Converts.ParkSpotConvert.ConvertParkingSpotToEF(l));
+           DeleteSet(DAL.Convert.ParkSpotConvert.ConvertParkingSpotToEF(l));
 
             return 1;
         }

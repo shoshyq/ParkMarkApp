@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,12 +12,12 @@ namespace BL
     {
         #region convertion functions
         //converts List<ParkingSpot> to List<PSpotHandler>
-        public List<PSpotHandler> ConvertToPSpotHandlerList(List<Entities.ParkingSpot> pslist)
+        public List<PSpotHandler> ConvertToPSpotHandlerList(List<ParkingSpot> pslist)
         {
             List<PSpotHandler> parkSpotsMatrixList = new List<PSpotHandler>();
             for (int spot = 0; spot < pslist.Count; spot++)
             {
-                var hourdic = GetHoursListFromWeekDay(pslist[spot].WeekDay.Code);
+                var hourdic = GetHoursListFromWeekDay((int)pslist[spot].DaysSchedule);
                 PSpotHandler psh = new PSpotHandler()
                 {
                     Code = pslist[spot].Code,
@@ -34,12 +35,12 @@ namespace BL
             return parkSpotsMatrixList;
         }
         //converts List<ParkingSpotSearch> to List<PSpotSearchHandler>
-        public List<PSpotSearchHandler> ConvertToSpotSearchHandlerList(List<Entities.ParkingSpotSearch> psearches)
+        public List<PSpotSearchHandler> ConvertToSpotSearchHandlerList(List<ParkingSpotSearch> psearches)
         {
             List<PSpotSearchHandler> parkSearchesMatrixList = new List<PSpotSearchHandler>();
             for (int search = 0; search < psearches.Count; search++)
             {
-                var hourdic2 = GetHoursListFromWeekDay(psearches[search].WeekDay.Code);
+                var hourdic2 = GetHoursListFromWeekDay((int)psearches[search].DaysSchedule);
                 PSpotSearchHandler psh = new PSpotSearchHandler()
                 {
                     Code = psearches[search].Code,
@@ -61,8 +62,8 @@ namespace BL
         //converts WeekDay table by Code from db/ returns dictionary - key: indexes a day (of weekdays list static prop above), value: list of Hour object per day
         public Dictionary<int, List<Hours>> GetHoursListFromWeekDay(int dscheduleCode)
         {
-            Entities.WeekDay weekdaylist = DAL.Converts.WeekDayConvert.ConvertWeekDaysListToEntity(DbHandler.GetAll<DAL.WeekDay>()).First(w => w.Code == dscheduleCode);
-
+            WeekDay weekdaylist = (DbHandler.GetAll<WeekDay>()).First(w => w.Code == dscheduleCode);
+            //DAL.Converts.WeekDayConvert.ConvertWeekDaysListToEntity(
             List<int> weekdayhours = new List<int>()
             {
                 Convert.ToInt32(weekdaylist.SundayHourQuaters),
@@ -109,11 +110,14 @@ namespace BL
             }
             return wkdhdic;
         }
+
+   
+
         // (for imidiate search) convert hours schedule for pspotsearch from weekDay to dictionary = key: index in weekdays list static prop above, value: Hours
         public Dictionary<int, Hours> GetHoursForPSImidiateSearch(int wdtCode)
         {
-            Entities.WeekDay weekdaylist = DAL.Converts.WeekDayConvert.ConvertWeekDaysListToEntity(DbHandler.GetAll<DAL.WeekDay>()).First(w => w.Code == wdtCode);
-
+            WeekDay weekdaylist = (DAL.Convert.WeekDayConvert.ConvertWeekDaysListToEntity(DbHandler.GetAll<DAL.WeekDay>())).First(w => w.Code == wdtCode);
+            //DAL.Converts.WeekDayConvert.ConvertWeekDaysListToEntity
             List<int> weekdayhours = new List<int>()
             {
                 Convert.ToInt32(weekdaylist.SundayHourQuaters),
@@ -168,7 +172,7 @@ namespace BL
             return s_h;
         }
         // converts time schedule data from Schedule_Week to WeekDay table. uses the function GetWeekDayHours below. returns a WeekDay table
-        public Entities.WeekDay SchedWeekToWeekDayTbl(Schedule_Week sw)
+        public WeekDay SchedWeekToWeekDayTbl(Schedule_Week sw)
         {
             Dictionary<int, List<Hours>> lhdic = new Dictionary<int, List<Hours>>();
             lhdic[0] = sw.SundayHours;
@@ -177,12 +181,12 @@ namespace BL
             lhdic[3] = sw.WednesdayHours;
             lhdic[4] = sw.ThursdayHours;
             lhdic[5] = sw.FridayHours;
-            Entities.WeekDay wd = GetWeekDayHours(lhdic);
+            WeekDay wd = GetWeekDayHours(lhdic);
             wd.Code = sw.Code;
 
             return wd;
         }
-        public Schedule_Week WeekDayTblToSchedWeek(Entities.WeekDay w)
+        public Schedule_Week WeekDayTblToSchedWeek(WeekDay w)
         {
             Schedule_Week sw = new Schedule_Week();
             Dictionary<int, List<Hours>> lhdic = GetHoursListFromWeekDay(w.Code);
@@ -197,9 +201,9 @@ namespace BL
             return sw;
         }
         // converts time_schedule from dic to WeekDay table
-        public Entities.WeekDay GetWeekDayHours(Dictionary<int, List<Hours>> hdic)
+        public WeekDay GetWeekDayHours(Dictionary<int, List<Hours>> hdic)
         {
-            var weekdaylist = new Entities.WeekDay();
+            var weekdaylist = new WeekDay();
 
             foreach (var item in hdic)
             {

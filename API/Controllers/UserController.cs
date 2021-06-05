@@ -5,7 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using BL;
-using DAL;
+using Entities;
+
 
 namespace API.Controllers
 {
@@ -28,21 +29,21 @@ namespace API.Controllers
         [AcceptVerbs("GET", "POST")]
         [Route("signUp")]
         [HttpPost]
-        public int SignUp(Entities.User u)
+        public int SignUp(User u)
         {
             return (ubl.SignUp(u));
         }
         [AcceptVerbs("GET", "POST")]
         [Route("updateUser")]
         [HttpPost]
-        public int UpdateUser(Entities.User u)
+        public int UpdateUser(User u)
         {
             return (ubl.UpdateUser(u));
         }
         [AcceptVerbs("GET", "POST")]
         [Route("deleteUser")]
         [HttpPost]
-        public int DeleteUser(Entities.User u)
+        public int DeleteUser(User u)
         {
             return (ubl.DeleteUser(u));
         }

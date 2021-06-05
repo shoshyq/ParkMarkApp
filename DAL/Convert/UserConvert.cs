@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using DAL;
 using Entities;
 
-namespace DAL.Converts
+namespace DAL.Convert
 {
     public static class UserConvert
     {
@@ -43,5 +43,7 @@ namespace DAL.Converts
             {
                 return users.Select(u => ConvertUserToEntity(u)).OrderBy(n => n.Code).ToList();
             }
+
+       
     }
 }

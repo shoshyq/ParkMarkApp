@@ -3,7 +3,7 @@
   <Class Name="BL.MainBL">
     <Position X="9.75" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAgAQAAEAAAAAAAAAAAAAAAAAAAAAQCAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAgAQAAEAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
       <FileName>MainBL.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -17,35 +17,35 @@
   <Class Name="BL.FeedbackBL">
     <Position X="6.5" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>QAAAAAAAAAAAAAgACIAAAAAAAAAAAAAAAAAAgCAAAAE=</HashCode>
+      <HashCode>QAAAAAAAAAAAAAgQCIAAAAAAAAAAAAAAAAAAgAAAAAE=</HashCode>
       <FileName>FeedbackBL.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BL.ParkingSpotsBL">
     <Position X="8.25" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAQAAAAAAAAAEAAAAAgAAAAAAAAAAAAAIAACACAAA=</HashCode>
+      <HashCode>AAAAQAAAAAAAAAEAAAAAgAAAAAAAAAAAAAIBAAACAAA=</HashCode>
       <FileName>ParkingSpotsBL.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BL.PaymentDetailsBL">
     <Position X="10" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAACAAAAAAAAACAgEAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAACAAAAAAAAAAAgEAA=</HashCode>
       <FileName>PaymentDetailsBL.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BL.SearchRequestsBL">
     <Position X="11.75" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAQAAAAAAEAAAAAgAAAABAAAAAAAAgAAiAABAA=</HashCode>
+      <HashCode>AAAAAAAQAAAAAAEAAAAAgAAAABAAAAAAAAgAAgABBAA=</HashCode>
       <FileName>SearchRequestsBL.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BL.UserBL">
     <Position X="13.5" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAABACAAEAAAAAAAAAQAgAAAAAEBQAAAIAAA=</HashCode>
+      <HashCode>AAAAAAAAAABACAAEAAAAAAAEAwAAAAAAAEBQAAAIAAA=</HashCode>
       <FileName>UserBL.cs</FileName>
     </TypeIdentifier>
   </Class>

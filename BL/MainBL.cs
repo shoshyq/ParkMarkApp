@@ -3,26 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL;
 using Entities;
-using City = DAL.City;
-using Feedback = DAL.Feedback;
-using ParkingSpot = DAL.ParkingSpot;
-using ParkingSpotSearch = DAL.ParkingSpotSearch;
-using PaymentDetail = DAL.PaymentDetail;
-using User = DAL.User;
-using WeekDay = DAL.WeekDay;
+
 
 namespace BL
 {
     public class MainBL
     {
         HungarianFunctions hf;
-        DBConnection DBCon;
         DistanceFunc df;
         public MainBL()
         {
-            DBCon = new DBConnection();
             df = new DistanceFunc();
             hf = new HungarianFunctions();
         }

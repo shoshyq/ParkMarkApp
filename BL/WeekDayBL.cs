@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DAL;
-using Entities;
 using WeekDay = DAL.WeekDay;
 
 namespace BL
@@ -22,15 +21,16 @@ namespace BL
         public int AddWeekDays(Schedule_Week sw)
         {
             Entities.WeekDay wd = convertFunc.SchedWeekToWeekDayTbl(sw);
-            AddSet(DAL.Converts.WeekDayConvert.ConvertWeekDayToEF(wd));
-            return DAL.Converts.WeekDayConvert.ConvertWeekDaysListToEntity(GetAll<WeekDay>()).Any(w => w.Code == wd.Code) ? DbHandler.GetAll<WeekDay>().First(w => w.Code == wd.Code).Code : 0;
+            AddSet(DAL.Convert.WeekDayConvert.ConvertWeekDayToEF(wd));
+            return (DAL.Convert.WeekDayConvert.ConvertWeekDaysListToEntity(GetAll<WeekDay>())).Any(w => w.Code == wd.Code) ? DbHandler.GetAll<WeekDay>().First(w => w.Code == wd.Code).Code : 0;
         }
         // update weekday function. returns a schedule week if succeeds.
         public Schedule_Week UpdateWeekDay(Schedule_Week sw)
         {
             Entities.WeekDay wd = convertFunc.SchedWeekToWeekDayTbl(sw);
-            UpdateSet(DAL.Converts.WeekDayConvert.ConvertWeekDayToEF(wd));
-            return DAL.Converts.WeekDayConvert.ConvertWeekDaysListToEntity(GetAll<WeekDay>()).Any(w => w.Code == wd.Code) ? convertFunc.WeekDayTblToSchedWeek(DAL.Converts.WeekDayConvert.ConvertWeekDaysListToEntity(GetAll<WeekDay>()).First(w => w.Code == wd.Code)) : null;
+            UpdateSet(DAL.Convert.WeekDayConvert.ConvertWeekDayToEF(wd));
+            return (DAL.Convert.WeekDayConvert.ConvertWeekDaysListToEntity(GetAll<WeekDay>())).Any(w => w.Code == wd.Code) ? convertFunc.WeekDayTblToSchedWeek(DAL.Convert.WeekDayConvert.ConvertWeekDaysListToEntity(GetAll<WeekDay>()).First(w => w.Code == wd.Code)) : null;
         }
+        //DAL.Converts.WeekDayConvert.ConvertWeekDaysListToEntity
     }
 }

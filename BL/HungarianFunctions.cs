@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BL;
 using Entities;
 
+
 namespace BL
 {
     public class HungarianFunctions
@@ -23,14 +24,14 @@ namespace BL
         {
             Dictionary<int, Dictionary<int, int>> dic = new Dictionary<int, Dictionary<int, int>>();
             // dic = key:city, value: list<searches>
-            var bycitySearchesDic = DbHandler.GetAll<ParkingSpotSearch>().Where(e => e.Regularly == true).GroupBy(t => t.City).ToDictionary(w => w.Key, w => w.ToList());
+            var bycitySearchesDic = DbHandler.GetAll<ParkingSpotSearch>().Where(e => e.Regularly == true).GroupBy(t => t.CityCode).ToDictionary(w => (int)w.Key, w => w.ToList());
             //dic = key:city, value: list<spots>
-            var bycitySpotsDic = DbHandler.GetAll<ParkingSpot>().Where(s => s.AvRegularly == true).GroupBy(y => y.City).ToDictionary(u => u.Key, u => u.ToList());
+            var bycitySpotsDic = DbHandler.GetAll<ParkingSpot>().Where(s => s.AvRegularly == true).GroupBy(y => y.CityCode).ToDictionary(u => (int)(u.Key), u => u.ToList());
             foreach (var item in bycitySearchesDic)
             {
-                List<ParkingSpot> spotslist = bycitySpotsDic[item.Key].ToList();
+                List<Entities.ParkingSpot> spotslist = bycitySpotsDic[item.Key].ToList();
                 var resultInsideDic = ParkingSpotPerUser(spotslist, item.Value);
-                dic.Add(key: item.Key.Code, value: resultInsideDic);
+                dic.Add(key: item.Key, value: resultInsideDic);
             }
             return dic;
 

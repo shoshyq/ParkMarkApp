@@ -63,6 +63,7 @@
     <Compile Include="HungarianFunctions.cs" />
     <Compile Include="LocationBase.cs" />
     <Compile Include="MainBL.cs" />
+    <Compile Include="MessageGmail.cs" />
     <Compile Include="ParkingSpotsBL.cs" />
     <Compile Include="PaymentDetailsBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="PSpotSearchHandler.cs" />
     <Compile Include="Schedule_Week.cs" />
     <Compile Include="SearchRequestsBL.cs" />
+    <Compile Include="SendMail.cs" />
     <Compile Include="UserBL.cs" />
     <Compile Include="WeekDayBL.cs" />
   </ItemGroup>
@@ -79,7 +81,7 @@
       <Name>DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\Entities\Entities.csproj">
-      <Project>{680cef66-ce71-4a68-843e-d9dc8f181f7b}</Project>
+      <Project>{ca208e41-c238-4ba5-b4b6-1f4afd42c830}</Project>
       <Name>Entities</Name>
     </ProjectReference>
   </ItemGroup>
