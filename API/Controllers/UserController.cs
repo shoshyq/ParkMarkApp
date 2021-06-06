@@ -27,6 +27,33 @@ namespace API.Controllers
         }
 
         [AcceptVerbs("GET", "POST")]
+        [Route("logIn/{username}/resetPassword")]
+        [HttpGet]
+        // reseting by username + email 
+        public int ForgotPassword(string username)
+        {
+            return ubl.ResetPassword(username);
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        [Route("logIn/confirmValcode/{username}/{valcode}")]
+        [HttpGet]
+        // mailed valditaion code confirmation. returns ucode if succeds, if not =0
+        public int ConfirmValCode(string username, string valcode)
+        {
+            return ubl.ConfirmValCode(username, valcode);
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        [Route("logIn/setNewPassword/{ucode}/{newPassword}")]
+        [HttpGet]
+        // setting a new password 
+        public int NewPassword(int usercode, string newPassword)
+        {
+            return ubl.NewPassword(usercode, newPassword);
+        }
+
+        [AcceptVerbs("GET", "POST")]
         [Route("signUp")]
         [HttpPost]
         public int SignUp(User u)
