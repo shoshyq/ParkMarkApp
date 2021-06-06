@@ -1,0 +1,9 @@
+<p>user works!</p>
+<div>
+    <form novalidate  (submit)="SignUp(frm)" #frm="ngForm">
+       
+        <div><input [(ngModel)]="newUser.username" name="username"/></div> 
+        <div> <input [(ngModel)]="newUser.userpassword" name="userpassword"/></div> 
+         <button style="width:50px; height: 20px;" type="submit">submit</button>
+    </form>
+</div>
