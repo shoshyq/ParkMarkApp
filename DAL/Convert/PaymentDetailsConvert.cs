@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DAL.Convert
-{
+{ 
     public static class PaymentDetailsConvert
     {
         public static DAL.PaymentDetail ConvertPaymentDetailToEF(Entities.PaymentDetail pd)
