@@ -45,14 +45,7 @@ namespace BL
 
         }
 
-        public int NewPassword(int usercode, string newPassword)
-        {
-            Entities.User user = DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<User>()).First(u => u.Code == usercode);
-            user.UserPassword = newPassword;
-            UpdateSet<User>(DAL.Convert.UserConvert.ConvertUserToEF(user));
-            return GetUserCode(user.Username, user.UserPassword);
-
-        }
+        
 
         // login function - returns user code
         public int Login(string username, string password)
@@ -113,7 +106,7 @@ namespace BL
                 {
                     Entities.User user = DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<User>()).First(u => u.Code == usercode);
                     Email.MailToUserDeletingUser(user);
-                    if (DeleteUser(DAL.Convert.UserConvert.ConvertUserToEF(user)) == 1)
+                    if (DeleteUser(user) == 1)
                         return 1;
                 }
                 return 0;
@@ -125,10 +118,7 @@ namespace BL
 
         }
 
-        private int DeleteUser(User user)
-        {
-            throw new NotImplementedException();
-        }
+    
 
         //gets user code by username and password
         public int GetUserCode(string userName, string password)
@@ -138,7 +128,7 @@ namespace BL
             return 0;
         }
         // function that sends email to user
-        public int SendEmail(string email, string username, string subject, string body)
+        public static int SendEmail(string email, string username, string subject, string body)
         {
             SendMail sendMail = new SendMail(username, "parkmarkapp2021@gmail.com");
 
@@ -153,8 +143,10 @@ namespace BL
                 Body = body,
                 IsBodyHtml = true
             });
+            if (mailSend == false)
+                return 0;
 
-            return 0;
+            return 1;
         }
         // password verification
         public bool Password(string password, string username)
@@ -164,7 +156,11 @@ namespace BL
         //reset the password
         public int ResetPassword(string username)
         {
-            Entities.User user = DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<User>()).First(u => u.Username == username.Trim());
+            Entities.User user;
+            if (DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<User>()).Any(u => u.Username == username))
+                user = DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<User>()).First(u => u.Username == username.Trim());
+            else
+                return 2;
             Random rand = new Random();
             int valcode = rand.Next(11111, 99999);
             user.UserPassword = valcode.ToString();
@@ -173,9 +169,21 @@ namespace BL
             string body = "";
             body += "\nהכנס את הקוד הבא לצורך החלפת סיסמא לחדשה: ";
             body += string.Format(" :הקוד לאימות: {0}", valcode);
-            SendEmail(user.UserEmail, username, subject, body);
-            return 1;
+            
+            return  SendEmail(user.UserEmail, username, subject, body);
         }
+        public int NewPassword(int usercode, string newPassword)
+        {
+            Entities.User user = DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<User>()).First(u => u.Code == usercode);
+            user.UserPassword = newPassword;
+            UpdateSet<User>(DAL.Convert.UserConvert.ConvertUserToEF(user));
+            string subject = string.Format("הסיסמא למשתמש {0} הוחלפה בהצלחה", user.Username);
+            string body = "";
+            body += "\nהסיסמא החדשה: ";
+            body += string.Format("  {0}", newPassword);
+           return SendEmail(user.UserEmail, user.Username, subject, body)  + GetUserCode(user.Username, user.UserPassword);
+            
 
+        }
     }
 }

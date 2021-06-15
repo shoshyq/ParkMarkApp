@@ -36,6 +36,7 @@ namespace API.Controllers
         }
 
         [AcceptVerbs("GET", "POST")]
+
         [Route("logIn/confirmValcode/{username}/{valcode}")]
         [HttpGet]
         // mailed valditaion code confirmation. returns ucode if succeds, if not =0

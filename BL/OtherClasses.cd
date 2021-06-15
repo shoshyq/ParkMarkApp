@@ -8,7 +8,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="BL.Email">
-    <Position X="1.25" Y="0.75" Width="1.5" />
+    <Position X="4.75" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAABA=</HashCode>
       <FileName>Email.cs</FileName>
@@ -29,7 +29,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="BL.MessageGmail">
-    <Position X="1.25" Y="2.25" Width="1.5" />
+    <Position X="3" Y="3.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAEAAAIABACAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>MessageGmail.cs</FileName>
@@ -40,6 +40,27 @@
     <TypeIdentifier>
       <HashCode>QAAAAAAAAAAAAACAABAAAAAAAgAAAAQAAAAAAAAgAAA=</HashCode>
       <FileName>SendMail.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BL.HungarianFunctions">
+    <Position X="8.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAgAAAAEAAAAAAAAAAAAIAAAAAAAAAAABAAA=</HashCode>
+      <FileName>HungarianFunctions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BL.HungarianAlgorithm">
+    <Position X="10" Y="0.75" Width="1.5" />
+    <NestedTypes>
+      <Struct Name="BL.HungarianAlgorithm.Location" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Hungarian.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAgEAgAAIABAAAIgMAAAQAgAAQA=</HashCode>
+      <FileName>Hungarian.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

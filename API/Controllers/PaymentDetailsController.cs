@@ -16,7 +16,8 @@ namespace API.Controllers
         PaymentDetailsBL pbl = new PaymentDetailsBL();
 
         [AcceptVerbs("GET", "POST")]
-        [Route("addPaymentAccount")]
+        [Route("addPaymentAccount/{usercode}")]
+        
         [HttpPost]
         //adding a payment details
         public int AddPaymentA(int usercode, Entities.PaymentDetail p)
