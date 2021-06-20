@@ -24,11 +24,11 @@ namespace BL
             return hf.PSpotsAllSearchesByCities();
         }
         // confirmation of the result from user about the parking spot. updating the schedule-times table 
-        public int ConfirmResult()
+        public int ConfirmResult(Entities.ParkingSpotSearch psr, int usercode, Entities.ParkingSpot ps)
         {
             return 1;
         }
-       
+
 
     }
 

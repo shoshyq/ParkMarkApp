@@ -38,22 +38,22 @@ namespace BL
                 return 0;
         }
 
-        public static string BuildUrlForLocationId(string address)
-        {
-            string location = "";
-            string[] locationAsArray;
-            locationAsArray = address.Split();
+        //public static string BuildUrlForLocationId(string address)
+        //{
+        //    string location = "";
+        //    string[] locationAsArray;
+        //    locationAsArray = address.Split();
 
-            for (int i = 0; i < locationAsArray.Length; i++)
-            {
-                if (i < locationAsArray.Length - 1)
-                    location += locationAsArray[i] + "+";
-                else
-                    location += locationAsArray[i];
-            }
+        //    for (int i = 0; i < locationAsArray.Length; i++)
+        //    {
+        //        if (i < locationAsArray.Length - 1)
+        //            location += locationAsArray[i] + "+";
+        //        else
+        //            location += locationAsArray[i];
+        //    }
 
-            return "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyDKdp5Tna0InvxI6tDyUSU3FYbpcWA7mYYs&query=" + location;
-        }
+        //    return "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyDKdp5Tna0InvxI6tDyUSU3FYbpcWA7mYYs&query=" + location;
+        //}
 
         public static string BuildUrlForDistance(string place1, string place2)
         {
@@ -83,13 +83,9 @@ namespace BL
             {
                 var result = await responseDistances.Content.ReadAsStringAsync();
                 RootDistanceBase root = JsonConvert.DeserializeObject<RootDistanceBase>(result);
-                // string dis_str;
-
 
                 for (int i = 0; i < idLocations.Length; i++)
-                {
-                    //dis_str = (root.rows[0].elements[i].distance.value).ToString();
-                    //double distance = Double.Parse(dis_str.Insert(dis_str.Length - 3, "."));
+                { 
                     result_dict.Add(key: pspots[i].Code, value: root.rows[0].elements[i].distance.value);
                 }
             }
@@ -131,7 +127,8 @@ namespace BL
 
         static string BuildUrlForManyDistances(string origin, string[] destinations)
         {
-            string url = "https://maps.googleapis.com/maps/api/distancematrix/json?key=AIzaSyDKdp5Tna0InvxI6tDyUSU3FYbpcWA7mYY&units=metric&origins=";
+            string url = "https://maps.googleapis.com/maps/api/distancematrix/" +
+                "json?key=AIzaSyDKdp5Tna0InvxI6tDyUSU3FYbpcWA7mYY&units=metric&origins=";
             url += "place_id:" + origin + "&destinations=place_id:" + destinations[0];
             for (int i = 1; i < destinations.Length - 1; i++)
             {

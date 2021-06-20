@@ -12,15 +12,18 @@ namespace BL
     public class SearchRequestsBL : DbHandler
     {
         DistanceFunc df;
+        DBConnection dbConnection;
         ConvertFuncBL convertFunc;
-        List<Entities.ParkingSpotSearch> psslist = DAL.Convert.SearchConvert.ConvertSearchesListToEntity(GetAll<ParkingSpotSearch>());
+        List<Entities.ParkingSpotSearch> psslist = DAL.Convert.SearchConvert.ConvertSearchesListToEntity(GetAllPSS());
 
 
         public SearchRequestsBL()
         {
             df = new DistanceFunc();
+            dbConnection = new DBConnection();
             convertFunc = new ConvertFuncBL();
         }
+     
         // adding a new parking spot search. returns code if succeeds
         public int AddParkingSpotSearch(Entities.ParkingSpotSearch pss)
 
@@ -30,7 +33,7 @@ namespace BL
             return psslist.Any(s => s.Code == pss.Code) ? psslist.First(s => s.Code == pss.Code).Code : 0;
 
         }
-        public Dictionary<Entities.ParkingSpot, int> AddImmidiateParkingSpotSearch(Entities.ParkingSpotSearch pss)
+        public Dictionary<Entities.ParkingSpot, string> AddImmidiateParkingSpotSearch(Entities.ParkingSpotSearch pss)
         {
             int result = AddParkingSpotSearch(pss);
             if (result != 0)
@@ -71,17 +74,20 @@ namespace BL
 
             return 1;
         }
-        public Dictionary<Entities.ParkingSpot, int> GetFiveClosestParkSpots(Entities.ParkingSpotSearch pss)
+        public Dictionary<Entities.ParkingSpot, string> GetFiveClosestParkSpots(Entities.ParkingSpotSearch pss)
         {
             //gets all parking spots in this city
-            var listOfSpots = DAL.Convert.ParkSpotConvert.ConvertParkingSpotsListToEntity(GetAll<DAL.ParkingSpot>()).Where(y => y.CityCode == pss.CityCode).ToList();//
+            var listOfSpots = DAL.Convert.ParkSpotConvert.
+                ConvertParkingSpotsListToEntity(GetAll<DAL.ParkingSpot>()).Where(y => y.CityCode == pss.CityCode)
+                .ToList();
             //filtering by hours
             var shl = convertFunc.GetHoursForPSImidiateSearch((int)pss.DaysSchedule);
             foreach (var spot in listOfSpots)
             {
                 var hl = convertFunc.GetHoursListFromWeekDay((int)spot.DaysSchedule);
                 //checks if there is any hours in listOfSpots that matches hours in that search at that day
-                if (!(hl[shl.First().Key].Any(h => (h.StartHour <= shl.First().Value.StartHour) && (h.EndHour >= shl.First().Value.EndHour))))
+                if (!(hl[shl.First().Key].Any(h => (h.StartHour <= shl.First().Value.StartHour) && 
+                (h.EndHour >= shl.First().Value.EndHour))))
                     listOfSpots.Remove(spot);
             }
 
@@ -89,11 +95,13 @@ namespace BL
             Dictionary<int, int> results_dic = df.GetDistanceToManyPoints(pss.Place_id, listOfSpots);
 
             //result Dict
-            Dictionary<Entities.ParkingSpot, int> distdic = new Dictionary<Entities.ParkingSpot, int>();
+            Dictionary<Entities.ParkingSpot, string> distdic = new Dictionary<Entities.ParkingSpot, string>();
             //  select the 5 closest
             foreach (var item in results_dic)
             {
-                distdic.Add(key: DAL.Convert.ParkSpotConvert.ConvertParkingSpotsListToEntity(GetAll<DAL.ParkingSpot>()).First(y => y.Code == item.Key), value: item.Value);//DAL.Converts.ParkSpotConvert.ConvertParkingSpotsListToEntity
+                distdic.Add(key: DAL.Convert.ParkSpotConvert.ConvertParkingSpotsListToEntity(GetAll<DAL.ParkingSpot>())
+                    .First(y => y.Code == item.Value), value: item.Key.ToString().Insert(item.Key.ToString().Length - 3,
+                    "."));
             }
             return distdic;
         }

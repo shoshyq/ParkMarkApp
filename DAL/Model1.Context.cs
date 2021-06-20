@@ -19,8 +19,7 @@ namespace DAL
             : base("name=ParkMarkEntitiesDAL")
         {
         }
-
-  
+    
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
@@ -33,5 +32,6 @@ namespace DAL
         public virtual DbSet<PaymentDetail> PaymentDetails { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<WeekDay> WeekDays { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }

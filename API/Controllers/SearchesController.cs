@@ -16,7 +16,7 @@ namespace API.Controllers
     {
 
         SearchRequestsBL sbl = new SearchRequestsBL();
-
+        WeekDayBL wdbl = new WeekDayBL();
         [AcceptVerbs("GET", "POST")]
         [Route("addRegSearch")]
         [HttpPost]
@@ -27,8 +27,8 @@ namespace API.Controllers
         }
         [Route("addImmidSearch")]
         [HttpPost]
-        //adding an immidiate search request 
-        public Dictionary<ParkingSpot, int> AddImmidiateSearch(ParkingSpotSearch pss)
+        //adding an immidiate search request - return results
+        public Dictionary<ParkingSpot, string> AddImmidiateSearch(ParkingSpotSearch pss)
         {
             return sbl.AddImmidiateParkingSpotSearch(pss);
         }
@@ -46,5 +46,27 @@ namespace API.Controllers
         {
             return (sbl.DeleteParkingSpotSearch(pss));
         }
+        [AcceptVerbs("GET", "POST")]
+        [Route("addSchedule")]
+        [HttpPost]
+        //adding a schedule table 
+        public int AddWeekDays(Schedule_Week sw)
+        {
+            return wdbl.AddWeekDays(sw);
+        }
+        //[AcceptVerbs("GET", "POST")]
+        //[Route("getQuickSearchResults")]
+        //[HttpPost]
+        ////adding a reg search request 
+        //public List< GetQuickSearchResults(ParkingSpotSearch pss)
+        //{
+        //    return sbl.AddParkingSpotSearch(pss);
+        //}
+        //[Route("api/electionResult/getResult/{electionId}")]
+        //public List<ResultOfOption> GetResult(long electionId)
+        //{
+        //    return GeneralBL.GetResult(electionId);
+        //}
     }
+
 }

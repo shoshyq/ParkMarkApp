@@ -25,9 +25,9 @@ namespace API.Controllers
         [AcceptVerbs("GET", "POST")]
         [Route("updateFeedback")]
         [HttpPost]
-        public int UpdateFeedback(Entities.Feedback f)
+        public int UpdateFeedback(int usercode,Entities.Feedback f)
         {
-            return (fbl.UpdateFeedback(f));
+            return (fbl.UpdateFeedback(usercode,f));
         }
         [AcceptVerbs("GET", "POST")]
         [Route("deleteFeedback")]

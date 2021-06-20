@@ -52,6 +52,7 @@ namespace API.Controllers
         [AcceptVerbs("GET", "POST")]
         [Route("deleteParkSpot")]
         [HttpPost]
+        //returns 0 if succeeds
         public int DeleteParkSpot(Entities.ParkingSpot ps)
         {
             return (psbl.DeleteParkingSpot(ps));

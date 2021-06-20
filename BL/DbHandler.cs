@@ -9,11 +9,11 @@ namespace BL
 {
     public class DbHandler
     {
-        static DBConnection dbConnection;
+        static DBConnection dbConnection = new DBConnection();
         #region Database handling
         public DbHandler()
         {
-            dbConnection = new DBConnection();
+            
         }
         public static int AddSet<T>(T entity) where T : class
         {
@@ -34,6 +34,10 @@ namespace BL
         public static List<T> GetAll<T>() where T : class
         {
             return dbConnection.GetDbSet<T>();
+        }
+        public static List<ParkingSpotSearch> GetAllPSS()
+        {
+            return dbConnection.GetPSSDbSet();
         }
 
         #endregion

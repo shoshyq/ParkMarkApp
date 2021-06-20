@@ -15,7 +15,7 @@ namespace BL
         {
         }
         // adding a new payment details table. returns code if succeeds
-        public int AddPaymentDetails(Entities.PaymentDetail pd)
+        public int AddPaymentDetails( Entities.PaymentDetail pd)
         {
 
             AddSet<DAL.PaymentDetail>(DAL.Convert.PaymentDetailsConvert.ConvertPaymentDetailToEF(pd));
@@ -26,11 +26,11 @@ namespace BL
         }
 
 
-        //returns 2 if can't add more payment accounts, returns the new payment code if succeeds
+        //returns -1 if can't add more payment accounts, returns the new payment code if succeeds
         public int CheckAndAddPaymentA(int usercode, Entities.PaymentDetail p)
         {
             if ((DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<DAL.User>()).First(u => u.Code == usercode).PaymentDetails1 != null) &&(DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<DAL.User>()).First(u => u.Code == usercode).PaymentDetails2 != null))
-                return 2;//
+                return -1;//
             else
                 return AddPaymentDetails(p);
         }//
@@ -47,17 +47,17 @@ namespace BL
                     }//
                 }
             }
-            return 1;
+            return 0;
         }
         public int DeletePaymentDetails(int usercode, Entities.PaymentDetail p)
         {
             if ((DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<DAL.User>()).First(u => u.Code == usercode).PaymentDetails1 != null) && (DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<DAL.User>()).First(u => u.Code == usercode).PaymentDetails2 != null))//
-            {//DAL.Converts.UserConvert.ConvertUsersListToEntity
-                DeleteSet((p));
-                return 1;
-            }//DAL.Converts.PaymentDetailsConvert.ConvertPaymentDetailToEF
-            else
+            {
+                DeleteSet(DAL.Convert.PaymentDetailsConvert.ConvertPaymentDetailToEF(p));
                 return 0;
+            }
+            else
+                return -1;
         }
     }
 }

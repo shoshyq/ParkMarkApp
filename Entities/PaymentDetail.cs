@@ -10,7 +10,6 @@ namespace Entities
     {
         public int Code { get; set; }
         public string CreditCardNumber { get; set; }
-        public Nullable<double> PaymentAmount { get; set; }
         public string ExpiryDateMonth { get; set; }
         public string ExpiryDateYear { get; set; }
         public string SecurityCode { get; set; }
