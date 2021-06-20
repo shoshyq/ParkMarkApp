@@ -29,8 +29,9 @@ namespace BL
 
         }
         // updating a feedback. returns code if succeeds
-        public int UpdateFeedback(Feedback f)
+        public int UpdateFeedback(int usercode,Feedback f)
         {
+
             UpdateSet(f);//(DAL.Converts.FeedbackConvert.ConvertFeedbackToEF
             return flst.First(g => g.Code == f.Code).Code;
         }
@@ -48,7 +49,7 @@ namespace BL
                 }
 
             }
-            return 1;
+            return 0;
         }
         //deletes feedback
         public int DeleteFeedback(Feedback f)
@@ -56,7 +57,7 @@ namespace BL
 
             var l  = flst.First(i => i.Code == f.Code);
             DeleteSet((l));//DAL.Converts.FeedbackConvert.ConvertFeedbackToEF
-            return 1;
+            return 0;
         }
         //gets all descripted users' feedbacks by usercode
         public List<Feedback> GetAllFeedbacksByUser(int usercode)

@@ -10,18 +10,18 @@ namespace BL
 {
     public class Validation
     {
-        //telephon
+        //phone
         public static bool PhoneNum(string ph)
         {
             string pattern = @"^\+?(972|0)(\-)?0?(([23489]{1}\d{7})|[5]{1}\d{8})$";
             Regex reg = new Regex(pattern);
             return reg.IsMatch(ph);
         }
-        public static bool IsHebrew(string word)
+        public static bool IsHebrew(string text)
         {
             string pattern = @"\b[א-ת-\s ]+$";
             Regex reg = new Regex(pattern);
-            return reg.IsMatch(word);
+            return reg.IsMatch(text);
 
         }        
         //email
@@ -44,7 +44,7 @@ namespace BL
             Regex regex = new Regex("^[^0-9]+$");
             return regex.IsMatch(str);
         }
-        //between 4-30 , digits and English letters allowa _ and -
+        //between 4-30 , digits and English letters, allow _ and -
         public static bool Username(string username)
         {
             Regex regex = new Regex(@"^(?=.{4,30}$)(?:[a-zA-Z\d]+(?:(?:\.|-|_)[a-zA-Z\d])*)+$");

@@ -35,7 +35,7 @@ namespace BL
             }
             return success;
         }
-        //פןקציה המיצרת את הודעת המייל
+        //פוקציה היוצרת את הודעת המייל
         private MailMessage createMessage(MessageGmail message)
         {
             MailMessage msg = new MailMessage()

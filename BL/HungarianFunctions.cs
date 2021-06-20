@@ -37,7 +37,8 @@ namespace BL
 
         }
         // Inside Main algorithm function - calculates parkspot per search by city code, returns dictionary <spot_code, search_code>
-        public Dictionary<int, int> ParkingSpotPerUser(List<Entities.ParkingSpot> pspots, List<Entities.ParkingSpotSearch> psearches)
+        public Dictionary<int, int> ParkingSpotPerUser(List<Entities.ParkingSpot> pspots, 
+            List<Entities.ParkingSpotSearch> psearches)
         {
             //costs array for hungarian Algorithm - rows: spots, columns: searches
             int[,] costs = new int[pspots.Count, psearches.Count];
@@ -68,7 +69,7 @@ namespace BL
                 }
                 groupOfPSpots.Clear();
             }
-            //mutations ???
+            //mutations 
             for (int i = 0; i < (parkSpotsMatrixList.Count / parkSearchesMatrixList.Count); i++)
             {
                 spotsClients = FillCosts(parkSpotsMatrixList, parkSearchesMatrixList, i, 2);
@@ -88,7 +89,7 @@ namespace BL
                 }
                 groupOfPSpots.Clear();
             }
-            //חלוקה עם שארית
+            
             if ((parkSpotsMatrixList.Count % parkSearchesMatrixList.Count) != 0)
             {
                 spotsClients = FillCosts(parkSpotsMatrixList, parkSearchesMatrixList, 0, 1);
@@ -118,7 +119,7 @@ namespace BL
             var listofdbcks = DbHandler.GetAll<Feedback>();
             var groupOfSpots = new List<PSpotHandler>();
             int costPerSearchAndSpot = 0;
-            //קבוצה מתוך הנגנים כמספר הכלים
+            
             if (mutation_num == 2)
                 for (int j = 0; j < parkingSearchesList.Count; j += 2)
                 {
@@ -346,13 +347,16 @@ namespace BL
 
 
                     // adds  10 points for no size matching
-                    if ((parkingSearchesList[search].SizeOpt == true) && (groupOfSpots[spot].SpotLength != null) && (groupOfSpots[spot].SpotWidth != null))
+                    if ((parkingSearchesList[search].SizeOpt == true) && (groupOfSpots[spot].SpotLength != null) 
+                        && (groupOfSpots[spot].SpotWidth != null))
                     {
-                        if (!((parkingSearchesList[search].PreferableWidth >= groupOfSpots[spot].SpotWidth) && (parkingSearchesList[search].PreferableLength >= groupOfSpots[spot].SpotLength)))
+                        if (!((parkingSearchesList[search].PreferableWidth >= groupOfSpots[spot].SpotWidth)
+                            && (parkingSearchesList[search].PreferableLength >= groupOfSpots[spot].SpotLength)))
                             costPerSearchAndSpot += 10;
                     }
                     // adds 30 points for no price matching
-                    if (!((parkingSearchesList[search].MinPrice <= groupOfSpots[spot].PricePerHour) && (parkingSearchesList[search].MaxPrice >= groupOfSpots[spot].PricePerHour)))
+                    if (!((parkingSearchesList[search].MinPrice <= groupOfSpots[spot].PricePerHour) 
+                        && (parkingSearchesList[search].MaxPrice >= groupOfSpots[spot].PricePerHour)))
                     {
                         costPerSearchAndSpot += 30;
                     }

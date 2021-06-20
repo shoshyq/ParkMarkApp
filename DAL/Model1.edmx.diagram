@@ -22,6 +22,7 @@
         <AssociationConnector Association="ParkMarkModel.FK__ParkingSp__UserI__47DBAE45" ManuallyRouted="false" />
         <AssociationConnector Association="ParkMarkModel.FK__Users__PaymentDe__3C69FB99" ManuallyRouted="false" />
         <AssociationConnector Association="ParkMarkModel.FK__Users__PaymentDe__3D5E1FD2" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="ParkMarkModel.sysdiagram" Width="1.5" PointX="7.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -23,7 +23,14 @@ namespace DAL
                 return pmm.Set<T>().ToList();
             }
         }
-  
+        public List<ParkingSpotSearch> GetPSSDbSet()
+        {
+            using (ParkMarkEntitiesDAL pmm = new ParkMarkEntitiesDAL())
+            {
+                return pmm.Set<ParkingSpotSearch>().ToList();
+            }
+        }
+
         public enum ExecuteActions
         {
             Insert,

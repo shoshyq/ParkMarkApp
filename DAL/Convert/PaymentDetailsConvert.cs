@@ -14,7 +14,6 @@ namespace DAL.Convert
             {
                 Code = pd.Code,
                 CreditCardNumber = pd.CreditCardNumber,
-                PaymentAmount = pd.PaymentAmount,
                 ExpiryDateMonth = pd.ExpiryDateMonth,
                 ExpiryDateYear = pd.ExpiryDateYear,
                 SecurityCode = pd.SecurityCode,
@@ -27,7 +26,6 @@ namespace DAL.Convert
             {
                 Code = pd.Code,
                 CreditCardNumber = pd.CreditCardNumber,
-                PaymentAmount = pd.PaymentAmount,
                 ExpiryDateMonth = pd.ExpiryDateMonth,
                 ExpiryDateYear = pd.ExpiryDateYear,
                 SecurityCode = pd.SecurityCode,

@@ -17,7 +17,7 @@ namespace BL
         {
             df = new DistanceFunc();
         }
-        // registering new parking spot . returns 1 if succeeds
+        // registering new parking spot . returns parking spot code if succeeds
         public int RegisterUsersParkSpot(Entities.ParkingSpot mp)
         {
             if (!pslst.Any(d => d.Place_id.Trim() == mp.Place_id.Trim()))
@@ -36,7 +36,7 @@ namespace BL
                 //}
                 return pslst.First(w => w.Code == mp.Code).Code;
             }
-            return 0;
+            return -1;
 
         }
         // updating a parking spot . returns code if succeeds
@@ -50,26 +50,18 @@ namespace BL
         {
             if (pslst != null)
             {
-                foreach (var item in pslst)
-                {
-                    if (item.UserCode == u.Code)
-                    {
-
-                        DeleteSet(DAL.Convert.ParkSpotConvert.ConvertParkingSpotToEF(item));
-
-                    }
-                    else
-                        return 0;
-                }
+                if(pslst.Any(ps => ps.UserCode == u.Code))
+                    DeleteSet(DAL.Convert.ParkSpotConvert.ConvertParkingSpotToEF(pslst.First(ps => ps.UserCode == u.Code)));                            
+                
             }
-            return 1;
+            return 0;
         }
         public int DeleteParkingSpot(Entities.ParkingSpot p)
         {
             var l = pslst.First(i => i.Code == p.Code);
            DeleteSet(DAL.Convert.ParkSpotConvert.ConvertParkingSpotToEF(l));
 
-            return 1;
+            return 0;
         }
     }
 }

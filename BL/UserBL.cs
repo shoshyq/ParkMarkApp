@@ -53,9 +53,9 @@ namespace BL
             int uc = GetUserCode(username, password);
             if (uc == 0)
             {
-                if (!Password(password, username))
+                if (UserName(username))
                     // incorrect password
-                    return 2;
+                    return -1;
             }
             return uc;
 
@@ -130,7 +130,7 @@ namespace BL
         // function that sends email to user
         public static int SendEmail(string email, string username, string subject, string body)
         {
-            SendMail sendMail = new SendMail(username, "parkmarkapp2021@gmail.com");
+            SendMail sendMail = new SendMail("ParkMark Support", "parkmarkapp2021@gmail.com");
 
             //subject = string.Format(" אימות סיסמא למשתמש {0}", "Shoshy");
             //body += "\nלתשומת לבך, מצורפת סיסמתך החדשה לכניסה למערכת";
@@ -148,10 +148,13 @@ namespace BL
 
             return 1;
         }
-        // password verification
-        public bool Password(string password, string username)
+        // makeing sure that inly the passwird is incorrect
+        public bool UserName( string username)
         {
-            return (DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<User>()).First(u => u.Username == username).UserPassword == password);
+            if (DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<User>()).Any(u => u.Username == username))
+                    return true;
+             else
+                    return false;
         }
         //reset the password
         public int ResetPassword(string username)
