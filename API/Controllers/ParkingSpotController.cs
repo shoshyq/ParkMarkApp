@@ -25,7 +25,14 @@ namespace API.Controllers
         {
             return wdbl.AddWeekDays(sw);
         }
-
+        [AcceptVerbs("GET", "POST")]
+        [Route("getSchedule")]
+        [HttpGet]
+        // getting schedule by weekday table code
+        public Schedule_Week GetSchedule(int wcode)
+        {
+            return wdbl.GetSchedule(wcode);
+        }
         [AcceptVerbs("GET", "POST")]
         [Route("addParkSpot")]
         [HttpPost]

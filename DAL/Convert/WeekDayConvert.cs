@@ -13,12 +13,18 @@ namespace DAL.Convert
             return new DAL.WeekDay
             {
                 Code = w.Code,
-                SundayHourQuaters = w.SundayHourQuaters,
-                MondayHourQuaters = w.MondayHourQuaters,
-                TuedayHourQuaters = w.TuedayHourQuaters,
-                WednesdayHourQuaters = w.WednesdayHourQuaters,
-                ThursdayHourQuaters = w.ThursdayHourQuaters,
-                FridayHourQuaters = w.FridayHourQuaters
+                Sunday1HourQuaters = w.Sunday1HourQuaters,
+                Sunday2HourQuaters = w.Sunday1HourQuaters,
+                Monday1HourQuaters = w.Monday1HourQuaters,
+                Monday2HourQuaters = w.Monday2HourQuaters,
+                Tueday1HourQuaters = w.Tueday1HourQuaters,
+                Tueday2HourQuaters = w.Tueday2HourQuaters,
+                Wednesday1HourQuaters = w.Wednesday1HourQuaters,
+                Wednesday2HourQuaters = w.Wednesday2HourQuaters,
+                Thursday1HourQuaters = w.Thursday1HourQuaters,
+                Thursday2HourQuaters = w.Thursday2HourQuaters,
+                Friday1HourQuaters = w.Friday1HourQuaters,
+                Friday2HourQuaters = w.Friday2HourQuaters
             };
         }
         public static Entities.WeekDay ConvertWeekDayToEntity(DAL.WeekDay w)
@@ -26,12 +32,18 @@ namespace DAL.Convert
             return new Entities.WeekDay
             {
                 Code = w.Code,
-                SundayHourQuaters = w.SundayHourQuaters,
-                MondayHourQuaters = w.MondayHourQuaters,
-                TuedayHourQuaters = w.TuedayHourQuaters,
-                WednesdayHourQuaters = w.WednesdayHourQuaters,
-                ThursdayHourQuaters = w.ThursdayHourQuaters,
-                FridayHourQuaters = w.FridayHourQuaters
+                Sunday1HourQuaters = w.Sunday1HourQuaters,
+                Sunday2HourQuaters = w.Sunday1HourQuaters,
+                Monday1HourQuaters = w.Monday1HourQuaters,
+                Monday2HourQuaters = w.Monday2HourQuaters,
+                Tueday1HourQuaters = w.Tueday1HourQuaters,
+                Tueday2HourQuaters = w.Tueday2HourQuaters,
+                Wednesday1HourQuaters = w.Wednesday1HourQuaters,
+                Wednesday2HourQuaters = w.Wednesday2HourQuaters,
+                Thursday1HourQuaters = w.Thursday1HourQuaters,
+                Thursday2HourQuaters = w.Thursday2HourQuaters,
+                Friday1HourQuaters = w.Friday1HourQuaters,
+                Friday2HourQuaters = w.Friday2HourQuaters
             };
         }
         public static List<Entities.WeekDay> ConvertWeekDaysListToEntity(IEnumerable<DAL.WeekDay> weekdays)

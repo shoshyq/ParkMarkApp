@@ -22,12 +22,18 @@ namespace DAL
         }
     
         public int Code { get; set; }
-        public Nullable<int> SundayHourQuaters { get; set; }
-        public Nullable<int> MondayHourQuaters { get; set; }
-        public Nullable<int> TuedayHourQuaters { get; set; }
-        public Nullable<int> WednesdayHourQuaters { get; set; }
-        public Nullable<int> ThursdayHourQuaters { get; set; }
-        public Nullable<int> FridayHourQuaters { get; set; }
+        public Nullable<long> Sunday1HourQuaters { get; set; }
+        public Nullable<long> Sunday2HourQuaters { get; set; }
+        public Nullable<long> Monday1HourQuaters { get; set; }
+        public Nullable<long> Monday2HourQuaters { get; set; }
+        public Nullable<long> Tueday1HourQuaters { get; set; }
+        public Nullable<long> Tueday2HourQuaters { get; set; }
+        public Nullable<long> Wednesday1HourQuaters { get; set; }
+        public Nullable<long> Wednesday2HourQuaters { get; set; }
+        public Nullable<long> Thursday1HourQuaters { get; set; }
+        public Nullable<long> Thursday2HourQuaters { get; set; }
+        public Nullable<long> Friday1HourQuaters { get; set; }
+        public Nullable<long> Friday2HourQuaters { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ParkingSpot> ParkingSpots { get; set; }

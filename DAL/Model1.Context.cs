@@ -13,10 +13,10 @@ namespace DAL
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class ParkMarkEntitiesDAL : DbContext
+    public partial class ParkMarkEntities : DbContext
     {
-        public ParkMarkEntitiesDAL()
-            : base("name=ParkMarkEntitiesDAL")
+        public ParkMarkEntities()
+            : base("name=ParkMarkEntities")
         {
         }
     
@@ -32,6 +32,5 @@ namespace DAL
         public virtual DbSet<PaymentDetail> PaymentDetails { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<WeekDay> WeekDays { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }

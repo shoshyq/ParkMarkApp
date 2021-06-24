@@ -81,13 +81,13 @@ namespace BL
                 ConvertParkingSpotsListToEntity(GetAll<DAL.ParkingSpot>()).Where(y => y.CityCode == pss.CityCode)
                 .ToList();
             //filtering by hours
-            var shl = convertFunc.GetHoursForPSImidiateSearch((int)pss.DaysSchedule);
+            var shl = convertFunc.GetHoursListFromWeekDay((int)pss.DaysSchedule);
             foreach (var spot in listOfSpots)
             {
                 var hl = convertFunc.GetHoursListFromWeekDay((int)spot.DaysSchedule);
                 //checks if there is any hours in listOfSpots that matches hours in that search at that day
-                if (!(hl[shl.First().Key].Any(h => (h.StartHour <= shl.First().Value.StartHour) && 
-                (h.EndHour >= shl.First().Value.EndHour))))
+                if (!(hl[shl.First().Key].Any(h => (h.StartHour <= shl.First().Value[0].StartHour) && 
+                (h.EndHour >= shl.First().Value[0].EndHour))))
                     listOfSpots.Remove(spot);
             }
 

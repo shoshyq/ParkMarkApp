@@ -17,9 +17,12 @@ namespace BL
             StartHour = v1;
             EndHour = v2;
         }
-
-        public double StartHour { get; }
-        public double EndHour { get; }
+        public void SetStartHour(double sh)
+        {
+            this.StartHour = sh;
+        }
+        public double StartHour { get; set; }
+        public double EndHour { get; set; }
 
     }
 
