@@ -32,5 +32,13 @@ namespace API.Controllers
         {
             return pbl.DeletePaymentDetails(usercode, p);
         }
+        [AcceptVerbs("GET", "POST")]
+        [Route("getPaymentAccounts")]
+        [HttpGet]
+        // getting all payment accounts by usercode
+        public List<Entities.PaymentDetail> NewPassword(int usercode)
+        {
+            return pbl.GetPaymentAccounts(usercode);
+        }
     }
 }

@@ -34,6 +34,18 @@ namespace BL
             else
                 return AddPaymentDetails(p);
         }//
+
+        public List<Entities.PaymentDetail> GetPaymentAccounts(int usercode)
+        {
+            List<Entities.PaymentDetail> plist = new List<Entities.PaymentDetail>();
+            if (DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<DAL.User>()).First(u => u.Code == usercode).PaymentDetails1!=null)
+                plist.Add(DAL.Convert.PaymentDetailsConvert.ConvertPaymentDetailListToEntity(GetAll<DAL.PaymentDetail>()).First(p => p.Code == (DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<DAL.User>()).First(u => u.Code == usercode).PaymentDetails1)));
+            if (DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<DAL.User>()).First(u => u.Code == usercode).PaymentDetails1 != null)
+                plist.Add(DAL.Convert.PaymentDetailsConvert.ConvertPaymentDetailListToEntity(GetAll<DAL.PaymentDetail>()).First(p => p.Code == (DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<DAL.User>()).First(u => u.Code == usercode).PaymentDetails2)));
+            return plist;
+
+        }
+
         public int DeletePaymentDetailsByUser(Entities.User user)
         {
             var pdlist = DAL.Convert.PaymentDetailsConvert.ConvertPaymentDetailListToEntity(GetAll<DAL.PaymentDetail>());

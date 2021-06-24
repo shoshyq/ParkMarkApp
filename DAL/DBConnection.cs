@@ -10,22 +10,22 @@ namespace DAL
 {
     public class DBConnection
     {
-        ParkMarkEntitiesDAL parkMarkmodels;
+        ParkMarkEntities parkMarkmodels;
         public DBConnection()
         {
-            parkMarkmodels = new ParkMarkEntitiesDAL();
+            parkMarkmodels = new ParkMarkEntities();
         }
         #region generic functions for all tables
         public List<T> GetDbSet<T>() where T : class
         {
-            using (ParkMarkEntitiesDAL pmm = new ParkMarkEntitiesDAL())
+            using (ParkMarkEntities pmm = new ParkMarkEntities())
             {
                 return pmm.Set<T>().ToList();
             }
         }
         public List<ParkingSpotSearch> GetPSSDbSet()
         {
-            using (ParkMarkEntitiesDAL pmm = new ParkMarkEntitiesDAL())
+            using (ParkMarkEntities pmm = new ParkMarkEntities())
             {
                 return pmm.Set<ParkingSpotSearch>().ToList();
             }
@@ -40,7 +40,7 @@ namespace DAL
 
         public void Execute<T>(T entity, ExecuteActions action) where T : class
         {
-            using (ParkMarkEntitiesDAL pmm = new ParkMarkEntitiesDAL())
+            using (ParkMarkEntities pmm = new ParkMarkEntities())
             {
                 var model = pmm.Set<T>();
                 switch (action)
