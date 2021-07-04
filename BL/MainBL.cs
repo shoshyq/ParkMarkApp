@@ -19,7 +19,7 @@ namespace BL
         }
 
         //once a day main-hungarian function - suppose to be here 
-        public Dictionary<int, Dictionary<int, int>> ParkingSpotPerUser()
+        public Dictionary<int, Dictionary<int?, int>> ParkingSpotPerUser()
         {
             return hf.PSpotsAllSearchesByCities();
         }

@@ -19,5 +19,6 @@ namespace BL
         public string Address;
         public bool? HasRoof;
         public Dictionary<int, List<Hours>> Hours;
+        public DateTime SearchDate { get; set; }
     }
 }

@@ -54,6 +54,21 @@ namespace API.Controllers
         {
             return wdbl.AddWeekDays(sw);
         }
+        [AcceptVerbs("GET", "POST")]
+        [Route("getSchedule")]
+        [HttpGet]
+        // getting schedule by weekday table code
+        public Schedule_Week GetSchedule(int wcode)
+        {
+            return wdbl.GetSchedule(wcode);
+        }
+        [AcceptVerbs("GET", "POST")]
+        [Route("updateWeekDays")]
+        [HttpPost]
+        public Schedule_Week UpdateWeekDays(Schedule_Week sw)
+        {
+            return (wdbl.UpdateWeekDay(sw));
+        }
         //[AcceptVerbs("GET", "POST")]
         //[Route("getQuickSearchResults")]
         //[HttpPost]

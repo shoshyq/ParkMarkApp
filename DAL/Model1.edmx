@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ParkMarkDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="ParkMarkDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Cities">
           <Key>
             <PropertyRef Name="Code" />
@@ -268,7 +268,8 @@
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ParkMarkDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -371,18 +372,18 @@
             <PropertyRef Name="Code" />
           </Key>
           <Property Name="Code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Sunday1HourQuaters" Type="Int32" />
-          <Property Name="Sunday2HourQuaters" Type="Int32" />
-          <Property Name="Monday1HourQuaters" Type="Int32" />
-          <Property Name="Monday2HourQuaters" Type="Int32" />
-          <Property Name="Tueday1HourQuaters" Type="Int32" />
-          <Property Name="Tueday2HourQuaters" Type="Int32" />
-          <Property Name="Wednesday1HourQuaters" Type="Int32" />
-          <Property Name="Wednesday2HourQuaters" Type="Int32" />
-          <Property Name="Thursday1HourQuaters" Type="Int32" />
-          <Property Name="Thursday2HourQuaters" Type="Int32" />
-          <Property Name="Friday1HourQuaters" Type="Int32" />
-          <Property Name="Friday2HourQuaters" Type="Int32" />
+          <Property Name="Sunday1HourQuaters" Type="Int64" />
+          <Property Name="Sunday2HourQuaters" Type="Int64" />
+          <Property Name="Monday1HourQuaters" Type="Int64" />
+          <Property Name="Monday2HourQuaters" Type="Int64" />
+          <Property Name="Tueday1HourQuaters" Type="Int64" />
+          <Property Name="Tueday2HourQuaters" Type="Int64" />
+          <Property Name="Wednesday1HourQuaters" Type="Int64" />
+          <Property Name="Wednesday2HourQuaters" Type="Int64" />
+          <Property Name="Thursday1HourQuaters" Type="Int64" />
+          <Property Name="Thursday2HourQuaters" Type="Int64" />
+          <Property Name="Friday1HourQuaters" Type="Int64" />
+          <Property Name="Friday2HourQuaters" Type="Int64" />
           <NavigationProperty Name="ParkingSpots" Relationship="Self.FK__ParkingSp__DaysS__4222D4EF" FromRole="WeekDays" ToRole="ParkingSpot" />
           <NavigationProperty Name="ParkingSpotSearches" Relationship="Self.FK__ParkingSp__DaysS__46E78A0C" FromRole="WeekDays" ToRole="ParkingSpotSearch" />
         </EntityType>
@@ -506,7 +507,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ParkMarkEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="ParkMarkDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Cities" EntityType="Self.City" />
           <EntitySet Name="Feedbacks" EntityType="Self.Feedback" />
           <EntitySet Name="ParkingSpots" EntityType="Self.ParkingSpot" />
@@ -560,7 +561,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ParkMarkDBModelStoreContainer" CdmEntityContainer="ParkMarkEntities">
+        <EntityContainerMapping StorageEntityContainer="ParkMarkDBModelStoreContainer" CdmEntityContainer="ParkMarkDBEntities">
           <EntitySetMapping Name="Cities">
             <EntityTypeMapping TypeName="ParkMarkDBModel.City">
               <MappingFragment StoreEntitySet="Cities">

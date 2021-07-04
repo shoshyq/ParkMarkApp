@@ -13,10 +13,10 @@ namespace DAL
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class ParkMarkEntities : DbContext
+    public partial class ParkMarkDBEntities : DbContext
     {
-        public ParkMarkEntities()
-            : base("name=ParkMarkEntities")
+        public ParkMarkDBEntities()
+            : base("name=ParkMarkDBEntities")
         {
         }
     

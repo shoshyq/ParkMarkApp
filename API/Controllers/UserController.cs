@@ -46,6 +46,15 @@ namespace API.Controllers
         }
 
         [AcceptVerbs("GET", "POST")]
+        [Route("getuser/{usercode}")]
+        [HttpGet]
+        // getting user by code
+        public User GetUserByCode(string usercode)
+        {
+            var t = ubl.GetUserByCode(Int32.Parse(usercode));
+            return t;
+        }
+        [AcceptVerbs("GET", "POST")]
         [Route("logIn/setNewPassword/{ucode}/{newPassword}")]
         [HttpGet]
         // setting a new password 
@@ -53,7 +62,6 @@ namespace API.Controllers
         {
             return ubl.NewPassword(usercode, newPassword);
         }
-
         [AcceptVerbs("GET", "POST")]
         [Route("signUp")]
         [HttpPost]
