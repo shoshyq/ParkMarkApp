@@ -13,6 +13,7 @@ namespace BL
     {
         DistanceFunc df;
         ConvertFuncBL convertFuncBL;
+        int[,] costs;
         public HungarianFunctions()
         {
             df = new DistanceFunc();
@@ -20,9 +21,9 @@ namespace BL
         }
         #region functions for hungarian
         //Main algorithm function  - returns dictionary key:city, value: dictionary - schedule of pspots and searches
-        public Dictionary<int, Dictionary<int, int>> PSpotsAllSearchesByCities()
+        public Dictionary<int, Dictionary<int?, int>> PSpotsAllSearchesByCities()
         {
-            Dictionary<int, Dictionary<int, int>> dic = new Dictionary<int, Dictionary<int, int>>();
+            Dictionary<int, Dictionary<int?, int>> dic = new Dictionary<int, Dictionary<int?, int>>();
             // dic = key:city, value: list<searches>
             var bycitySearchesDic = DbHandler.GetAll<ParkingSpotSearch>().Where(e => e.Regularly == true).GroupBy(t => t.CityCode).ToDictionary(w => (int)w.Key, w => w.ToList());
             //dic = key:city, value: list<spots>
@@ -37,111 +38,118 @@ namespace BL
 
         }
         // Inside Main algorithm function - calculates parkspot per search by city code, returns dictionary <spot_code, search_code>
-        public Dictionary<int, int> ParkingSpotPerUser(List<Entities.ParkingSpot> pspots, 
-            List<Entities.ParkingSpotSearch> psearches)
+        public Dictionary<int?, int> ParkingSpotPerUser(List<Entities.ParkingSpot> pspots, List<Entities.ParkingSpotSearch> psearches)
         {
             //costs array for hungarian Algorithm - rows: spots, columns: searches
-            int[,] costs = new int[pspots.Count, psearches.Count];
-            var groupOfPSpots = new List<DAL.ParkingSpot>();
+            //costs = new int[pspots.Count, psearches.Count];
+            var groupOfPSpots = new List<PSpotHandler>();
             int[] spotsClients;
-            int minCost = int.MaxValue;
+            int? minCost = int.MaxValue;
+            // converting the pspots and searches lists to it handler lists
             List<PSpotHandler> parkSpotsMatrixList = convertFuncBL.ConvertToPSpotHandlerList(pspots);
             List<PSpotSearchHandler> parkSearchesMatrixList = convertFuncBL.ConvertToSpotSearchHandlerList(psearches);
 
-            Dictionary<int, int> settingPSpotsPerSearch = new Dictionary<int, int>();
-            int costPerOption;
+            Dictionary<int?, int> settingPSpotsPerSearch = new Dictionary<int?, int>();
+            Dictionary<int?, int> settingPSpotsPerSearchEnding = new Dictionary<int?, int>();
+            int? costPerOption = 0;
             for (int i = 0; i < (parkSpotsMatrixList.Count / parkSearchesMatrixList.Count); i++)
             {
-                spotsClients = FillCosts(parkSpotsMatrixList, parkSearchesMatrixList, i, 1);
-                costPerOption = 0;
-                for (int k = 0; k < spotsClients.Count(); k++)
+                for (int j = 0; j < parkSearchesMatrixList.Count; j++)
                 {
-                    costPerOption += costs[k, spotsClients[k]];
+                    groupOfPSpots.Add(parkSpotsMatrixList[j + (parkSearchesMatrixList.Count * i)]);
                 }
+                List<int> resultlist = FillCosts(groupOfPSpots, parkSearchesMatrixList);
+                resultlist.RemoveAt(resultlist.Count - 1);
+                spotsClients = resultlist.ToArray();
+                costPerOption = resultlist[resultlist.Count - 1];
+                settingPSpotsPerSearch.Clear();
+
                 if (costPerOption < minCost)
                 {
-                    for (int t = 0; t < spotsClients.Count(); t++)
-                    {
-                        settingPSpotsPerSearch.Clear();
-                        settingPSpotsPerSearch.Add(groupOfPSpots[t].Code, parkSearchesMatrixList[spotsClients[t]].Code);
-                    }
                     minCost = costPerOption;
+                    for (int s = 0; s < spotsClients.Count(); s++)
+                    {
+                        settingPSpotsPerSearch.Add(groupOfPSpots[s].Code, parkSearchesMatrixList[spotsClients[s]].Code);
+                    }
+                    settingPSpotsPerSearchEnding = settingPSpotsPerSearch;
                 }
                 groupOfPSpots.Clear();
             }
-            //mutations 
-            for (int i = 0; i < (parkSpotsMatrixList.Count / parkSearchesMatrixList.Count); i++)
+            if((parkSpotsMatrixList.Count / parkSearchesMatrixList.Count)>1)
             {
-                spotsClients = FillCosts(parkSpotsMatrixList, parkSearchesMatrixList, i, 2);
-                costPerOption = 0;
-                for (int a = 0; a < spotsClients.Count(); a++)
+                //mutations 
+                for (int i = 0; i < (parkSpotsMatrixList.Count / parkSearchesMatrixList.Count); i++)
                 {
-                    costPerOption += costs[a, spotsClients[a]];
-                }
-                if (costPerOption < minCost)
-                {
-                    for (int s = 0; s < spotsClients.Count(); s++)
+                    for (int j = i; j < parkSearchesMatrixList.Count * (parkSpotsMatrixList.Count / parkSearchesMatrixList.Count); j += parkSpotsMatrixList.Count / parkSearchesMatrixList.Count)
                     {
-                        settingPSpotsPerSearch.Clear();
-                        settingPSpotsPerSearch.Add(groupOfPSpots[s].Code, parkSearchesMatrixList[spotsClients[s]].Code);
+                        groupOfPSpots.Add(parkSpotsMatrixList[j]);
                     }
-                    minCost = costPerOption;
+                    List<int> resultlist = FillCosts(groupOfPSpots, parkSearchesMatrixList);
+                    resultlist.RemoveAt(resultlist.Count - 1);
+                    spotsClients = resultlist.ToArray();
+                    costPerOption = resultlist[resultlist.Count - 1];
+                    settingPSpotsPerSearch.Clear();
+                    if (costPerOption < minCost)
+                    {
+                        minCost = costPerOption;
+                        for (int s = 0; s < spotsClients.Count(); s++)
+                        {
+                            settingPSpotsPerSearch.Add(groupOfPSpots[s].Code, parkSearchesMatrixList[spotsClients[s]].Code);
+                        }
+                        settingPSpotsPerSearchEnding = settingPSpotsPerSearch;
+                    }
+                    groupOfPSpots.Clear();
                 }
-                groupOfPSpots.Clear();
             }
             
             if ((parkSpotsMatrixList.Count % parkSearchesMatrixList.Count) != 0)
             {
-                spotsClients = FillCosts(parkSpotsMatrixList, parkSearchesMatrixList, 0, 1);
-                costPerOption = 0;
-                for (int f = 0; f < spotsClients.Count(); f++)
+                var rand = new Random();
+                int prev = -1;
+                for (int l = parkSpotsMatrixList.Count - (parkSpotsMatrixList.Count % parkSearchesMatrixList.Count) - 1; l < parkSpotsMatrixList.Count; l++)
+                    groupOfPSpots.Add(parkSpotsMatrixList[l]);
+                for (int k = 0; k < parkSearchesMatrixList.Count - (parkSpotsMatrixList.Count % parkSearchesMatrixList.Count); k++)
                 {
-                    costPerOption += costs[f, spotsClients[f]];
+                    int y = rand.Next(0, parkSpotsMatrixList.Count - (parkSpotsMatrixList.Count % parkSearchesMatrixList.Count));
+                    if (y == prev)
+                    {
+                        while(y==prev)
+                        {
+                             y = rand.Next(0, parkSpotsMatrixList.Count - (parkSpotsMatrixList.Count % parkSearchesMatrixList.Count));
+                        }
+                    }
+                    prev = y;
+                    groupOfPSpots.Add(parkSpotsMatrixList[y]);
                 }
+                List<int> resultlist = FillCosts(parkSpotsMatrixList, parkSearchesMatrixList);
+                resultlist.RemoveAt(resultlist.Count - 1);
+                spotsClients = resultlist.ToArray();
+                costPerOption = resultlist[resultlist.Count - 1];
+             
+                settingPSpotsPerSearch.Clear();
                 if (costPerOption < minCost)
                 {
+                    minCost = costPerOption;
                     for (int s = 0; s < spotsClients.Count(); s++)
                     {
-                        settingPSpotsPerSearch.Clear();
                         settingPSpotsPerSearch.Add(groupOfPSpots[s].Code, parkSearchesMatrixList[spotsClients[s]].Code);
                     }
-                    minCost = costPerOption;
+                    settingPSpotsPerSearchEnding = settingPSpotsPerSearch;
                 }
             }
-            return settingPSpotsPerSearch;
+            return settingPSpotsPerSearchEnding;
         }
         // calculates costs matrix, sends it to hungarian_function and returns its result array 
-        private int[] FillCosts(List<PSpotHandler> parkingSpotsList, List<PSpotSearchHandler> parkingSearchesList, int group, int mutation_num)
+        private List<int> FillCosts(List<PSpotHandler> parkingSpotsList, List<PSpotSearchHandler> parkingSearchesList)
         {
-            int[,] costs = new int[parkingSearchesList.Count, parkingSearchesList.Count];
+            costs = new int[parkingSearchesList.Count, parkingSearchesList.Count];
             int[] finalArray;
 
             var listofdbcks = DbHandler.GetAll<Feedback>();
             var groupOfSpots = new List<PSpotHandler>();
             int costPerSearchAndSpot = 0;
-            
-            if (mutation_num == 2)
-                for (int j = 0; j < parkingSearchesList.Count; j += 2)
-                {
-                    groupOfSpots.Add(parkingSpotsList[j + (parkingSearchesList.Count * group)]);
-                }
-            else
-                if (mutation_num == 1)
-                for (int j = 0; j < parkingSearchesList.Count; j++)
-                {
-                    groupOfSpots.Add(parkingSpotsList[j + (parkingSearchesList.Count * group)]);
-                }
-            else
-            {
-                for (int k = parkingSpotsList.Count % parkingSearchesList.Count; k < parkingSpotsList.Count; k++)
-                {
-                    groupOfSpots.Add(parkingSpotsList[k]);
-                }
-                for (int t = 0; t < parkingSearchesList.Count - groupOfSpots.Count; t++)
-                {
-                    groupOfSpots.Add(parkingSpotsList[t]);
-                }
-            }
+       
+            int cost_sum = 0;
             //sets the cost value per spotXsearch
             for (int spot = 0; spot < groupOfSpots.Count(); spot++)
             {
@@ -347,7 +355,7 @@ namespace BL
 
 
                     // adds  10 points for no size matching
-                    if ((parkingSearchesList[search].SizeOpt == true) && (groupOfSpots[spot].SpotLength != null) 
+                    if ((parkingSearchesList[search].SizeOpt == true) && (groupOfSpots[spot].SpotLength != null)
                         && (groupOfSpots[spot].SpotWidth != null))
                     {
                         if (!((parkingSearchesList[search].PreferableWidth >= groupOfSpots[spot].SpotWidth)
@@ -355,7 +363,7 @@ namespace BL
                             costPerSearchAndSpot += 10;
                     }
                     // adds 30 points for no price matching
-                    if (!((parkingSearchesList[search].MinPrice <= groupOfSpots[spot].PricePerHour) 
+                    if (!((parkingSearchesList[search].MinPrice <= groupOfSpots[spot].PricePerHour)
                         && (parkingSearchesList[search].MaxPrice >= groupOfSpots[spot].PricePerHour)))
                     {
                         costPerSearchAndSpot += 30;
@@ -372,12 +380,16 @@ namespace BL
                     }
 
                     costs[spot, search] = costPerSearchAndSpot;
+                    cost_sum += costPerSearchAndSpot;
                     costPerSearchAndSpot = 0;
                 }
             }
 
             //an array of spots, each cell represents the row index and the value represent the column index
-            return finalArray = HungarianAlgorithm.FindAssignments(costs);
+            finalArray = HungarianAlgorithm.FindAssignments(costs);
+            List<int> flist = finalArray.OfType<int>().ToList();
+            flist.Add(cost_sum);
+            return flist;
         }
         #endregion
     }

@@ -9,6 +9,7 @@ namespace BL
 	public class PSpotSearchHandler
 	{
 		public int Code;
+		public int UserCode;
 		public bool? SizeOpt;
 		public double? PreferableWidth;
 		public double? PreferableLength;
@@ -18,6 +19,8 @@ namespace BL
 		public string Place_Id;
 		public string Address;
 		public Dictionary<int, List<Hours>> Hours;
+		public DateTime? SearchDate { get; set; }
+
 
 	}
 }

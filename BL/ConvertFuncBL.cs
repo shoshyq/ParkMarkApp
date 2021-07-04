@@ -26,6 +26,7 @@ namespace BL
                     Address = pslist[spot].FullAddress,
                     HasRoof = pslist[spot].HasRoof,
                     Hours = hourdic
+                 
                 };
                 parkSpotsMatrixList.Add(psh);
             }
@@ -49,7 +50,8 @@ namespace BL
                     MaxPrice = psearches[search].MaxPrice,
                     Place_Id = psearches[search].Place_id,
                     Address = psearches[search].MyLocationAddress,
-                    Hours = hourdic2
+                    Hours = hourdic2,
+                    SearchDate = psearches[search].SearchDate
                 };
                 parkSearchesMatrixList.Add(psh);
             }
@@ -143,92 +145,6 @@ namespace BL
             return wkdhdic;
         }
 
-        // (for imidiate search) convert hours schedule for pspotsearch from weekDay to dictionary = key: index in weekdays list static prop above, value: Hours
-        //public Dictionary<int, Hours> GetHoursForPSImidiateSearch(int wdtCode)
-        //{
-        //    WeekDay weekdaylist = (DAL.Convert.WeekDayConvert.ConvertWeekDaysListToEntity(DbHandler.GetAll<DAL.WeekDay>())).First(w => w.Code == wdtCode);
-        //    //DAL.Converts.WeekDayConvert.ConvertWeekDaysListToEntity
-        //    Dictionary<int, long> weekdayhours = new Dictionary<int, long>()
-        //    {
-        //    {  1,  Convert.ToInt64(weekdaylist.Sunday1HourQuaters)},
-        //    {   2,  Convert.ToInt64(weekdaylist.Sunday2HourQuaters)},
-        //    {  3,  Convert.ToInt64(weekdaylist.Monday1HourQuaters) },
-        //    {    4,Convert.ToInt64(weekdaylist.Monday2HourQuaters) },
-        //    {   5, Convert.ToInt64(weekdaylist.Tueday1HourQuaters) },
-        //    {   6,  Convert.ToInt64(weekdaylist.Tueday2HourQuaters) },
-        //    {  7,  Convert.ToInt64(weekdaylist.Wednesday1HourQuaters) },
-        //    {   8,  Convert.ToInt64(weekdaylist.Wednesday2HourQuaters) },
-        //    {  9,  Convert.ToInt64(weekdaylist.Thursday1HourQuaters) },
-        //    {   10,  Convert.ToInt64(weekdaylist.Thursday2HourQuaters) },
-        //    {  11,  Convert.ToInt64(weekdaylist.Friday1HourQuaters) },
-        //    {  12,  Convert.ToInt64(weekdaylist.Friday2HourQuaters) }
-
-        //    };
-        //    Dictionary<int, Hours> hours = new Dictionary<int, Hours>();
-        //    int index = 0;
-        //    foreach (var item in weekdayhours)
-        //    {
-        //        List<Hours> hourList = new List<Hours>();
-        //        char[] bitshours = new char[48];
-        //        int k = 0;
-        //        long num = item.Value;
-        //        while (num != 0)
-        //        {
-        //            bitshours[k++] = (num & 1) == 1 ? '1' : '0';
-        //            num >>= 1;
-        //        }
-        //        Array.Reverse(bitshours, 0, 48);
-        //        //string strbithours = new string(bitshours);
-        //        int count = 0;
-        //        // bool flag = bitshours[0] == '1' ? true : false;
-        //        //true if it's 1, if the previous was 1
-        //        bool flag = bitshours[0] == '1' ? true : false;
-        //        bool startflag = bitshours[0] == '1' ? true : false;
-        //        double add = item.Key % 2 == 0 ? 12.00 : 00.00;
-        //        for (int j = 1; j < 48; j++)
-        //        {
-        //            if ((bitshours[j].Equals('1')) && (j == 47))
-        //            {
-        //                double end = item.Key % 2 == 0 ? 00.00 : 12.00;
-        //                Hours h = new Hours(Convert.ToDouble(((j - count) / 4).ToString() + "." + (((j - count) % 4) * 15).ToString()) + add, end);
-        //                hourList.Add(h);
-        //                break;
-        //            }
-        //            if ((bitshours[j].Equals('1')) && (j != 47))
-        //            {
-        //                count++;
-        //                flag = true;
-        //                continue;
-        //            }
-        //            else
-        //            {
-        //                if (startflag)
-        //                {
-        //                    Hours h = new Hours(00.00 + add, Convert.ToDouble(((j / 4).ToString() + "." + ((j % 4) * 15).ToString())) + add);
-        //                    hourList.Add(h);
-        //                    count = 0;
-        //                    flag = false;
-        //                    startflag = false;
-        //                    continue;
-        //                }
-        //                if (flag)
-        //                {
-        //                    Hours h = new Hours(Convert.ToDouble(((j - count) / 4).ToString() + "." + (((j - count) % 4) * 15).ToString()) + add, Convert.ToDouble((j / 4).ToString() + "." + ((j % 4) * 15).ToString()) + add);
-        //                    hourList.Add(h);
-        //                    count = 0;
-        //                    flag = false;
-        //                    continue;
-        //                }
-
-        //            }
-
-        //        }
-        //        hours.Add(key: index, value: hourList[0]);
-        //        index++;
-        //    }
-        //    return hours;
-        //}
-        //updated - converts double_format time to a number of bits
         public int ConvertToNumOfBits(double num)
         {
             int s_h = Convert.ToInt32(num) * 4;

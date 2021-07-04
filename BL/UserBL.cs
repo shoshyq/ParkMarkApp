@@ -32,6 +32,11 @@ namespace BL
                 AddSet<User>(DAL.Convert.UserConvert.ConvertUserToEF(user));
                 return (DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<User>()).First(u => u.Username == user.Username && u.UserPassword == user.UserPassword)).Code;
             }
+            else
+            {
+                if (DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<User>()).Any(u => u.Username == user.Username && u.UserPassword == user.UserPassword))
+                    return (DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<User>()).First(u => u.Username == user.Username && u.UserPassword == user.UserPassword)).Code;
+            }
 
             return 0;
         }
@@ -186,6 +191,10 @@ namespace BL
             body += string.Format("  {0}", newPassword);
            return SendEmail(user.UserEmail, user.Username, subject, body)  + GetUserCode(user.Username, user.UserPassword);
             
+        }
+        public Entities.User GetUserByCode(int usercode)
+        {
+            return DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<User>()).First(u => u.Code == usercode);
 
         }
     }
