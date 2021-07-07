@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entities
 {
-    public class City
+    public class CityDTO
     {
         public int Code { get; set; }
         public string CityName { get; set; }

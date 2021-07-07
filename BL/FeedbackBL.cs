@@ -12,8 +12,8 @@ namespace BL
     public class FeedbackBL : DbHandler
     {
         UserBL ubl;
-        List<Feedback> flst = (GetAll<Feedback>());
-        public FeedbackBL()//DAL.Converts.FeedbackConvert.ConvertFeedbacksListToEntity
+        List<Feedback> flst = DAL.Convert.FeedbackConvert.ConvertFeedbacksListToEntity((IEnumerable<DAL.Feedback>)GetAll<Feedback>());
+        public FeedbackBL()//
         {
             ubl = new UserBL();
         }

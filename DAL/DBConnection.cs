@@ -20,7 +20,7 @@ namespace DAL
         {
             using (ParkMarkDBEntities pmm = new ParkMarkDBEntities())
             {
-                return pmm.Set<T>().ToList();
+                return pmm.GetDbSet<T>().ToList();
             }
         
         }

@@ -9,6 +9,8 @@ namespace BL
     public class RootLocationBase
     {
         public Result[] results { get; set; }
+    
+
     }
 
     public class Result

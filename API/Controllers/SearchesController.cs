@@ -16,6 +16,7 @@ namespace API.Controllers
     {
 
         SearchRequestsBL sbl = new SearchRequestsBL();
+        CityBL ctbl = new CityBL();
         WeekDayBL wdbl = new WeekDayBL();
         [AcceptVerbs("GET", "POST")]
         [Route("addRegSearch")]
@@ -61,6 +62,14 @@ namespace API.Controllers
         public Schedule_Week GetSchedule(int wcode)
         {
             return wdbl.GetSchedule(wcode);
+        }
+        [AcceptVerbs("GET", "POST")]
+        [Route("getCities")]
+        [HttpGet]
+        // getting list of cities
+        public List<CityDTO> GetCities()
+        {
+            return ctbl.GetAllCities();
         }
         [AcceptVerbs("GET", "POST")]
         [Route("updateWeekDays")]

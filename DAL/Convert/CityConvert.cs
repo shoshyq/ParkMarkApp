@@ -8,7 +8,7 @@ namespace DAL.Convert
 {
     public static class CityConvert
     {
-        public static DAL.City ConvertCityToEF(Entities.City c)
+        public static DAL.City ConvertCityToEF(Entities.CityDTO c)
         {
             return new DAL.City
             {
@@ -16,16 +16,16 @@ namespace DAL.Convert
                 CityName = c.CityName
             };
         }
-        public static Entities.City ConvertCityToEntity(DAL.City c)
+        public static Entities.CityDTO ConvertCityToEntity(DAL.City c)
         {
-            return new Entities.City
+            return new Entities.CityDTO
             {
                 Code = c.Code,
                 CityName = c.CityName
             };
         }
 
-        public static List<Entities.City> ConvertCityToEntity(IEnumerable<DAL.City> cities)
+        public static List<Entities.CityDTO> ConvertCityToEntity(IEnumerable<DAL.City> cities)
         {
             return cities.Select(p => ConvertCityToEntity(p)).OrderBy(n => n.Code).ToList();
         }

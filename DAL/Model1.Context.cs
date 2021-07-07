@@ -19,18 +19,23 @@ namespace DAL
             : base("name=ParkMarkDBEntities")
         {
         }
-    
+
+        public DbSet<T> GetDbSet<T>() where T : class
+        {
+            
+                return this.Set<T>();
+                                }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Feedback> Feedbacks { get; set; }
         public virtual DbSet<ParkingSpot> ParkingSpots { get; set; }
         public virtual DbSet<ParkingSpotSearch> ParkingSpotSearches { get; set; }
         public virtual DbSet<PaymentDetail> PaymentDetails { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<WeekDay> WeekDays { get; set; }
+        public virtual DbSet<City> Cities { get; set; }
     }
 }

@@ -1,12 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="DAL.City">
-    <Position X="2.75" Y="4.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAIAAAQAAAAAAgAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
-      <FileName>City.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="DAL.DBConnection">
     <Position X="9.75" Y="2.75" Width="1.75" />
     <Compartments>
@@ -20,8 +13,22 @@
       </Enum>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAQAAAACAAAEAAAAAAAQAAAAAQAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAQAAAACAAAQAAAAAAAAAAAAAQAAAAA=</HashCode>
       <FileName>DBConnection.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DAL.ParkMarkDBEntities">
+    <Position X="6.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ECAAACAAAAIAQAAAAAACAAAAEAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Model1.Context.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DAL.City">
+    <Position X="2.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAQAAAAAAgAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>City.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="DAL.Feedback">
@@ -45,17 +52,10 @@
       <FileName>ParkingSpotSearch.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="DAL.ParkMarkEntitiesDAL">
-    <Position X="6.25" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>ECAAACAAAAIAQAAAAAACAAAAEAAAAAAAAAAAAQAAAAA=</HashCode>
-      <FileName>Model1.Context.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="DAL.PaymentDetail">
     <Position X="6.25" Y="4" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>hAAAACAAAAAAAAAAIAAgAAAAAAIAAAAACAAAAAEAAAA=</HashCode>
+      <HashCode>hAAAACAAAAAAAAAAIAAgAAAAAAIAAAAACAAAAAAAAAA=</HashCode>
       <FileName>PaymentDetail.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -69,7 +69,7 @@
   <Class Name="DAL.WeekDay">
     <Position X="1" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>EgAAAAgAAAAAQAAAAAAgAAAAAAAAAABAAAAAAYAAAAg=</HashCode>
+      <HashCode>AAAAAAAAAQIIQAgAAAAgAAAAAAQAAAAAAAAECQYAIEA=</HashCode>
       <FileName>WeekDay.cs</FileName>
     </TypeIdentifier>
   </Class>
