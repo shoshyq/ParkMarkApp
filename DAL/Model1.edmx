@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ParkMarkDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ParkMarkDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Cities">
           <Key>
             <PropertyRef Name="Code" />
@@ -268,20 +268,10 @@
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ParkMarkDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="City">
-          <Key>
-            <PropertyRef Name="Code" />
-          </Key>
-          <Property Name="Code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CityName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ParkingSpots" Relationship="Self.FK__ParkingSp__CityC__412EB0B6" FromRole="Cities" ToRole="ParkingSpot" />
-          <NavigationProperty Name="ParkingSpotSearches" Relationship="Self.FK__ParkingSp__CityC__45F365D3" FromRole="Cities" ToRole="ParkingSpotSearch" />
-        </EntityType>
         <EntityType Name="Feedback">
           <Key>
             <PropertyRef Name="Code" />
@@ -310,9 +300,9 @@
           <Property Name="DaysSchedule" Type="Int32" />
           <Property Name="IsOccupied" Type="Boolean" />
           <Property Name="AvRegularly" Type="Boolean" />
-          <NavigationProperty Name="City" Relationship="Self.FK__ParkingSp__CityC__412EB0B6" FromRole="ParkingSpot" ToRole="Cities" />
           <NavigationProperty Name="WeekDay" Relationship="Self.FK__ParkingSp__DaysS__4222D4EF" FromRole="ParkingSpot" ToRole="WeekDays" />
           <NavigationProperty Name="User" Relationship="Self.FK__ParkingSp__UserC__403A8C7D" FromRole="ParkingSpot" ToRole="Users" />
+          <NavigationProperty Name="City" Relationship="ParkMarkDBModel.FK__ParkingSp__CityC__412EB0B6" FromRole="ParkingSpot" ToRole="City" />
         </EntityType>
         <EntityType Name="ParkingSpotSearch">
           <Key>
@@ -332,9 +322,9 @@
           <Property Name="MaxPrice" Type="Double" />
           <Property Name="Regularly" Type="Boolean" />
           <Property Name="SearchDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="City" Relationship="Self.FK__ParkingSp__CityC__45F365D3" FromRole="ParkingSpotSearch" ToRole="Cities" />
           <NavigationProperty Name="WeekDay" Relationship="Self.FK__ParkingSp__DaysS__46E78A0C" FromRole="ParkingSpotSearch" ToRole="WeekDays" />
           <NavigationProperty Name="User" Relationship="Self.FK__ParkingSp__UserI__44FF419A" FromRole="ParkingSpotSearch" ToRole="Users" />
+          <NavigationProperty Name="City" Relationship="ParkMarkDBModel.FK__ParkingSp__CityC__45F365D3" FromRole="ParkingSpotSearch" ToRole="City" />
         </EntityType>
         <EntityType Name="PaymentDetail">
           <Key>
@@ -387,30 +377,6 @@
           <NavigationProperty Name="ParkingSpots" Relationship="Self.FK__ParkingSp__DaysS__4222D4EF" FromRole="WeekDays" ToRole="ParkingSpot" />
           <NavigationProperty Name="ParkingSpotSearches" Relationship="Self.FK__ParkingSp__DaysS__46E78A0C" FromRole="WeekDays" ToRole="ParkingSpotSearch" />
         </EntityType>
-        <Association Name="FK__ParkingSp__CityC__412EB0B6">
-          <End Role="Cities" Type="Self.City" Multiplicity="0..1" />
-          <End Role="ParkingSpot" Type="Self.ParkingSpot" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cities">
-              <PropertyRef Name="Code" />
-            </Principal>
-            <Dependent Role="ParkingSpot">
-              <PropertyRef Name="CityCode" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__ParkingSp__CityC__45F365D3">
-          <End Role="Cities" Type="Self.City" Multiplicity="0..1" />
-          <End Role="ParkingSpotSearch" Type="Self.ParkingSpotSearch" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Cities">
-              <PropertyRef Name="Code" />
-            </Principal>
-            <Dependent Role="ParkingSpotSearch">
-              <PropertyRef Name="CityCode" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Feedbacks__Descr__49C3F6B7">
           <End Role="Users" Type="Self.User" Multiplicity="0..1" />
           <End Role="Feedbacks" Type="Self.Feedback" Multiplicity="*" />
@@ -508,21 +474,12 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="ParkMarkDBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Cities" EntityType="Self.City" />
           <EntitySet Name="Feedbacks" EntityType="Self.Feedback" />
           <EntitySet Name="ParkingSpots" EntityType="Self.ParkingSpot" />
           <EntitySet Name="ParkingSpotSearches" EntityType="Self.ParkingSpotSearch" />
           <EntitySet Name="PaymentDetails" EntityType="Self.PaymentDetail" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="WeekDays" EntityType="Self.WeekDay" />
-          <AssociationSet Name="FK__ParkingSp__CityC__412EB0B6" Association="Self.FK__ParkingSp__CityC__412EB0B6">
-            <End Role="Cities" EntitySet="Cities" />
-            <End Role="ParkingSpot" EntitySet="ParkingSpots" />
-          </AssociationSet>
-          <AssociationSet Name="FK__ParkingSp__CityC__45F365D3" Association="Self.FK__ParkingSp__CityC__45F365D3">
-            <End Role="Cities" EntitySet="Cities" />
-            <End Role="ParkingSpotSearch" EntitySet="ParkingSpotSearches" />
-          </AssociationSet>
           <AssociationSet Name="FK__Feedbacks__Descr__49C3F6B7" Association="Self.FK__Feedbacks__Descr__49C3F6B7">
             <End Role="Users" EntitySet="Users" />
             <End Role="Feedbacks" EntitySet="Feedbacks" />
@@ -555,21 +512,55 @@
             <End Role="PaymentDetails" EntitySet="PaymentDetails" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
+          <EntitySet Name="Cities" EntityType="ParkMarkDBModel.City" />
+          <AssociationSet Name="FK__ParkingSp__CityC__412EB0B6" Association="ParkMarkDBModel.FK__ParkingSp__CityC__412EB0B6">
+            <End Role="City" EntitySet="Cities" />
+            <End Role="ParkingSpot" EntitySet="ParkingSpots" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ParkingSp__CityC__45F365D3" Association="ParkMarkDBModel.FK__ParkingSp__CityC__45F365D3">
+            <End Role="City" EntitySet="Cities" />
+            <End Role="ParkingSpotSearch" EntitySet="ParkingSpotSearches" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CityName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ParkingSpots" Relationship="ParkMarkDBModel.FK__ParkingSp__CityC__412EB0B6" FromRole="City" ToRole="ParkingSpot" />
+          <NavigationProperty Name="ParkingSpotSearches" Relationship="ParkMarkDBModel.FK__ParkingSp__CityC__45F365D3" FromRole="City" ToRole="ParkingSpotSearch" />
+        </EntityType>
+        <Association Name="FK__ParkingSp__CityC__412EB0B6">
+          <End Type="ParkMarkDBModel.City" Role="City" Multiplicity="0..1" />
+          <End Type="ParkMarkDBModel.ParkingSpot" Role="ParkingSpot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="ParkingSpot">
+              <PropertyRef Name="CityCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ParkingSp__CityC__45F365D3">
+          <End Type="ParkMarkDBModel.City" Role="City" Multiplicity="0..1" />
+          <End Type="ParkMarkDBModel.ParkingSpotSearch" Role="ParkingSpotSearch" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="ParkingSpotSearch">
+              <PropertyRef Name="CityCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="ParkMarkDBModelStoreContainer" CdmEntityContainer="ParkMarkDBEntities">
-          <EntitySetMapping Name="Cities">
-            <EntityTypeMapping TypeName="ParkMarkDBModel.City">
-              <MappingFragment StoreEntitySet="Cities">
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="CityName" ColumnName="CityName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Feedbacks">
             <EntityTypeMapping TypeName="ParkMarkDBModel.Feedback">
               <MappingFragment StoreEntitySet="Feedbacks">
@@ -660,6 +651,14 @@
                 <ScalarProperty Name="Thursday2HourQuaters" ColumnName="Thursday2HourQuaters" />
                 <ScalarProperty Name="Friday1HourQuaters" ColumnName="Friday1HourQuaters" />
                 <ScalarProperty Name="Friday2HourQuaters" ColumnName="Friday2HourQuaters" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="ParkMarkDBModel.City">
+              <MappingFragment StoreEntitySet="Cities">
+                <ScalarProperty Name="CityName" ColumnName="CityName" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

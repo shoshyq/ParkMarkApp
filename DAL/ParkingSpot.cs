@@ -27,8 +27,8 @@ namespace DAL
         public Nullable<bool> IsOccupied { get; set; }
         public Nullable<bool> AvRegularly { get; set; }
     
-        public virtual City City { get; set; }
         public virtual WeekDay WeekDay { get; set; }
         public virtual User User { get; set; }
+        public virtual City City { get; set; }
     }
 }

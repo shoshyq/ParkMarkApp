@@ -9,7 +9,7 @@ namespace BL
 {
    public class CityBL : DbHandler
     {
-
+        List<CityDTO> ctlst = DAL.Convert.CityConvert.ConvertCityToEntity(GetAll<DAL.City>());
         public CityBL()
         {
         }
@@ -17,9 +17,14 @@ namespace BL
         public int AddCity(string cityname)
         {
 
-            AddSet(new City { CityName = cityname });
+            AddSet(new CityDTO { CityName = cityname });
             return 1;
         }
+        public List<CityDTO> GetAllCities()
+        {
+            return ctlst;
+        }
+
 
 
     }
