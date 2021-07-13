@@ -14,10 +14,10 @@ namespace BL
         {
         }
         // adding a new city to cities table. returns 1 if succeeds
-        public int AddCity(string cityname)
+        public int AddCity(CityDTO city)
         {
 
-            AddSet(new CityDTO { CityName = cityname });
+            AddSet(DAL.Convert.CityConvert.ConvertCityToEF(city));
             return 1;
         }
         public List<CityDTO> GetAllCities()

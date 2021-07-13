@@ -22,7 +22,7 @@ namespace BL
         {
             Entities.WeekDay wd = convertFunc.GetWeekDayHours(sw);
             AddSet(DAL.Convert.WeekDayConvert.ConvertWeekDayToEF(wd));
-            return (DAL.Convert.WeekDayConvert.ConvertWeekDaysListToEntity(GetAll<WeekDay>())).Any(w => w.Code == wd.Code) ? DbHandler.GetAll<WeekDay>().First(w => w.Code == wd.Code).Code : 0;
+            return (DAL.Convert.WeekDayConvert.ConvertWeekDaysListToEntity(GetAll<WeekDay>())).LastOrDefault().Code;
         }
 
         public Schedule_Week GetSchedule(int wcode)

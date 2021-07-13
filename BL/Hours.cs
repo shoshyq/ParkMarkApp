@@ -12,17 +12,17 @@ namespace BL
         {
         }
 
-        public Hours(double v1, double v2)
+        public Hours(string v1, string v2)
         {
             StartHour = v1;
             EndHour = v2;
         }
         public void SetStartHour(double sh)
         {
-            this.StartHour = sh;
+            this.StartHour = sh.ToString();
         }
-        public double StartHour { get; set; }
-        public double EndHour { get; set; }
+        public string StartHour { get; set; }
+        public string EndHour { get; set; }
 
     }
 

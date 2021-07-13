@@ -20,7 +20,7 @@ namespace BL
         // adding new feedback. returns code if succeeds
         public int AddFeedback(Feedback f)
         {
-            AddSet((f));//DAL.Converts.FeedbackConvert.ConvertFeedbackToEF
+            AddSet(DAL.Convert.FeedbackConvert.ConvertFeedbackToEF(f));//
             ubl.checkUserAvRating((int)f.DescriptedUserCode);
             if (flst.Any(g => g.Code == f.Code))
                 return flst.First(g => g.Code == f.Code).Code;
@@ -32,7 +32,7 @@ namespace BL
         public int UpdateFeedback(int usercode,Feedback f)
         {
 
-            UpdateSet(f);//(DAL.Converts.FeedbackConvert.ConvertFeedbackToEF
+            UpdateSet(DAL.Convert.FeedbackConvert.ConvertFeedbackToEF(f));//
             return flst.First(g => g.Code == f.Code).Code;
         }
         // deleting descripted users' feedbacks by usercode
@@ -44,7 +44,7 @@ namespace BL
                 {
                     if (item.DescriptedUserCode == usercode)
                     {
-                        DeleteSet((item));//DAL.Converts.FeedbackConvert.ConvertFeedbackToEF
+                        DeleteSet(DAL.Convert.FeedbackConvert.ConvertFeedbackToEF(item));
                     }
                 }
 
@@ -56,7 +56,7 @@ namespace BL
         {
 
             var l  = flst.First(i => i.Code == f.Code);
-            DeleteSet((l));//DAL.Converts.FeedbackConvert.ConvertFeedbackToEF
+            DeleteSet(DAL.Convert.FeedbackConvert.ConvertFeedbackToEF(l));
             return 0;
         }
         //gets all descripted users' feedbacks by usercode

@@ -23,22 +23,39 @@ namespace BL
             dbConnection = new DBConnection();
             convertFunc = new ConvertFuncBL();
         }
-     
+
         // adding a new parking spot search. returns code if succeeds
         public int AddParkingSpotSearch(Entities.ParkingSpotSearch pss)
 
         {
-            pss.Place_id = df.GetPlaceId(pss.MyLocationAddress);
+            if ((pss.Place_id == null) || (pss.Place_id == ""))
+            {
+                pss.Place_id = df.GetPlaceId(pss.MyLocationAddress);
+
+            }
             AddSet(DAL.Convert.SearchConvert.ConvertSearchToEF(pss));
-            return psslist.Any(s => s.Code == pss.Code) ? psslist.First(s => s.Code == pss.Code).Code : 0;
+            return psslist.LastOrDefault().Code;
 
         }
-        public Dictionary<Entities.ParkingSpot, string> AddImmidiateParkingSpotSearch(Entities.ParkingSpotSearch pss)
+        public List<ResDict> AddImmidiateParkingSpotSearch(Entities.ParkingSpotSearch pss)
         {
+
+            if ((pss.Place_id == null) || (pss.Place_id == ""))
+            {
+                pss.Place_id = df.GetPlaceId(pss.MyLocationAddress);
+
+            }
             int result = AddParkingSpotSearch(pss);
             if (result != 0)
+            { 
+                var rdic =  GetFiveClosestParkSpots(pss);
+                List<ResDict> rdlist = new List<ResDict>();
+                foreach (var item in rdic)
+                    rdlist.Add(new ResDict { PSpot = item.Key, Distance = item.Value });
+                return rdlist;
+            }
                 //gets dic = key: pspot , value: distance (in km.000 but without a dot)
-                return GetFiveClosestParkSpots(pss);
+               
             else
                 return null;
         }
@@ -52,20 +69,20 @@ namespace BL
         }
         // deletes search by user
         public int DeletePSSearchesByUser(Entities.User u)
-        {   
+        {
             if (psslist != null)
             {
                 foreach (var item in psslist)
                 {
                     if (item.UserId == u.Code)
                     {
-                       DeleteSet(DAL.Convert.SearchConvert.ConvertSearchToEF(item));
+                        DeleteSet(DAL.Convert.SearchConvert.ConvertSearchToEF(item));
                     }
                 }
             }
             return 1;
         }
-        
+
         //deletes search
         public int DeleteParkingSpotSearch(ParkingSpotSearch pss)
         {
@@ -82,17 +99,20 @@ namespace BL
                 .ToList();
             //filtering by hours
             var shl = convertFunc.GetHoursListFromWeekDay((int)pss.DaysSchedule);
+            List<Entities.ParkingSpot> pslist = new List<Entities.ParkingSpot>();
             foreach (var spot in listOfSpots)
             {
                 var hl = convertFunc.GetHoursListFromWeekDay((int)spot.DaysSchedule);
-                //checks if there is any hours in listOfSpots that matches hours in that search at that day
-                if (!(hl[shl.First().Key].Any(h => (h.StartHour <= shl.First().Value[0].StartHour) && 
-                (h.EndHour >= shl.First().Value[0].EndHour))))
-                    listOfSpots.Remove(spot);
+                bool keyExists = hl.ContainsKey(shl.First().Key);
+                if (keyExists)
+                    //checks if there is any hours in listOfSpots that matches hours in that search at that day
+                    if ((hl[shl.First().Key].Any(h => (Double.Parse(h.StartHour) <= Double.Parse(shl.First().Value[0].StartHour)) &&
+                (Double.Parse(h.EndHour) >= Double.Parse(shl.First().Value[0].EndHour)))))
+                    pslist.Add(spot);
             }
 
             //caclulating distances from the place_id to listOfSpotsInCity
-            Dictionary<int, int> results_dic = df.GetDistanceToManyPoints(pss.Place_id, listOfSpots);
+            Dictionary<int, string> results_dic = df.GetDistanceToManyPoints(pss.Place_id, pslist);
 
             //result Dict
             Dictionary<Entities.ParkingSpot, string> distdic = new Dictionary<Entities.ParkingSpot, string>();
@@ -100,8 +120,7 @@ namespace BL
             foreach (var item in results_dic)
             {
                 distdic.Add(key: DAL.Convert.ParkSpotConvert.ConvertParkingSpotsListToEntity(GetAll<DAL.ParkingSpot>())
-                    .First(y => y.Code == item.Value), value: item.Key.ToString().Insert(item.Key.ToString().Length - 3,
-                    "."));
+                    .First(y => y.Code == item.Key), value: item.Value.ToString());
             }
             return distdic;
         }

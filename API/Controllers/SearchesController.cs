@@ -29,7 +29,7 @@ namespace API.Controllers
         [Route("addImmidSearch")]
         [HttpPost]
         //adding an immidiate search request - return results
-        public Dictionary<ParkingSpot, string> AddImmidiateSearch(ParkingSpotSearch pss)
+        public List<ResDict> AddImmidiateSearch(ParkingSpotSearch pss)
         {
             return sbl.AddImmidiateParkingSpotSearch(pss);
         }
@@ -55,6 +55,10 @@ namespace API.Controllers
         {
             return wdbl.AddWeekDays(sw);
         }
+        //public int AddWeekDays(Schedule_Week sw)
+        //{
+        //    return wdbl.AddWeekDays(sw);
+        //}
         [AcceptVerbs("GET", "POST")]
         [Route("getSchedule")]
         [HttpGet]
@@ -70,6 +74,14 @@ namespace API.Controllers
         public List<CityDTO> GetCities()
         {
             return ctbl.GetAllCities();
+        }
+        [AcceptVerbs("GET", "POST")]
+        [Route("addCity")]
+        [HttpPost]
+        // adding a city
+        public int AddCity(CityDTO city)
+        {
+            return ctbl.AddCity(city);
         }
         [AcceptVerbs("GET", "POST")]
         [Route("updateWeekDays")]

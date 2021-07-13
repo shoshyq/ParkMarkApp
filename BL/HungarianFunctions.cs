@@ -178,7 +178,7 @@ namespace BL
                                     {
                                         //checks if there is any hours in parkspot_hourlist that matches hours in parksearch_hourlist at that day
 
-                                        if (groupOfSpots[spot].Hours[i].Any(h => (h.StartHour <= item.StartHour) && (h.EndHour >= item.EndHour)))
+                                        if (groupOfSpots[spot].Hours[i].Any(h => (Double.Parse(h.StartHour) <= Double.Parse(item.StartHour)) && (Double.Parse(h.EndHour) >= Double.Parse(item.EndHour))))
                                             inpspot_count++;
                                     }
                                 }

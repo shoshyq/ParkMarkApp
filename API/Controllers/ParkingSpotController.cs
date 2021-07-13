@@ -45,9 +45,9 @@ namespace API.Controllers
         [Route("addCity")]
         [HttpPost]
         //adding a new city
-        public int AddCity(string cityname)
+        public int AddCity(Entities.CityDTO city)
         {
-            return cbl.AddCity(cityname);
+            return cbl.AddCity(city);
         }
         [AcceptVerbs("GET", "POST")]
         [Route("updateParkSpot")]

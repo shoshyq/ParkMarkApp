@@ -19,9 +19,12 @@ namespace BL
         }
 
         //once a day main-hungarian function - suppose to be here 
+        //Main algorithm function  - returns dictionary key:city, value: dictionary - schedule of pspots and searches
         public Dictionary<int, Dictionary<int?, int>> ParkingSpotPerUser()
         {
-            return hf.PSpotsAllSearchesByCities();
+            Dictionary<int, Dictionary<int?, int>> rdic =  hf.PSpotsAllSearchesByCities();
+            
+                return rdic;
         }
         // confirmation of the result from user about the parking spot. updating the schedule-times table 
         public int ConfirmResult(Entities.ParkingSpotSearch psr, int usercode, Entities.ParkingSpot ps)

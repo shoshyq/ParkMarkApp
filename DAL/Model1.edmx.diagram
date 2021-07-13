@@ -4,13 +4,16 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7ac514a6a05c44b7b18644e0836ecf0b" Name="Diagram1">
+      <Diagram DiagramId="0c5e8806c8d444c090e879fb9f9fd91e" Name="Diagram1">
+        <EntityTypeShape EntityType="ParkMarkDBModel.City" Width="1.5" PointX="3" PointY="3.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ParkMarkDBModel.Feedback" Width="1.5" PointX="5.25" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ParkMarkDBModel.ParkingSpot" Width="1.5" PointX="8.25" PointY="6" IsExpanded="true" />
         <EntityTypeShape EntityType="ParkMarkDBModel.ParkingSpotSearch" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ParkMarkDBModel.PaymentDetail" Width="1.5" PointX="0.75" PointY="6.625" IsExpanded="true" />
         <EntityTypeShape EntityType="ParkMarkDBModel.User" Width="1.5" PointX="3" PointY="6.125" IsExpanded="true" />
         <EntityTypeShape EntityType="ParkMarkDBModel.WeekDay" Width="1.5" PointX="3" PointY="11" IsExpanded="true" />
+        <AssociationConnector Association="ParkMarkDBModel.FK__ParkingSp__CityC__412EB0B6" ManuallyRouted="false" />
+        <AssociationConnector Association="ParkMarkDBModel.FK__ParkingSp__CityC__45F365D3" ManuallyRouted="false" />
         <AssociationConnector Association="ParkMarkDBModel.FK__Feedbacks__Descr__49C3F6B7" ManuallyRouted="false" />
         <AssociationConnector Association="ParkMarkDBModel.FK__Feedbacks__Descr__4AB81AF0" ManuallyRouted="false" />
         <AssociationConnector Association="ParkMarkDBModel.FK__ParkingSp__DaysS__4222D4EF" ManuallyRouted="false" />
@@ -19,9 +22,10 @@
         <AssociationConnector Association="ParkMarkDBModel.FK__ParkingSp__UserI__44FF419A" ManuallyRouted="false" />
         <AssociationConnector Association="ParkMarkDBModel.FK__Users__PaymentDe__3C69FB99" ManuallyRouted="false" />
         <AssociationConnector Association="ParkMarkDBModel.FK__Users__PaymentDe__3D5E1FD2" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="ParkMarkDBModel.City" Width="1.5" PointX="0.75" PointY="0.875" />
-        <AssociationConnector Association="ParkMarkDBModel.FK__ParkingSp__CityC__412EB0B6" />
-        <AssociationConnector Association="ParkMarkDBModel.FK__ParkingSp__CityC__45F365D3" />
+        <EntityTypeShape EntityType="ParkMarkDBModel.SearchResult" Width="1.5" PointX="10.5" PointY="4.25" />
+        <AssociationConnector Association="ParkMarkDBModel.FK__SearchRes__Resul__5EBF139D" />
+        <AssociationConnector Association="ParkMarkDBModel.FK__SearchRes__Searc__5DCAEF64" />
+        <AssociationConnector Association="ParkMarkDBModel.FK__SearchRes__Userc__5CD6CB2B" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
