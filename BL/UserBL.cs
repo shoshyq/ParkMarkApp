@@ -77,6 +77,13 @@ namespace BL
             }
             return 0;
         }
+
+        public List<Entities.User> GetAllUsers()
+        {
+            return DAL.Convert.UserConvert.ConvertUsersListToEntity(GetAll<DAL.User>());
+
+        }
+
         //deletes a user returns 1 if succeeds
         public int DeleteUser(Entities.User u)
         {

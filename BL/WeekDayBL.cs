@@ -31,6 +31,11 @@ namespace BL
             return convertFunc.WeekDayTblToSchedWeek(weekday);
         }
 
+        //update hours in park-spot by search, return parking spot
+        public Entities.ParkingSpot UpdatePSpotScheduleBySearch(int dayi,string sh, string eh,Entities.ParkingSpot pspot)
+        {
+            return convertFunc.UpdatePSpotSchedule(dayi,sh, eh, pspot);
+        }
         // update weekday function. returns a schedule week if succeeds.
         public Schedule_Week UpdateWeekDay(Schedule_Week sw)
         {

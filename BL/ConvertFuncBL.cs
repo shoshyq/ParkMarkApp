@@ -7,6 +7,8 @@ namespace BL
 {
     public class ConvertFuncBL
     {
+        WeekDayBL wbl;
+       
         #region convertion functions
         //converts List<ParkingSpot> to List<PSpotHandler>
         public List<PSpotHandler> ConvertToPSpotHandlerList(List<ParkingSpot> pslist)
@@ -58,18 +60,118 @@ namespace BL
             return parkSearchesMatrixList;
         }
 
+        public ParkingSpot UpdatePSpotSchedule(int dayi, string sh, string eh, ParkingSpot pspot)
+        {
+            var spotHours = GetHoursListFromWeekDay((int)pspot.DaysSchedule);
+            WeekDay weekdaylist = (DAL.Convert.WeekDayConvert.ConvertWeekDaysListToEntity(DbHandler.GetAll<DAL.WeekDay>()).First(w => w.Code == pspot.DaysSchedule));
+            Schedule_Week sw = WeekDayTblToSchedWeek(weekdaylist);
+    
+                bool keyExists = spotHours.ContainsKey(dayi);
+            if (keyExists)
+            {
+                if (spotHours[dayi].Any(h => (Double.Parse(h.StartHour) <= Double.Parse(sh)) && (Double.Parse(h.EndHour) >= Double.Parse(eh))))
+                {
+                    Hours hrs = spotHours[dayi].First(h => (Double.Parse(h.StartHour) <= Double.Parse(sh)) && (Double.Parse(h.EndHour) >= Double.Parse(eh)));
+                    Hours newh1 = new Hours();
+                    Hours newh2 = new Hours();
+                    if ((Double.Parse(hrs.StartHour) < Double.Parse(sh)) && (Double.Parse(hrs.EndHour) > Double.Parse(eh)))
+                    {
+                        newh1.StartHour = hrs.StartHour;
+                        newh1.EndHour = sh;
+                        newh2.StartHour = eh;
+                        newh2.EndHour = hrs.EndHour;
+                    }
+                    else
+                    {
+                        if ((Double.Parse(hrs.StartHour) == Double.Parse(sh)) && (Double.Parse(hrs.EndHour) > Double.Parse(eh)))
+                        {
+                            newh1.StartHour = eh;
+                            newh1.EndHour = hrs.EndHour;
+                        }
+                        else
+                        {
+                            if ((Double.Parse(hrs.StartHour) < Double.Parse(sh)) && (Double.Parse(hrs.EndHour) == Double.Parse(eh)))
+                            {
+                                newh1.StartHour = hrs.StartHour;
+                                newh1.EndHour = sh;
+                            }
+                        }
+                    }
+                    switch (dayi)
+                    {
+                        case 0:
+                            Hours r1 = sw.SundayHours.Find(h => ((h.StartHour == hrs.StartHour) && (h.EndHour == hrs.EndHour)));
+                            sw.SundayHours.Remove(r1);
+                            if (newh2 != null)
+                                sw.SundayHours.Add(newh2);
+                            if (newh1 != null)
+                                sw.SundayHours.Add(newh1);
+                            break;
+                        case 1:
+                            Hours r2 = sw.MondayHours.Find(h => ((h.StartHour == hrs.StartHour) && (h.EndHour == hrs.EndHour)));
+                            sw.MondayHours.Remove(r2);
+                            if (newh2 != null)
+                                sw.MondayHours.Add(newh2);
+                            if (newh1 != null)
+                                sw.MondayHours.Add(newh1); break;
+                        case 2:
+                            Hours r3 = sw.TuesdayHours.Find(h => ((h.StartHour == hrs.StartHour) && (h.EndHour == hrs.EndHour)));
+                            sw.TuesdayHours.Remove(r3);
+                            if (newh2 != null)
+                                sw.TuesdayHours.Add(newh2);
+                            if (newh1 != null)
+                                sw.TuesdayHours.Add(newh1); break;
+                        case 3:
+                            Hours r4 = sw.WednesdayHours.Find(h => ((h.StartHour == hrs.StartHour) && (h.EndHour == hrs.EndHour)));
+                            sw.WednesdayHours.Remove(r4);
+                            if (newh2 != null)
+                                sw.WednesdayHours.Add(newh2);
+                            if (newh1 != null)
+                                sw.WednesdayHours.Add(newh1);
+                            break;
+                        case 4:
+                            Hours r5 = sw.ThursdayHours.Find(h => ((h.StartHour == hrs.StartHour) && (h.EndHour == hrs.EndHour)));
+                            sw.ThursdayHours.Remove(r5);
+                            if (newh2 != null)
+                                sw.ThursdayHours.Add(newh2);
+                            if (newh1 != null)
+                                sw.ThursdayHours.Add(newh1);
+                            break;
+                        case 5:
+                            Hours r6 = sw.FridayHours.Find(h => ((h.StartHour == hrs.StartHour) && (h.EndHour == hrs.EndHour)));
+                            sw.FridayHours.Remove(r6);
+                            if (newh2 != null)
+                                sw.FridayHours.Add(newh2);
+                            if (newh1 != null)
+                                sw.FridayHours.Add(newh1);
+                            break;
+                        default:
+                            break;
+                    }
+
+                }
+            }
+               
+            wbl = new WeekDayBL();
+            var sw_updated = wbl.UpdateWeekDay(sw);
+            pspot.DaysSchedule = sw_updated.Code;
+            WeekDay weekdaytbl = (DAL.Convert.WeekDayConvert.ConvertWeekDaysListToEntity(DbHandler.GetAll<DAL.WeekDay>()).First(w => w.Code == pspot.DaysSchedule));
+            Schedule_Week spotSch = WeekDayTblToSchedWeek(weekdaytbl);
+            return pspot;
+        }
+
         //updated - converts WeekDay table by Code from db/ returns dictionary - key: indexes a day ], value: list of Hour object per day
         public Dictionary<int, List<Hours>> GetHoursListFromWeekDay(int dscheduleCode)
         {
-          Dictionary<int, List<Hours>> wkdhdic = new Dictionary<int, List<Hours>>();
-          WeekDay weekdaylist = (DAL.Convert.WeekDayConvert.ConvertWeekDaysListToEntity(DbHandler.GetAll<DAL.WeekDay>()).First(w => w.Code == dscheduleCode));
+            Dictionary<int, List<Hours>> wkdhdic = new Dictionary<int, List<Hours>>();
+            WeekDay weekdaylist = (DAL.Convert.WeekDayConvert.ConvertWeekDaysListToEntity(DbHandler.GetAll<DAL.WeekDay>()).First(w => w.Code == dscheduleCode));
             Schedule_Week sw = WeekDayTblToSchedWeek(weekdaylist);
             if (sw.SundayHours != null)
             {
                 List<Hours> shrs = new List<Hours>();
                 foreach (var item in sw.SundayHours)
                 {
-                    shrs.Add( new Hours() { StartHour = item.StartHour.ToString().Trim(), EndHour = item.EndHour.ToString().Trim() });
+                    shrs.Add(new Hours() { StartHour = item.StartHour.ToString().Trim(), EndHour = item.EndHour.ToString().Trim() });
                 }
                 wkdhdic.Add(key: 0, value: shrs);
             }
@@ -82,10 +184,10 @@ namespace BL
                 }
                 wkdhdic.Add(key: 1, value: mhrs);
             }
-            if (sw.TuedayHours != null)
+            if (sw.TuesdayHours != null)
             {
                 List<Hours> tuhrs = new List<Hours>();
-                foreach (var item in sw.TuedayHours)
+                foreach (var item in sw.TuesdayHours)
                 {
                     tuhrs.Add(new Hours() { StartHour = item.StartHour.ToString().Trim(), EndHour = item.EndHour.ToString().Trim() });
                 }
@@ -228,7 +330,7 @@ namespace BL
         {
             //Dictionary<int, List<Hours>> lhdic =  GetHoursListFromWeekDay(w.Code);
             Schedule_Week sw = new Schedule_Week();
-
+            sw.Code = w.Code;
             if ((w.Sunday != null) && (w.Sunday != ""))
             {
                 List<Hours> hours1list = new List<Hours>();
@@ -287,7 +389,7 @@ namespace BL
                     }
 
                 }
-                sw.TuedayHours = hours3list;
+                sw.TuesdayHours = hours3list;
             }
             if ((w.Wednesday != null) && (w.Wednesday != ""))
             {
@@ -408,9 +510,11 @@ namespace BL
 
         public WeekDay GetWeekDayHours(Schedule_Week sw)
         {
+
             // Dictionary<int, List<Hours>> hoursdic = GetHoursListFromScheduleWeek(sw);
             // Dictionary<int, List<Hours>> hoursdic = new Dictionary<int, List<Hours>>();
             WeekDay weekday = new WeekDay();
+            weekday.Code = sw.Code;
             if (sw.SundayHours != null)
             {
                 foreach (var item in sw.SundayHours)
@@ -429,9 +533,9 @@ namespace BL
                     weekday.Monday += item.StartHour.ToString().Trim() + "-" + item.EndHour.ToString().Trim() + ", ";
                 }
             }
-            if (sw.TuedayHours != null)
+            if (sw.TuesdayHours != null)
             {
-                foreach (var item in sw.TuedayHours)
+                foreach (var item in sw.TuesdayHours)
                 {
                     if ((item.EndHour == "00.00") || (item.EndHour == "0.00") || (item.EndHour == "0.0"))
                         item.EndHour = "24.00";
@@ -583,7 +687,7 @@ namespace BL
             {
                 if ((Double.Parse(item.StartHour) >= 00.00) && (Double.Parse(item.EndHour) < 12.00))
                 {
-                    sw.TuedayHours.Add(item);
+                    sw.TuesdayHours.Add(item);
                 }
                 if ((Double.Parse(item.StartHour) >= 00.00) && (Double.Parse(item.EndHour) == 12.00))
                 {
@@ -594,14 +698,14 @@ namespace BL
             {
                 if ((Double.Parse(item.StartHour) > 12.00) && (Double.Parse(item.EndHour) <= 00.00))
                 {
-                    sw.TuedayHours.Add(item);
+                    sw.TuesdayHours.Add(item);
                 }
                 if ((Double.Parse(item.StartHour) == 12.00) && (Double.Parse(item.EndHour) <= 00.00))
                 {
                     midlleh.EndHour = item.EndHour;
                 }
             }
-            sw.TuedayHours.Add(midlleh);
+            sw.TuesdayHours.Add(midlleh);
             foreach (var item in hdic[6])
             {
                 if ((Double.Parse(item.StartHour) >= 00.00) && (Double.Parse(item.EndHour) < 12.00))

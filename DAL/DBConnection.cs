@@ -60,6 +60,7 @@ namespace DAL
                     default:
                         break;
                 }
+
                 pmm.SaveChanges();
             }
         }

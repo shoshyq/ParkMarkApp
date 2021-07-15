@@ -58,6 +58,7 @@
     <Compile Include="Convert\ParkSpotConvert.cs" />
     <Compile Include="Convert\PaymentDetailsConvert.cs" />
     <Compile Include="Convert\SearchConvert.cs" />
+    <Compile Include="Convert\SearchResultConvert.cs" />
     <Compile Include="Convert\UserConvert.cs" />
     <Compile Include="Convert\WeekDayConvert.cs" />
     <Compile Include="DBConnection.cs" />

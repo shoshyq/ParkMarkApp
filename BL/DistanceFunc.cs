@@ -57,7 +57,7 @@ namespace BL
 
         public static string BuildUrlForDistance(string place1, string place2)
         {
-            string url = "https://maps.googleapis.com/maps/api/distancematrix/json?key=AIzaSyBDl3290lOEG_WUo66K6HzCfd-rO36-Poc&units=metric&origins=";
+            string url = "https://maps.googleapis.com/maps/api/distancematrix/json?key=AIzaSyBDl3290lOEG_WUo66K6HzCfd-rO36-Poc&units=metric&mode=driving&origins=";
             return url + "place_id:" + place1 + "&destinations=place_id:" + place2;
         }
         //returns a dictionary= key: pspot code , value: distance to there in 00.000 km
@@ -132,7 +132,7 @@ namespace BL
         static string BuildUrlForManyDistances(string origin, string[] destinations)
         {
             string url = "https://maps.googleapis.com/maps/api/distancematrix/" +
-                "json?key=AIzaSyBDl3290lOEG_WUo66K6HzCfd-rO36-Poc&units=metric&origins=";
+                "json?key=AIzaSyBDl3290lOEG_WUo66K6HzCfd-rO36-Poc&units=metric&mode=driving&origins=";
             url += "place_id:" + origin + "&destinations=place_id:" + destinations[0];
             for (int i = 1; i < destinations.Length; i++)
             {

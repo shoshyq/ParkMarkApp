@@ -76,12 +76,20 @@ namespace API.Controllers
         {
             return (ubl.UpdateUser(u));
         }
+        
         [AcceptVerbs("GET", "POST")]
         [Route("deleteUser")]
         [HttpPost]
         public int DeleteUser(User u)
         {
             return (ubl.DeleteUser(u));
+        }
+        [AcceptVerbs("GET", "POST")]
+        [Route("getallusers")]
+        [HttpGet]
+        public List<Entities.User> GetAllUsers()
+        {
+            return ubl.GetAllUsers();
         }
     }
 }

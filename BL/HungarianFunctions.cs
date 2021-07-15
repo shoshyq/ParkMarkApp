@@ -21,13 +21,13 @@ namespace BL
         }
         #region functions for hungarian
         //Main algorithm function  - returns dictionary key:city, value: dictionary - schedule of pspots and searches
-        public Dictionary<int, Dictionary<int?, int>> PSpotsAllSearchesByCities()
+        public Dictionary<int, Dictionary<int?, int>> PSpotsAllSearchesByCities(DateTime date)
         {
             Dictionary<int, Dictionary<int?, int>> dic = new Dictionary<int, Dictionary<int?, int>>();
             // dic = key:city, value: list<searches>
-            var bycitySearchesDic = DbHandler.GetAll<ParkingSpotSearch>().Where(e => e.Regularly == true).GroupBy(t => t.CityCode).ToDictionary(w => (int)w.Key, w => w.ToList());
+            var bycitySearchesDic = DAL.Convert.SearchConvert.ConvertSearchesListToEntity(DbHandler.GetAll<DAL.ParkingSpotSearch>()).Where(e => ((e.Regularly == true)&&(((DateTime)(e.SearchDate)).Date.ToString("d") == date.Date.ToString("d")))).GroupBy(t => t.CityCode).ToDictionary(w => (int)w.Key, w => w.ToList());
             //dic = key:city, value: list<spots>
-            var bycitySpotsDic = DbHandler.GetAll<ParkingSpot>().Where(s => s.AvRegularly == true).GroupBy(y => y.CityCode).ToDictionary(u => (int)(u.Key), u => u.ToList());
+            var bycitySpotsDic = DAL.Convert.ParkSpotConvert.ConvertParkingSpotsListToEntity(DbHandler.GetAll<DAL.ParkingSpot>()).Where(s => s.AvRegularly == true).GroupBy(y => y.CityCode).ToDictionary(u => (int)(u.Key), u => u.ToList());
             foreach (var item in bycitySearchesDic)
             {
                 List<Entities.ParkingSpot> spotslist = bycitySpotsDic[item.Key].ToList();
