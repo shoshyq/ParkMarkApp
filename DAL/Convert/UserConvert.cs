@@ -41,9 +41,8 @@ namespace DAL.Convert
 
             public static List<Entities.User> ConvertUsersListToEntity(IEnumerable<DAL.User> users)
             {
-                return users.Select(u => ConvertUserToEntity(u)).OrderBy(n => n.Code).ToList();
+                return users.Select(u => ConvertUserToEntity(u)).ToList();
             }
 
-       
     }
 }

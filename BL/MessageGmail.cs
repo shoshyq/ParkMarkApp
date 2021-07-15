@@ -11,6 +11,6 @@ namespace BL
         public string sendTo { get; set; }
         public string Subject { get; set; }
         public string Body { get; set; }
-        public bool IsBodyHtml { get; set; } = false;
+        public bool IsBodyHtml { get; set; } = true;
     }
 }

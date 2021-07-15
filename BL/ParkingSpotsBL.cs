@@ -39,10 +39,20 @@ namespace BL
             return -1;
 
         }
+
+        public Entities.ParkingSpot GetPSpot(int scode)
+        {
+            return DAL.Convert.ParkSpotConvert.ConvertParkingSpotsListToEntity(GetAll<ParkingSpot>()).First(p=> p.Code == scode);
+        }
+
         // updating a parking spot . returns code if succeeds
         public int UpdateUsersParkSpot(Entities.ParkingSpot mp)
         {
-            mp.Place_id = df.GetPlaceId(mp.FullAddress);
+            if ((mp.Place_id == null) || (mp.Place_id == ""))
+            {
+                mp.Place_id = df.GetPlaceId(mp.FullAddress);
+
+            }
             UpdateSet(DAL.Convert.ParkSpotConvert.ConvertParkingSpotToEF(mp));
             return mp.Code;
         }

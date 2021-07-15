@@ -22,7 +22,7 @@ namespace BL
         {
             Entities.WeekDay wd = convertFunc.GetWeekDayHours(sw);
             AddSet(DAL.Convert.WeekDayConvert.ConvertWeekDayToEF(wd));
-            return (DAL.Convert.WeekDayConvert.ConvertWeekDaysListToEntity(GetAll<WeekDay>())).Any(w => w.Code == wd.Code) ? DbHandler.GetAll<WeekDay>().First(w => w.Code == wd.Code).Code : 0;
+            return (DAL.Convert.WeekDayConvert.ConvertWeekDaysListToEntity(GetAll<WeekDay>())).LastOrDefault().Code;
         }
 
         public Schedule_Week GetSchedule(int wcode)
@@ -31,6 +31,11 @@ namespace BL
             return convertFunc.WeekDayTblToSchedWeek(weekday);
         }
 
+        //update hours in park-spot by search, return parking spot
+        public Entities.ParkingSpot UpdatePSpotScheduleBySearch(int dayi,string sh, string eh,Entities.ParkingSpot pspot)
+        {
+            return convertFunc.UpdatePSpotSchedule(dayi,sh, eh, pspot);
+        }
         // update weekday function. returns a schedule week if succeeds.
         public Schedule_Week UpdateWeekDay(Schedule_Week sw)
         {

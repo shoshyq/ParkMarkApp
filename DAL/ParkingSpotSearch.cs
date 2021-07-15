@@ -14,6 +14,12 @@ namespace DAL
     
     public partial class ParkingSpotSearch
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ParkingSpotSearch()
+        {
+            this.SearchResults = new HashSet<SearchResult>();
+        }
+    
         public int Code { get; set; }
         public Nullable<int> UserId { get; set; }
         public string MyLocationAddress { get; set; }
@@ -29,8 +35,10 @@ namespace DAL
         public Nullable<bool> Regularly { get; set; }
         public Nullable<System.DateTime> SearchDate { get; set; }
     
+        public virtual City City { get; set; }
         public virtual WeekDay WeekDay { get; set; }
         public virtual User User { get; set; }
-        public virtual City City { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SearchResult> SearchResults { get; set; }
     }
 }

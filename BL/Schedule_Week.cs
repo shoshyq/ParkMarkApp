@@ -11,7 +11,7 @@ namespace BL
         public int Code { get; set; }
         public List<Hours> SundayHours { get; set; }
         public List<Hours> MondayHours { get; set; }
-        public List<Hours> TuedayHours { get; set; }
+        public List<Hours> TuesdayHours { get; set; }
         public List<Hours> WednesdayHours { get; set; }
         public List<Hours> ThursdayHours { get; set; }
         public List<Hours> FridayHours { get; set; }

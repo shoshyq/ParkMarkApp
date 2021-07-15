@@ -18,6 +18,7 @@ namespace API.Controllers
         SearchRequestsBL sbl = new SearchRequestsBL();
         CityBL ctbl = new CityBL();
         WeekDayBL wdbl = new WeekDayBL();
+        MainBL mbl;
         [AcceptVerbs("GET", "POST")]
         [Route("addRegSearch")]
         [HttpPost]
@@ -29,7 +30,7 @@ namespace API.Controllers
         [Route("addImmidSearch")]
         [HttpPost]
         //adding an immidiate search request - return results
-        public Dictionary<ParkingSpot, string> AddImmidiateSearch(ParkingSpotSearch pss)
+        public List<ResDict> AddImmidiateSearch(ParkingSpotSearch pss)
         {
             return sbl.AddImmidiateParkingSpotSearch(pss);
         }
@@ -43,7 +44,7 @@ namespace API.Controllers
         [AcceptVerbs("GET", "POST")]
         [Route("deleteSearch")]
         [HttpPost]
-        public int DeleteSearch(DAL.ParkingSpotSearch pss)
+        public int DeleteSearch(Entities.ParkingSpotSearch pss)
         {
             return (sbl.DeleteParkingSpotSearch(pss));
         }
@@ -56,12 +57,32 @@ namespace API.Controllers
             return wdbl.AddWeekDays(sw);
         }
         [AcceptVerbs("GET", "POST")]
-        [Route("getSchedule")]
+        [Route("confirmImidSearchResult/{pspotCode}/{psearchCode}")]
+        [HttpGet]
+        //confirming imidiate search result 
+        public int ConfirmResult(int pspotCode, int psearchCode)
+        {
+            return sbl.ConfirmResult(pspotCode, psearchCode);
+        }
+        //public int AddWeekDays(Schedule_Week sw)
+        //{
+        //    return wdbl.AddWeekDays(sw);
+        //}
+        [AcceptVerbs("GET", "POST")]
+        [Route("getSchedule/{wcode}")]
         [HttpGet]
         // getting schedule by weekday table code
         public Schedule_Week GetSchedule(int wcode)
         {
             return wdbl.GetSchedule(wcode);
+        }
+        [AcceptVerbs("GET", "POST")]
+        [Route("getSearch/{scode}")]
+        [HttpGet]
+        // getting schedule by weekday table code
+        public Entities.ParkingSpotSearch GetSearch(int scode)
+        {
+            return sbl.GetSearch(scode);
         }
         [AcceptVerbs("GET", "POST")]
         [Route("getCities")]
@@ -70,6 +91,24 @@ namespace API.Controllers
         public List<CityDTO> GetCities()
         {
             return ctbl.GetAllCities();
+        }
+        [AcceptVerbs("GET", "POST")]
+        [Route("getRegSearchesResults/{ucode}")]
+        [HttpGet]
+        // getting list of cities
+        public List<SearchResult> GetUserSearchResults(int ucode)
+        {
+            mbl = new MainBL();
+            return mbl.GetUserSearchResults(ucode);
+        }
+        
+       [AcceptVerbs("GET", "POST")]
+        [Route("addCity")]
+        [HttpPost]
+        // adding a city
+        public int AddCity(CityDTO city)
+        {
+            return ctbl.AddCity(city);
         }
         [AcceptVerbs("GET", "POST")]
         [Route("updateWeekDays")]

@@ -21,6 +21,7 @@ namespace DAL
             this.Feedbacks1 = new HashSet<Feedback>();
             this.ParkingSpots = new HashSet<ParkingSpot>();
             this.ParkingSpotSearches = new HashSet<ParkingSpotSearch>();
+            this.SearchResults = new HashSet<SearchResult>();
         }
     
         public int Code { get; set; }
@@ -41,5 +42,7 @@ namespace DAL
         public virtual ICollection<ParkingSpotSearch> ParkingSpotSearches { get; set; }
         public virtual PaymentDetail PaymentDetail { get; set; }
         public virtual PaymentDetail PaymentDetail1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<SearchResult> SearchResults { get; set; }
     }
 }

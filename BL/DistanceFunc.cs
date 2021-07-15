@@ -52,44 +52,48 @@ namespace BL
         //            location += locationAsArray[i];
         //    }
 
-        //    return "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyDKdp5Tna0InvxI6tDyUSU3FYbpcWA7mYYs&query=" + location;
+        //    return "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyBDl3290lOEG_WUo66K6HzCfd-rO36-Poc&query=" + location;
         //}
 
         public static string BuildUrlForDistance(string place1, string place2)
         {
-            string url = "https://maps.googleapis.com/maps/api/distancematrix/json?key=AIzaSyDKdp5Tna0InvxI6tDyUSU3FYbpcWA7mYY&units=metric&origins=";
+            string url = "https://maps.googleapis.com/maps/api/distancematrix/json?key=AIzaSyBDl3290lOEG_WUo66K6HzCfd-rO36-Poc&units=metric&mode=driving&origins=";
             return url + "place_id:" + place1 + "&destinations=place_id:" + place2;
         }
         //returns a dictionary= key: pspot code , value: distance to there in 00.000 km
-        public Dictionary<int, int> GetDistanceToManyPoints(string origin_place_id, List<ParkingSpot> pspots)
+        public Dictionary<int, string> GetDistanceToManyPoints(string origin_place_id, List<ParkingSpot> pspots)
         {
-            Task<Dictionary<int, int>> t = GetDistance(origin_place_id, pspots);
-            return t.Result;
-        }
-        //returns a dictionary= key: pspot code , value: distance to there in 00.000 km
-        public async Task<Dictionary<int, int>> GetDistance(string origin_place_id, List<ParkingSpot> pspots)
-        {
-            Dictionary<int, int> result_dict = new Dictionary<int, int>();
             string[] idLocations = new string[pspots.Count];
-            HttpClient http = new HttpClient();
             for (int i = 0; i < idLocations.Length; i++)
             {
                 idLocations[i] = pspots[i].Place_id;
             }
-            string url = BuildUrlForManyDistances(origin_place_id, idLocations);
-            var responseDistances = await http.GetAsync(url);
-
-            if (responseDistances.IsSuccessStatusCode)
+            var t = GetDistance(origin_place_id, idLocations);
+            Dictionary<int, string> result_dict = new Dictionary<int, string>();
+            for (int i = 0; i < t.Result.rows[0].elements.Length; i++)
             {
-                var result = await responseDistances.Content.ReadAsStringAsync();
-                RootDistanceBase root = JsonConvert.DeserializeObject<RootDistanceBase>(result);
-
-                for (int i = 0; i < idLocations.Length; i++)
-                { 
-                    result_dict.Add(key: pspots[i].Code, value: root.rows[0].elements[i].distance.value);
-                }
+                result_dict.Add(key: pspots[i].Code, value: t.Result.rows[0].elements[i].distance.text);
             }
             return result_dict;
+        }
+
+        //returns a dictionary= key: pspot code , value: distance to there in 00.000 km
+        public async Task<RootDistanceBase> GetDistance(string origin_place_id,string[] idLocations)
+        {
+            HttpClient http = new HttpClient();
+           
+            string url = BuildUrlForManyDistances(origin_place_id, idLocations);
+            var responseDistances = Task.Run(() => http.GetAsync(url));
+            
+            if (responseDistances!=null)
+            {
+                var result = await responseDistances.Result.Content.ReadAsStringAsync();
+                RootDistanceBase root = JsonConvert.DeserializeObject<RootDistanceBase>(result);
+                return root;
+             
+            }
+            else
+               return null;
         }
         public string GetPlaceId(string address)
         {
@@ -109,14 +113,14 @@ namespace BL
                     location += locationAsArray[i];
             }
 
-            string url = "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyDKdp5Tna0InvxI6tDyUSU3FYbpcWA7mYY&query=" + location;
+            string url = "https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyBDl3290lOEG_WUo66K6HzCfd-rO36-Poc&query=" + location;
             HttpClient http = new HttpClient();
 
-            var responseId = await http.GetAsync(url);
+            var responseId = Task.Run(()=> http.GetAsync(url));
 
-            if (responseId.IsSuccessStatusCode)
+            if (responseId != null)
             {
-                var result = await responseId.Content.ReadAsStringAsync();
+                var result = await responseId.Result.Content.ReadAsStringAsync();
                 RootLocationBase root = JsonConvert.DeserializeObject<RootLocationBase>(result);
                 place_id = root.results[0].place_id;
             }
@@ -128,9 +132,9 @@ namespace BL
         static string BuildUrlForManyDistances(string origin, string[] destinations)
         {
             string url = "https://maps.googleapis.com/maps/api/distancematrix/" +
-                "json?key=AIzaSyDKdp5Tna0InvxI6tDyUSU3FYbpcWA7mYY&units=metric&origins=";
+                "json?key=AIzaSyBDl3290lOEG_WUo66K6HzCfd-rO36-Poc&units=metric&mode=driving&origins=";
             url += "place_id:" + origin + "&destinations=place_id:" + destinations[0];
-            for (int i = 1; i < destinations.Length - 1; i++)
+            for (int i = 1; i < destinations.Length; i++)
             {
                 url += "|place_id:" + destinations[i];
             }
