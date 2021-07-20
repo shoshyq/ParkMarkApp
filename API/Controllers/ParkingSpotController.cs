@@ -25,8 +25,8 @@ namespace API.Controllers
         {
             return wdbl.AddWeekDays(sw);
         }
-        
-       [AcceptVerbs("GET", "POST")]
+
+        [AcceptVerbs("GET", "POST")]
         [Route("getSchedule/{wcode}")]
         [HttpGet]
         // getting schedule by weekday table code
@@ -41,6 +41,16 @@ namespace API.Controllers
         public Entities.ParkingSpot GetPSpot(int scode)
         {
             return psbl.GetPSpot(scode);
+        }
+        [AcceptVerbs("GET", "POST")]
+        [Route("getPSpotByUser/{ucode}")]
+        [HttpGet]
+        // getting pspot by its' code
+        public Entities.ParkingSpot GetPSpotByUCode(int ucode)
+        {
+            
+              var res =  psbl.GetPSpotByUCode(ucode);
+            return res;
         }
         [AcceptVerbs("GET", "POST")]
         [Route("addParkSpot")]

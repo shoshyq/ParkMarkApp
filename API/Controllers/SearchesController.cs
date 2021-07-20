@@ -64,6 +64,15 @@ namespace API.Controllers
         {
             return sbl.ConfirmResult(pspotCode, psearchCode);
         }
+        [AcceptVerbs("GET", "POST")]
+        [Route("confirmRegSearchResult/{srCode}")]
+        [HttpGet]
+        //confirming reg search result 
+        public int ConfirmRegSResult(int srCode)
+        {
+            mbl = new MainBL();
+            return mbl.ConfirmRegSResult(srCode);
+        }
         //public int AddWeekDays(Schedule_Week sw)
         //{
         //    return wdbl.AddWeekDays(sw);

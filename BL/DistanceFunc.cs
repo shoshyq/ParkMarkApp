@@ -16,26 +16,26 @@ namespace BL
     {
         #region distance functions
         public static int status = 1;
-        public int GetShortestDistance(string place_id1, string place_id2)
+        public string GetShortestDistance(string place_id1, string place_id2)
         {
-            Task<int> t = FindDistance(place_id1, place_id2);
-            return t.Result;
+            Task<RootDistanceBase> t = FindDistance(place_id1, place_id2);
+            return t.Result.rows[0].elements[0].distance.text;
         }
-        public static async Task<int> FindDistance(string place_id1, string place_id2)
+        public static async Task<RootDistanceBase> FindDistance(string place_id1, string place_id2)
         {
             string[] idLocations = { place_id1, place_id2 };
             HttpClient http = new HttpClient();
-
-            var responseDistance = await http.GetAsync(BuildUrlForDistance(idLocations[0], idLocations[1]));
-
-            if (responseDistance.IsSuccessStatusCode)
+            var responseDistance = Task.Run(() => http.GetAsync(BuildUrlForDistance(idLocations[0], idLocations[1])));
+            if (responseDistance != null)
             {
-                var result = await responseDistance.Content.ReadAsStringAsync();
+                var result = await responseDistance.Result.Content.ReadAsStringAsync();
                 RootDistanceBase root = JsonConvert.DeserializeObject<RootDistanceBase>(result);
-                return root.rows[0].elements[0].distance.value;
+                return root;
+
             }
+          
             else
-                return 0;
+                return null;
         }
 
         //public static string BuildUrlForLocationId(string address)

@@ -20,8 +20,7 @@ namespace BL
         // registering new parking spot . returns parking spot code if succeeds
         public int RegisterUsersParkSpot(Entities.ParkingSpot mp)
         {
-            if (!pslst.Any(d => d.Place_id.Trim() == mp.Place_id.Trim()))
-            {
+            
                 //if (!DbHandler.GetAll<ParkingLocation>().Any(d => d.Place_Id.Trim() == mp.Place_id.Trim()))
                 //{
                 mp.Place_id = df.GetPlaceId(mp.FullAddress);
@@ -33,16 +32,27 @@ namespace BL
                 //    Place_Id = mp.Place_id,
                 //    FullAddress = mp.FullAddress
                 //    //});
-                //}
-                return pslst.First(w => w.Code == mp.Code).Code;
-            }
-            return -1;
+                //}           
+
+                return DAL.Convert.ParkSpotConvert.ConvertParkingSpotsListToEntity(GetAll<ParkingSpot>()).LastOrDefault().Code;
+          
 
         }
 
         public Entities.ParkingSpot GetPSpot(int scode)
         {
-            return DAL.Convert.ParkSpotConvert.ConvertParkingSpotsListToEntity(GetAll<ParkingSpot>()).First(p=> p.Code == scode);
+            if (DAL.Convert.ParkSpotConvert.ConvertParkingSpotsListToEntity(GetAll<ParkingSpot>()).Any(p => p.Code == scode))
+                return DAL.Convert.ParkSpotConvert.ConvertParkingSpotsListToEntity(GetAll<ParkingSpot>()).First(p => p.Code == scode);
+            else
+                return null;
+        }
+
+        public Entities.ParkingSpot GetPSpotByUCode(int ucode)
+        {
+            if ( DAL.Convert.ParkSpotConvert.ConvertParkingSpotsListToEntity(GetAll<ParkingSpot>()).Any(p => p.UserCode == ucode))
+               return DAL.Convert.ParkSpotConvert.ConvertParkingSpotsListToEntity(GetAll<ParkingSpot>()).First(p => p.UserCode == ucode);
+            else
+                return null;
         }
 
         // updating a parking spot . returns code if succeeds

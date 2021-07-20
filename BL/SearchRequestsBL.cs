@@ -41,6 +41,7 @@ namespace BL
             }
             AddSet(DAL.Convert.SearchConvert.ConvertSearchToEF(pss));
             mainBL.RegFunc();
+           // mainBL.ParkingSpotPerUser();
             return psslist.LastOrDefault().Code;
 
         }
@@ -57,9 +58,13 @@ namespace BL
             {
                 var rdic = GetFiveClosestParkSpots(pss);
                 List<ResDict> rdlist = new List<ResDict>();
-                foreach (var item in rdic)
-                    rdlist.Add(new ResDict { PSpot = item.Key, Distance = item.Value });
-                rdlist.Add(new ResDict { PSpot = new Entities.ParkingSpot { Code = result }, Distance = "" });
+                if (rdic != null)
+                {
+                    foreach (var item in rdic)
+                        rdlist.Add(new ResDict { PSpot = item.Key, Distance = item.Value });
+                    rdlist.Add(new ResDict { PSpot = new Entities.ParkingSpot { Code = result }, Distance = "" });
+
+                }
                 return rdlist;
             }
             //gets dic = key: pspot , value: distance (in km.000 but without a dot)
@@ -67,6 +72,7 @@ namespace BL
             else
                 return null;
         }
+
 
         public int ConfirmResult(int pspCode, int psCode)
         {
@@ -214,7 +220,8 @@ namespace BL
                         if ((pss.MinPrice <= spot.PricePerHour) && (pss.MaxPrice >= spot.PricePerHour))
                             pslist.Add(spot);
             }
-
+            if (pslist.Count == 0)
+                return null;
             //caclulating distances from the place_id to listOfSpotsInCity
             Dictionary<int, string> results_dic = df.GetDistanceToManyPoints(pss.Place_id, pslist);
 

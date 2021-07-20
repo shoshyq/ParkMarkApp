@@ -95,6 +95,16 @@ namespace BL
                                 newh1.StartHour = hrs.StartHour;
                                 newh1.EndHour = sh;
                             }
+                            else
+                            {
+                                if ((Double.Parse(hrs.StartHour) == Double.Parse(sh)) && (Double.Parse(hrs.EndHour) == Double.Parse(eh)))
+                                {
+                                    newh1.StartHour = null;
+                                    newh1.EndHour = null ;
+                                    newh2.StartHour = null;
+                                    newh2.EndHour = null;
+                                }
+                            }
                         }
                     }
                     switch (dayi)
@@ -102,47 +112,47 @@ namespace BL
                         case 0:
                             Hours r1 = sw.SundayHours.Find(h => ((h.StartHour == hrs.StartHour) && (h.EndHour == hrs.EndHour)));
                             sw.SundayHours.Remove(r1);
-                            if (newh2 != null)
+                            if ((newh2 != null)&&(newh2.StartHour != null)&& (newh2.EndHour != null))
                                 sw.SundayHours.Add(newh2);
-                            if (newh1 != null)
+                            if ((newh1 != null) && (newh1.StartHour != null) && (newh1.EndHour != null))
                                 sw.SundayHours.Add(newh1);
                             break;
                         case 1:
                             Hours r2 = sw.MondayHours.Find(h => ((h.StartHour == hrs.StartHour) && (h.EndHour == hrs.EndHour)));
                             sw.MondayHours.Remove(r2);
-                            if (newh2 != null)
+                            if ((newh2 != null) && (newh2.StartHour != null) && (newh2.EndHour != null))
                                 sw.MondayHours.Add(newh2);
-                            if (newh1 != null)
+                            if ((newh1 != null) && (newh1.StartHour != null) && (newh1.EndHour != null))
                                 sw.MondayHours.Add(newh1); break;
                         case 2:
                             Hours r3 = sw.TuesdayHours.Find(h => ((h.StartHour == hrs.StartHour) && (h.EndHour == hrs.EndHour)));
                             sw.TuesdayHours.Remove(r3);
-                            if (newh2 != null)
+                            if ((newh2 != null) && (newh2.StartHour != null) && (newh2.EndHour != null))
                                 sw.TuesdayHours.Add(newh2);
-                            if (newh1 != null)
+                            if ((newh1 != null) && (newh1.StartHour != null) && (newh1.EndHour != null))
                                 sw.TuesdayHours.Add(newh1); break;
                         case 3:
                             Hours r4 = sw.WednesdayHours.Find(h => ((h.StartHour == hrs.StartHour) && (h.EndHour == hrs.EndHour)));
                             sw.WednesdayHours.Remove(r4);
-                            if (newh2 != null)
+                            if ((newh2 != null) && (newh2.StartHour != null) && (newh2.EndHour != null))
                                 sw.WednesdayHours.Add(newh2);
-                            if (newh1 != null)
+                            if ((newh1 != null) && (newh1.StartHour != null) && (newh1.EndHour != null))
                                 sw.WednesdayHours.Add(newh1);
                             break;
                         case 4:
                             Hours r5 = sw.ThursdayHours.Find(h => ((h.StartHour == hrs.StartHour) && (h.EndHour == hrs.EndHour)));
                             sw.ThursdayHours.Remove(r5);
-                            if (newh2 != null)
+                            if ((newh2 != null) && (newh2.StartHour != null) && (newh2.EndHour != null))
                                 sw.ThursdayHours.Add(newh2);
-                            if (newh1 != null)
+                            if ((newh1 != null) && (newh1.StartHour != null) && (newh1.EndHour != null))
                                 sw.ThursdayHours.Add(newh1);
                             break;
                         case 5:
                             Hours r6 = sw.FridayHours.Find(h => ((h.StartHour == hrs.StartHour) && (h.EndHour == hrs.EndHour)));
                             sw.FridayHours.Remove(r6);
-                            if (newh2 != null)
+                            if ((newh2 != null) && (newh2.StartHour != null) && (newh2.EndHour != null))
                                 sw.FridayHours.Add(newh2);
-                            if (newh1 != null)
+                            if ((newh1 != null) && (newh1.StartHour != null) && (newh1.EndHour != null))
                                 sw.FridayHours.Add(newh1);
                             break;
                         default:
