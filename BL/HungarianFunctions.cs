@@ -25,14 +25,20 @@ namespace BL
         {
             Dictionary<int, Dictionary<int?, int>> dic = new Dictionary<int, Dictionary<int?, int>>();
             // dic = key:city, value: list<searches>
-            var bycitySearchesDic = DAL.Convert.SearchConvert.ConvertSearchesListToEntity(DbHandler.GetAll<DAL.ParkingSpotSearch>()).Where(e => ((e.Regularly == true)&&(((DateTime)(e.SearchDate)).Date.ToString("d") == date.Date.ToString("d")))).GroupBy(t => t.CityCode).ToDictionary(w => (int)w.Key, w => w.ToList());
+            var bycitySearchesDic = DAL.Convert.SearchConvert.ConvertSearchesListToEntity(DbHandler.GetAll<DAL.ParkingSpotSearch>()).Where(e => ((e.Regularly == true))).GroupBy(t => t.CityCode).ToDictionary(w => (int)w.Key, w => w.ToList());//(((DateTime)(e.SearchDate)).Date.ToString("d") == date.Date.ToString("d"))
             //dic = key:city, value: list<spots>
             var bycitySpotsDic = DAL.Convert.ParkSpotConvert.ConvertParkingSpotsListToEntity(DbHandler.GetAll<DAL.ParkingSpot>()).Where(s => s.AvRegularly == true).GroupBy(y => y.CityCode).ToDictionary(u => (int)(u.Key), u => u.ToList());
             foreach (var item in bycitySearchesDic)
             {
-                List<Entities.ParkingSpot> spotslist = bycitySpotsDic[item.Key].ToList();
-                var resultInsideDic = ParkingSpotPerUser(spotslist, item.Value);
-                dic.Add(key: item.Key, value: resultInsideDic);
+                List<Entities.ParkingSpot> spotslist = new List<ParkingSpot>();
+                if (bycitySpotsDic.ContainsKey(item.Key))
+                {
+                    spotslist = bycitySpotsDic[item.Key].ToList();
+                     var resultInsideDic = ParkingSpotPerUser(spotslist, item.Value);
+                        dic.Add(key: item.Key, value: resultInsideDic);
+                }
+               
+                   
             }
             return dic;
 
@@ -43,7 +49,6 @@ namespace BL
             //costs array for hungarian Algorithm - rows: spots, columns: searches
             //costs = new int[pspots.Count, psearches.Count];
             var groupOfPSpots = new List<PSpotHandler>();
-            int[] spotsClients;
             int? minCost = int.MaxValue;
             // converting the pspots and searches lists to it handler lists
             List<PSpotHandler> parkSpotsMatrixList = convertFuncBL.ConvertToPSpotHandlerList(pspots);
@@ -58,12 +63,9 @@ namespace BL
                 {
                     groupOfPSpots.Add(parkSpotsMatrixList[j + (parkSearchesMatrixList.Count * i)]);
                 }
-                List<int> resultlist = FillCosts(groupOfPSpots, parkSearchesMatrixList);
-                resultlist.RemoveAt(resultlist.Count - 1);
-                spotsClients = resultlist.ToArray();
-                costPerOption = resultlist[resultlist.Count - 1];
+                (int[] spotsClients, int[,] costs) = FillCosts(groupOfPSpots, parkSearchesMatrixList);
                 settingPSpotsPerSearch.Clear();
-
+                costPerOption = CalcCost(costs,spotsClients);
                 if (costPerOption < minCost)
                 {
                     minCost = costPerOption;
@@ -71,7 +73,7 @@ namespace BL
                     {
                         settingPSpotsPerSearch.Add(groupOfPSpots[s].Code, parkSearchesMatrixList[spotsClients[s]].Code);
                     }
-                    settingPSpotsPerSearchEnding = settingPSpotsPerSearch;
+                    settingPSpotsPerSearchEnding = new Dictionary<int?, int>(settingPSpotsPerSearch);
                 }
                 groupOfPSpots.Clear();
             }
@@ -84,11 +86,9 @@ namespace BL
                     {
                         groupOfPSpots.Add(parkSpotsMatrixList[j]);
                     }
-                    List<int> resultlist = FillCosts(groupOfPSpots, parkSearchesMatrixList);
-                    resultlist.RemoveAt(resultlist.Count - 1);
-                    spotsClients = resultlist.ToArray();
-                    costPerOption = resultlist[resultlist.Count - 1];
+                    (int[] spotsClients, int[,] costs) = FillCosts(groupOfPSpots, parkSearchesMatrixList);
                     settingPSpotsPerSearch.Clear();
+                    costPerOption = CalcCost(costs, spotsClients);
                     if (costPerOption < minCost)
                     {
                         minCost = costPerOption;
@@ -96,7 +96,7 @@ namespace BL
                         {
                             settingPSpotsPerSearch.Add(groupOfPSpots[s].Code, parkSearchesMatrixList[spotsClients[s]].Code);
                         }
-                        settingPSpotsPerSearchEnding = settingPSpotsPerSearch;
+                        settingPSpotsPerSearchEnding = new Dictionary<int?, int>(settingPSpotsPerSearch);
                     }
                     groupOfPSpots.Clear();
                 }
@@ -106,7 +106,7 @@ namespace BL
             {
                 var rand = new Random();
                 int prev = -1;
-                for (int l = parkSpotsMatrixList.Count - (parkSpotsMatrixList.Count % parkSearchesMatrixList.Count) - 1; l < parkSpotsMatrixList.Count; l++)
+                for (int l = parkSpotsMatrixList.Count - (parkSpotsMatrixList.Count % parkSearchesMatrixList.Count); l < parkSpotsMatrixList.Count; l++)
                     groupOfPSpots.Add(parkSpotsMatrixList[l]);
                 for (int k = 0; k < parkSearchesMatrixList.Count - (parkSpotsMatrixList.Count % parkSearchesMatrixList.Count); k++)
                 {
@@ -121,12 +121,9 @@ namespace BL
                     prev = y;
                     groupOfPSpots.Add(parkSpotsMatrixList[y]);
                 }
-                List<int> resultlist = FillCosts(parkSpotsMatrixList, parkSearchesMatrixList);
-                resultlist.RemoveAt(resultlist.Count - 1);
-                spotsClients = resultlist.ToArray();
-                costPerOption = resultlist[resultlist.Count - 1];
-             
+                (int[] spotsClients, int[,] costs) = FillCosts(groupOfPSpots, parkSearchesMatrixList);
                 settingPSpotsPerSearch.Clear();
+                costPerOption = CalcCost(costs, spotsClients);
                 if (costPerOption < minCost)
                 {
                     minCost = costPerOption;
@@ -134,27 +131,43 @@ namespace BL
                     {
                         settingPSpotsPerSearch.Add(groupOfPSpots[s].Code, parkSearchesMatrixList[spotsClients[s]].Code);
                     }
-                    settingPSpotsPerSearchEnding = settingPSpotsPerSearch;
+                    settingPSpotsPerSearchEnding = new Dictionary<int?, int>(settingPSpotsPerSearch);
                 }
             }
             return settingPSpotsPerSearchEnding;
         }
+
+      
+        private int? CalcCost( int[,] costs, int[] resultarray)
+        {
+            // var searches = DAL.Convert.SearchConvert.ConvertSearchesListToEntity(DbHandler.GetAll<DAL.ParkingSpotSearch>());
+            //var spots = DAL.Convert.ParkSpotConvert.ConvertParkingSpotsListToEntity(DbHandler.GetAll<DAL.ParkingSpot>());
+            int cost = 0;
+            for (int i = 0; i < resultarray.Length; i++)
+            {
+                cost += costs[i, resultarray[i]];
+            }
+            return cost;
+        }
+
         // calculates costs matrix, sends it to hungarian_function and returns its result array 
-        private List<int> FillCosts(List<PSpotHandler> parkingSpotsList, List<PSpotSearchHandler> parkingSearchesList)
+        private (int[],int[,]) FillCosts(List<PSpotHandler> parkingSpotsList, List<PSpotSearchHandler> parkingSearchesList)
         {
             costs = new int[parkingSearchesList.Count, parkingSearchesList.Count];
             int[] finalArray;
 
-            var listofdbcks = DbHandler.GetAll<Feedback>();
+            var listofdbcks = DAL.Convert.FeedbackConvert.ConvertFeedbacksListToEntity(DbHandler.GetAll<DAL.Feedback>());
             var groupOfSpots = new List<PSpotHandler>();
             int costPerSearchAndSpot = 0;
-       
+            groupOfSpots = parkingSpotsList;
             int cost_sum = 0;
             //sets the cost value per spotXsearch
             for (int spot = 0; spot < groupOfSpots.Count(); spot++)
             {
-                var fdbckPerUser = listofdbcks.Where(l => l.DescriptedUserCode == groupOfSpots[spot].UserCode);
-                int? avgRating = fdbckPerUser.Select(r => r.Rating).Sum() / fdbckPerUser.Count();
+                int? avgRating = null;
+                List<Entities.Feedback> fdbckPerUser = listofdbcks.Where(l => l.DescriptedUserCode == groupOfSpots[spot].UserCode).ToList();
+                if((fdbckPerUser!=null)&&(fdbckPerUser.Count!=0))
+                   avgRating = fdbckPerUser.Select(r => r.Rating).Sum() / fdbckPerUser.Count();
                 for (int search = 0; search < parkingSearchesList.Count(); search++)
                 {
                     // var that counts days mathed to days in search
@@ -165,7 +178,7 @@ namespace BL
                     // sets maxValue if doesn't fit the hours
                     for (int i = 0; i < 6; i++)
                     {
-                        if (parkingSearchesList[search].Hours[i] != null)
+                        if (parkingSearchesList[search].Hours.ContainsKey(i))
                         {
                             //var that counts matched hours at day i in parkspot_hourlist per parksearch_hourlist
                             int scount = parkingSearchesList[search].Hours[i].Count;
@@ -177,7 +190,7 @@ namespace BL
                                     if (item != null)
                                     {
                                         //checks if there is any hours in parkspot_hourlist that matches hours in parksearch_hourlist at that day
-
+                                       if(groupOfSpots[spot].Hours.ContainsKey(i))
                                         if (groupOfSpots[spot].Hours[i].Any(h => (Double.Parse(h.StartHour) <= Double.Parse(item.StartHour)) && (Double.Parse(h.EndHour) >= Double.Parse(item.EndHour))))
                                             inpspot_count++;
                                     }
@@ -315,36 +328,41 @@ namespace BL
 
                     }
                     //adds 300 points if it's farther than 500 m
-                    int distance = df.GetShortestDistance(parkingSearchesList[search].Place_Id, parkingSpotsList[spot].Place_Id);
-                    if (distance > 50)
+                    
+                    string distanceres = df.GetShortestDistance(parkingSearchesList[search].Place_Id, parkingSpotsList[spot].Place_Id);
+                    double distance =0;
+                    char[] MyChar = { 'k', 'm', ' ' };
+                    string NewString = distanceres.TrimEnd(MyChar);
+                    distance = Double.Parse(NewString);
+                    if (distance > 0.5)
                     {
                         costPerSearchAndSpot += 10;
                     }
                     else
                     {
 
-                        if (distance > 100)
+                        if (distance > 1.5)
                         {
                             costPerSearchAndSpot += 20;
                         }
                         else
                         {
 
-                            if (distance > 200)
+                            if (distance > 2)
                             {
                                 costPerSearchAndSpot += 50;
                             }
                             else
                             {
 
-                                if (distance > 400)
+                                if (distance > 3)
                                 {
                                     costPerSearchAndSpot += 100;
                                 }
                                 else
                                 {
 
-                                    if (distance > 500)
+                                    if (distance > 5)
                                     {
                                         costPerSearchAndSpot = int.MaxValue;
                                     }
@@ -387,9 +405,9 @@ namespace BL
 
             //an array of spots, each cell represents the row index and the value represent the column index
             finalArray = HungarianAlgorithm.FindAssignments(costs);
-            List<int> flist = finalArray.OfType<int>().ToList();
-            flist.Add(cost_sum);
-            return flist;
+         //   List<int> flist = finalArray.OfType<int>().ToList();
+           // flist.Add(cost_sum);
+            return (finalArray,costs);
         }
         #endregion
     }
